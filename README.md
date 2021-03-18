@@ -1,2 +1,2 @@
-# ProgettoEmbedded
-Repository per il progetto di Embedded
+# Overview
+This branch is user to develop the MainServer part and the Client application
