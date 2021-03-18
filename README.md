@@ -1,2 +1,4 @@
-# ProgettoEmbedded
-Repository per il progetto di Embedded
+# Overview
+
+Questo branch viene utilizzato per sviluppare il server
+all'interno di raspberry
