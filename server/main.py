@@ -6,7 +6,8 @@ import os
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.secret_key = os.envirion.get("SECRET_KEY") # set env val by EXPORT 
+app.secret_key = os.urandom(24) # this secret is not used by the app beacause use google secret
+# maybe it can be avoided 
 
 app.register_blueprint(authentication)
 
