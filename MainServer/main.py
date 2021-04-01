@@ -1,6 +1,8 @@
 from flask import Flask
-
+import pymysql.cursor
+from DB_connection import test
 app = Flask(__name__)
+
 
 def run():
 	
