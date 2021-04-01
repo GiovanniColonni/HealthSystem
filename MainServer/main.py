@@ -1,9 +1,9 @@
 from flask import Flask
-import pymysql.cursor
-from DB_connection import test
+from DBConnection import DBConnection
+
 app = Flask(__name__)
-
-
+dbConn = DBConnection()
+dbConn.getAllPatient(5)
 def run():
 	
 	app.run(host="0.0.0.0")
