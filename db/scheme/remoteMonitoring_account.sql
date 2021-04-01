@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.23, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.33, for Linux (x86_64)
 --
 -- Host: localhost    Database: remoteMonitoring
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,11 +21,13 @@
 
 DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
+  `uniqueId` int DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,6 +38,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES ('doctor1@gmail.com','pwd','doctor',NULL,NULL),('doctor10@gmail.com','pwd','doctor',NULL,NULL),('doctor2@gmail.com','pwd','doctor',NULL,NULL),('doctor3@gmail.com','pwd','doctor',NULL,NULL),('doctor4@gmail.com','pwd','doctor',NULL,NULL),('doctor5@gmail.com','pwd','doctor',NULL,NULL),('doctor6@gmail.com','pwd','doctor',NULL,NULL),('doctor7@gmail.com','pwd','doctor',NULL,NULL),('doctor8@gmail.com','pwd','doctor',NULL,NULL),('doctor9@gmail.com','pwd','doctor',NULL,NULL),('patient1@gmail.com','pwd','patient',NULL,NULL),('patient10@gmail.com','pwd','patient',NULL,NULL),('patient2@gmail.com','pwd','patient',NULL,NULL),('patient3@gmail.com','pwd','patient',NULL,NULL),('patient4@gmail.com','pwd','patient',NULL,NULL),('patient5@gmail.com','pwd','patient',NULL,NULL),('patient6@gmail.com','pwd','patient',NULL,NULL),('patient7@gmail.com','pwd','patient',NULL,NULL),('patient8@gmail.com','pwd','patient',NULL,NULL),('patient9@gmail.com','pwd','patient',NULL,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-29 19:03:46
+-- Dump completed on 2021-04-01 11:58:23
