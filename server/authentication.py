@@ -39,6 +39,13 @@ def login():
 	except ValueError:
 		return 'Invalid ID token', HTTPStatus.FORBIDDEN
 
-	return "token ok", HTTPStatus.OK
+	if('sub' not in identity or 'name' not in identity or 'picture' not in identity):
+		return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
+
+	# aggiungere user a database qui
+	# attivare sessione user	
+
+
+	return "Token ok", HTTPStatus.OK
 
 
