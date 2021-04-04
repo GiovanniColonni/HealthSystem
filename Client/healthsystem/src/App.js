@@ -7,6 +7,8 @@ import API from './api/API';
 import React,{useState} from "react"
 
 import axios from 'axios'
+
+
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
@@ -18,17 +20,21 @@ function App() {
   const [loginState,setLoginState] = useState(false)
   
   let loginSuccess = function(resp){
-      console.log("auth success")
+      
         var formData = new FormData()
-        console.log(resp)
         async function complete(){
+        
         formData.set("id_token",resp.tokenObj.id_token)
         formData.set("email",resp.profileObj.email)
         formData.set("googleId",resp.profileObj.googleId)
+
         try{
-          await axios.post("/login",formData)
-          console.log("request sended")
-          setLoginState(true)
+          let resp = await axios.post("/login",formData)
+          
+          if (resp.status === 200){
+            setLoginState(true)
+          }
+          
         }catch(e){
           setLoginState(false)
         }

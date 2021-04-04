@@ -4,17 +4,18 @@ from flask_login import LoginManager, current_user, login_required, login_user, 
 from oauthlib.oauth2 import WebApplicationClient
 import os 
 import requests
+from http import HTTPStatus
+
+from google_token import * 
 
 authentication = Blueprint('auth',__name__)
 
-GOOGLE_CLIENT_ID = "844949237967-h0pnqs3orkq4159ngua6s4jp0fdqatl4.apps.googleusercontent.com" # usare variabili di ambiente
-GOOGLE_CLIENT_SECRET = "opeuYXl_nSVbvYtY0U6LMyfN"
-GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
 
 # user session managment setup
 login_manager = LoginManager()
 
+GOOGLE_CLIENT_ID = "844949237967-h0pnqs3orkq4159ngua6s4jp0fdqatl4.apps.googleusercontent.com"
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 with app.app_context():
@@ -29,13 +30,15 @@ def login():
 	googleId = request.form.get('googleId')
 
 	if id_token is None:
-		print("NO ID token provided")
-		return "NO ID token provided",201 # cambiare in httpstatus.Forbidden
+		return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
 
 	# convert token into identity
 
+	try: 
+		identity = validate_id_token(id_token, "844949237967-h0pnqs3orkq4159ngua6s4jp0fdqatl4.apps.googleusercontent.com")
+	except ValueError:
+		return 'Invalid ID token', HTTPStatus.FORBIDDEN
 
-
-	return "token ok",200
+	return "token ok", HTTPStatus.OK
 
 
