@@ -1,7 +1,7 @@
 from flask import current_app as app
-from flask import g # object used to store data of the request (expires at the end of each request9) used to avoid multiple connection creation 
-# for one request
-import click
+from flask import g # object used to store data of the request (expires at the end of each request)
+# used to avoid multiple connection creation  for one request
+
 import sqlite3
 
 
@@ -19,7 +19,7 @@ def init_app(app):
 def get_db():
 	if 'db' not in g: # if connection is not open then open it
 		g.db = sqlite3.connect(
-			current_app.config['DATABASE'],
+			"db.db", # mettere poi su configurazioni app
 			detect_types = sqlite3.PARSE_DECLTYPES
 		)
 		g.db.row_factory = sqlite3.Row
@@ -43,3 +43,4 @@ def init_db_command(): # this is a command and maybe it will not be usefull
 	# this command cleare the existing data and create new tables
 	init_db()
 	click.echo('Initialized  the db')
+
