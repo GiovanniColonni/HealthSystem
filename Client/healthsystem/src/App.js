@@ -17,7 +17,7 @@ function App() {
       console.log("auth success")
       // qui mettere fetch per attivare login utente
         var formData = new FormData()
-
+        console.log(resp)
         async function complete(){
         formData.set("id_token",resp.tokenObj.id_token);
         try{
