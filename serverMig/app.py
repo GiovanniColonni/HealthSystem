@@ -12,7 +12,7 @@ app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY']=True
 
 with app.app_context():
-	from auth import auth
+	from auth import auth # 
 
 
 app.register_blueprint(auth)
