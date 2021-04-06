@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api,Resource
 from config import SECRET_KEY
-
+from DBConnection import DBConnection
 app = Flask(__name__)
 app.config.from_object(__name__)
 

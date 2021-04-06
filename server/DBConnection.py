@@ -1,10 +1,10 @@
 import mysql.connector
 
-from config import DB_HOST_ADDRESS, DB_USER, DB_PASSWORD, 
+from config import (DB_HOST_ADDRESS, DB_USER, DB_PASSWORD, DB_NAME,DB_AUTH_PLUGIN)
 
 def connection():
     conn = mysql.connector.connect(host=DB_HOST_ADDRESS,
-                                   user=DB_USER',
+                                   user=DB_USER,
                                    password=DB_PASSWORD,
                                    database=DB_NAME,
                                    auth_plugin=DB_AUTH_PLUGIN)
