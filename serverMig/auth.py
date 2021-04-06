@@ -51,8 +51,38 @@ class CurrentUser(Resource):
     
     @login_required
     def get(self):
-        return "ok",HTTPStatus.OK
+        return jsonify({
+            'google_id': current_user.id,
+            'name': current_user.name,
+            'email': current_user.email
+        })
     
     @csrf_protection
     def post(self):
-        return "ok",HTTPStatus.OK
+        id_token = request.form.get('id_token')
+        email = request.form.get('email')
+        googleId = request.form.get('googleId')
+        
+        # controllare parametri
+
+        if id_token is None:
+            return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
+
+	    # convert token into identity
+
+        try: 
+            identity = validate_id_token(id_token, GOOGLE_CLIENT_ID)
+        except ValueError:
+            return 'Invalid ID token', HTTPStatus.FORBIDDEN
+
+        if('sub' not in identity or 'name' not in identity or 'picture' not in identity):
+
+            return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
+
+        # aggiungere user a database qui
+        # attivare sessione user	
+
+
+        return "Token ok", HTTPStatus.OK
+
+
