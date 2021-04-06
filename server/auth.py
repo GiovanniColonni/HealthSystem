@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request, redirect, g
 from flask import current_app as app
 
 from flask_restx import Api,Resource,fields
@@ -10,6 +10,7 @@ import requests
 from http import HTTPStatus
 
 from google_token import * 
+from DBConnection import DBConnection
 
 from config import GOOGLE_CLIENT_ID
 
@@ -35,6 +36,7 @@ def csrf_protection(fn):
             return "X-Requested-With header missing", HTTPStatus.FORBIDDEN
    return protected
 
+    
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -43,11 +45,18 @@ def user_loader(user_id):
 @apiLogin.route("/login")
 class CurrentUser(Resource):
 
-    a_user = apiLogin.model("User",{
+
+    user = apiLogin.model("User",{
         'google_id': fields.Integer(description=""),
         'name': fields.String(description=""),
         'email':fields.String(description="")
     })
+
+    def getDBConn(self):
+        if 'db' not in g: 
+            g.db = DBConnection()
+        return g.db
+
     
     @login_required
     def get(self):
@@ -78,6 +87,7 @@ class CurrentUser(Resource):
         if('sub' not in identity or 'name' not in identity or 'picture' not in identity):
 
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
+
 
         # aggiungere user a database qui
         # attivare sessione user	
