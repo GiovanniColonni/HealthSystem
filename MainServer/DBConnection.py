@@ -2,7 +2,7 @@ import mysql.connector
 
 
 def connection():
-    conn = mysql.connector.connect(host="localhost",
+    conn = mysql.connector.connect(host="79.53.69.133",
                                    user='root',
                                    password='pwd',
                                    database='remoteMonitoring',
