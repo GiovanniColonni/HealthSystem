@@ -12,3 +12,4 @@ DB_USER = "root"
 DB_PASSWORD = "pwd"
 DB_NAME = "remoteMonitoring"
 DB_AUTH_PLUGIN = "mysql_native_password"
+
