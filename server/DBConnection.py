@@ -1,12 +1,13 @@
 import mysql.connector
 
+from config import DB_HOST_ADDRESS, DB_USER, DB_PASSWORD, 
 
 def connection():
-    conn = mysql.connector.connect(host="79.53.69.133",
-                                   user='root',
-                                   password='pwd',
-                                   database='remoteMonitoring',
-                                   auth_plugin='mysql_native_password')
+    conn = mysql.connector.connect(host=DB_HOST_ADDRESS,
+                                   user=DB_USER',
+                                   password=DB_PASSWORD,
+                                   database=DB_NAME,
+                                   auth_plugin=DB_AUTH_PLUGIN)
 
     # c = conn.cursor()
     return conn

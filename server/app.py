@@ -14,7 +14,7 @@ app.config['REMEMBER_COOKIE_HTTPONLY']=True
 dbConn = DBConnection()
 
 with app.app_context():
-	from auth import auth # 
+	from auth import auth  
 
 
 app.register_blueprint(auth)
