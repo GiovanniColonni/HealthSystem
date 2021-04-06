@@ -11,6 +11,8 @@ api = Api(app=app,title="HealthSystem")
 app.secret_key = SECRET_KEY 
 app.config['REMEMBER_COOKIE_HTTPONLY']=True
 
+dbConn = DBConnection()
+
 with app.app_context():
 	from auth import auth # 
 
