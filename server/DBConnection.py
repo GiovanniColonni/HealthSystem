@@ -13,9 +13,6 @@ def connection():
     return conn
     # c = conn.cursor()
 
-def close():
-    pass
-
 class DBConnection:
     def __init__(self):
         self.conn = connection()
@@ -29,6 +26,15 @@ class DBConnection:
         cursor.execute(query, {"doctorId": doctor_id })
         for v in cursor:
             print(v)
+
+
         self.conn.commit()
         cursor.close()
         # qui close db
+
+    def insertUser():
+        pass
+
+    def getUserById(id):
+        
+        pass    
