@@ -13,19 +13,30 @@ from google_token import *
 from DBConnection import DBConnection
 
 from config import GOOGLE_CLIENT_ID
+from UserManager import UserManager
 
 auth = Blueprint('auth',__name__)
-apiLogin = Api(auth) # likn api up to the BP
+apiLogin = Api(auth) # link api up to the BP
 
+client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+
+
+
+user_manager = UserManager()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
-
 with app.app_context():
     login_manager.init_app(app)
+
+# implement the user loader of LoginManager (by flask_login)
+# with the actual implementation
+@login_manager.user_loader 
+def user_loader(googleId):
+    return user_manager.lookupUser(googleId)
 
 
 def csrf_protection(fn):
@@ -35,8 +46,6 @@ def csrf_protection(fn):
         else:
             return "X-Requested-With header missing", HTTPStatus.FORBIDDEN
    return protected
-
-    
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -52,18 +61,13 @@ class CurrentUser(Resource):
         'email':fields.String(description="")
     })
 
-    def getDBConn(self):
-        if 'db' not in g: 
-            g.db = DBConnection()
-        return g.db
-
-    
     @login_required
     def get(self):
         return jsonify({
-            'google_id': current_user.id,
-            'name': current_user.name,
-            'email': current_user.email
+            'googleId': current_user.id,
+            'username': current_user.name,
+            'email': current_user.email,
+            'userType': current_user.userType
         })
     
     @csrf_protection
@@ -72,14 +76,14 @@ class CurrentUser(Resource):
         email = request.form.get('email')
         googleId = request.form.get('googleId')
         
-        # controllare parametri
+    
+        # controllare parametri input
 
         if id_token is None:
             return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
 
-	    # convert token into identity
-
         try: 
+            # call ESP for validating
             identity = validate_id_token(id_token, GOOGLE_CLIENT_ID)
         except ValueError:
             return 'Invalid ID token', HTTPStatus.FORBIDDEN
@@ -88,11 +92,15 @@ class CurrentUser(Resource):
 
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
+        username = identity["name"]
+        print(f"username {username}")
+        user = user_manager.insertUserOrNothing(googleId,username,email,"fakePass","unknow")
 
-        # aggiungere user a database qui
-        # attivare sessione user	
+        
+        if(login_user(user, remember=True) == False):
+            print("login error")
+            return "Error while login",HTTPStatus.INTERNAL_SERVER_ERROR
 
-
-        return "Token ok", HTTPStatus.OK
+        return self.get()
 
 

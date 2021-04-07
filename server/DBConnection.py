@@ -27,14 +27,34 @@ class DBConnection:
         for v in cursor:
             print(v)
 
-
-        self.conn.commit()
         cursor.close()
         # qui close db
 
-    def insertUser():
-        pass
+    def insertUser(self, uniqueId,username,email,password,accountType):
+        code = 0
+        query = "INSERT INTO account VALUES ( %(email)s, %(password)s, %(accountType)s, %(uniqueId)s, %(username)s )"
+        cursor = self.conn.cursor()
+        cursor.execute(query,{"email":email,"password":password,"accountType":accountType,"uniqueId":uniqueId,"username":username})
+        self.conn.commit()
+        if cursor.rowcount != 1:
+            print("Error inserting user")
+            code = 1
+        cursor.close()
+        return code
 
-    def getUserById(id):
+    def getUserById(self,id):
+        query = "SELECT * FROM account WHERE uniqueId = %(id)s"
+        cursor = self.conn.cursor()
+        cursor.execute(query,{"id":id})
+        records = cursor.fetchall()
+        cursor.close()
+        return records
         
-        pass    
+    def getUserByEmail(self,email):
+        query = "SELECT * FROM account WHERE email = %(email)s"
+        cursor = self.conn.cursor()
+        cursor.execute(query,{"email":email})
+        records = cursor.fetchall()
+        cursor.close()
+
+        return records
