@@ -1,65 +1,38 @@
 
 import './App.css';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import GoogleLogin from 'react-google-login';
-import API from './api/API';
-import React,{useState} from "react"
 
-import axios from 'axios'
+import React,{useState,useEffect} from "react"
+import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
 
-
-axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
-axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
-
-
-
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
+import Login from "./components/Login"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
   
-  let loginSuccess = function(resp){
-      
-        var formData = new FormData()
-        async function complete(){
-        
-        formData.set("id_token",resp.tokenObj.id_token)
-        formData.set("email",resp.profileObj.email)
-        formData.set("googleId",resp.profileObj.googleId)
+  useEffect(()=>{
+    // chiamare isUserAuth api e se ok bene altrimenti 
+    // redirect to login
+    
+  })
 
-        try{
-          let resp = await axios.post("/login",formData)
-          
-          if (resp.status === 200){
-            setLoginState(true)
-          }
-          
-        }catch(e){
-          setLoginState(false)
-        }
-      }
-      complete()
-      
-  }
-  let loginFailure = function(resp){
-    console.log(resp)
-  }
+
   return (
     <div className="App">
-       {!loginState && <GoogleLogin 
-        clientId={GOOGLE_CLIENT_ID}
-        buttonText="Log in with google"
-        onSuccess={loginSuccess}
-        onFailure={loginFailure}
-        cookiePolicy={"single_host_origin"}
-        redirectUri="postmessage"
-        scope="openid"
-      />}
-      {loginState && <h1>Logged</h1> }
 
+      <Switch>
+        
+        <Route exact path="/login">
+          <Login props={setLoginState}/>
+        </Route>
 
-    
+        <Route exact path="/home">
+          <div>
+            <h1>if you see this you are logged</h1>
+          </div>
+        </Route>
+
+      </Switch>
+      
     </div>
   );
 }

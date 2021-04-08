@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 async function postToLogin(){
     // api per prendere il link verso cui fare il redirect
     return new Promise((resolve,reject)=>{
@@ -6,11 +9,19 @@ async function postToLogin(){
             
     })
 }
-async function activeUserSession(){
-    return new Promise((resolve,reject)=>{
-        fetch("/login1",{method:'POST'}).then().catch((err) => console.error("error"))
-    })
+
+async function isAuthenticated(){
+    
+    const resp = await axios("/user")
+    const userJson = await resp.json()
+    
+    if (resp.ok){
+        return userJson
+    }else{
+        throw("error") // sostituire con oggetto errore
+    }
 }
+
 
 const API = {postToLogin}
 export default API;
