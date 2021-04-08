@@ -5,6 +5,7 @@ import React,{useState,useEffect} from "react"
 import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
 
 import Login from "./components/Login"
+import API from "./api/API"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -12,7 +13,7 @@ function App() {
   useEffect(()=>{
     // chiamare isUserAuth api e se ok bene altrimenti 
     // redirect to login
-    
+
   })
 
 

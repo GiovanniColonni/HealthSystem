@@ -12,7 +12,7 @@ async function postToLogin(){
 
 async function isAuthenticated(){
     
-    const resp = await axios("/user")
+    const resp = await axios("/login")
     const userJson = await resp.json()
     
     if (resp.ok){
