@@ -43,7 +43,7 @@ class DBConnection:
         return code
 
     def getUserById(self,id):
-        query = "SELECT * FROM account WHERE uniqueId = %(id)s"
+        query = "SELECT * FROM account WHERE gogoleId = %(id)s"
         cursor = self.conn.cursor()
         cursor.execute(query,{"id":id})
         records = cursor.fetchall()

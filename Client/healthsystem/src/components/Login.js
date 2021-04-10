@@ -1,15 +1,14 @@
 import React from "react"
-
 import GoogleLogin from 'react-google-login';
-import axios from 'axios'
 
+import axios from 'axios'
 
 // per csfr protection
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-function Login({setLoginState}){
-
+function Login(){
+  let setLoginState = () => {return}
 
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
@@ -38,7 +37,7 @@ function Login({setLoginState}){
       }
       complete()
       
-  }
+    }
 
     let loginFailure = function(resp){
         console.log(resp)
