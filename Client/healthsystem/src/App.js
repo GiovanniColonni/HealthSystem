@@ -1,7 +1,7 @@
 
 import './App.css';
 
-import React,{useState,useEffect} from "react"
+import React,{useState,useEffect, useCallback, useMemo} from "react"
 import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
 import {useHistory} from "react-router"
 import Login from "./components/Login"
@@ -11,6 +11,9 @@ function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
   
+  const setLogState = useCallback(()=> setLoginState(oldState => [...oldState,{}])) // rendo la callback independete dallo scope
+
+  const funcToPass  =   useMemo(()=>({setLogState}),[])
   
   return (
     <div className="App">
@@ -18,7 +21,7 @@ function App() {
       <Switch>
        
         <Route exact path={"/login"}>
-          <Login props={setLoginState}/>
+          <Login stateSetter={funcToPass}/>
         </Route>
 
         <Route exact path={"/home"}>

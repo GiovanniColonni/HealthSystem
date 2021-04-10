@@ -7,9 +7,8 @@ import axios from 'axios'
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-function Login(){
-  let setLoginState = () => {return}
-
+function Login(funcToPass){
+ 
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
 
@@ -28,11 +27,11 @@ function Login(){
           let resp = await axios.post("/login",formData)
           
           if (resp.status === 200){
-            setLoginState(true)
+            funcToPass.setLoginState(true)
           }
           
         }catch(e){
-          setLoginState(false)
+          funcToPass.setLoginState(false)
         }
       }
       complete()
