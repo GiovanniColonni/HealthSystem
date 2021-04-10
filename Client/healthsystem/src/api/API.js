@@ -1,12 +1,12 @@
 import axios from 'axios'
 
+axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
+axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 async function postToLogin(){
     // api per prendere il link verso cui fare il redirect
     return new Promise((resolve,reject)=>{
         fetch("/login",{method:'POST',"Access-Control-Allow-Origin":"http://accounts.google.com/"})
-        //.then((respose)=>{console.log(respose)})
-            
     })
 }
 
@@ -23,5 +23,5 @@ async function isAuthenticated(){
 }
 
 
-const API = {postToLogin}
+const API = {postToLogin,isAuthenticated}
 export default API;
