@@ -22,6 +22,12 @@ async function isAuthenticated(){
     }
 }
 
+async function getEvents(id){
+    return new Promise((resolve,reject) =>{
+        fetch("/events",{method: 'GET'})
+    })
+}
+
 
 const API = {postToLogin,isAuthenticated}
 export default API;

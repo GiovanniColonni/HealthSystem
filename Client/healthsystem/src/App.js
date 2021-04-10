@@ -6,6 +6,7 @@ import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-rout
 import {useHistory} from "react-router"
 import Login from "./components/Login"
 import API from "./api/API"
+import BigCalendar from "./components/BigCalendar"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -25,6 +26,10 @@ function App() {
           <div>
             <h1>AAAA</h1>
           </div>
+        </Route>
+
+        <Route exact path={"/calendar"}>
+          <BigCalendar />
         </Route>
 
       </Switch>
