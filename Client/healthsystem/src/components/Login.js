@@ -1,5 +1,6 @@
 import React from "react"
 import GoogleLogin from 'react-google-login';
+import {useHistory} from "react-router"
 
 import axios from 'axios'
 
@@ -7,10 +8,11 @@ import axios from 'axios'
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-function Login(funcToPass){
+function Login({setLoginState,setUser}){
  
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
+    let history = useHistory()
 
     let loginSuccess = function(resp){
         
@@ -27,12 +29,13 @@ function Login(funcToPass){
           let resp = await axios.post("/login",formData)
           
           if (resp.status === 200){
-            funcToPass.setLoginState(true)
+            setLoginState(true)
           }
           
         }catch(e){
-          funcToPass.setLoginState(false)
+          setLoginState(false)
         }
+        history.push('/home')
       }
       complete()
       

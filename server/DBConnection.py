@@ -30,11 +30,11 @@ class DBConnection:
         cursor.close()
         # qui close db
 
-    def insertUser(self, uniqueId,username,email,password,accountType):
+    def insertUser(self, googleId,username,email,password,accountType):
         code = 0
-        query = "INSERT INTO account VALUES ( %(email)s, %(password)s, %(accountType)s, %(uniqueId)s, %(username)s )"
+        query = "INSERT INTO account VALUES ( %(email)s, %(password)s, %(accountType)s, %(googleId)s, %(username)s )"
         cursor = self.conn.cursor()
-        cursor.execute(query,{"email":email,"password":password,"accountType":accountType,"uniqueId":uniqueId,"username":username})
+        cursor.execute(query,{"email":email,"password":password,"accountType":accountType,"googleId":googleId,"username":username})
         self.conn.commit()
         if cursor.rowcount != 1:
             print("Error inserting user")
@@ -43,7 +43,7 @@ class DBConnection:
         return code
 
     def getUserById(self,id):
-        query = "SELECT * FROM account WHERE gogoleId = %(id)s"
+        query = "SELECT * FROM account WHERE googleId = %(id)s"
         cursor = self.conn.cursor()
         cursor.execute(query,{"id":id})
         records = cursor.fetchall()

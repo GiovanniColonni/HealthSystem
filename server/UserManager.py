@@ -10,15 +10,15 @@ class UserManager(object):
     def getDBConnection(self):
         return DBConnection()
     
-    def lookupUser(self, googleId):
+    def lookup_user(self, googleId): # the name is inerithed from UserManager object
         DB = self.getDBConnection()
         DB.getUserById(googleId)
 
     def insertUserOrNothing(self,googleId,username,email,password,accountType):
         DB = self.getDBConnection()
-        record = DB.getUserById(googleId)
-
+        record = DB.getUserByEmail(email)
         if(len(record) == 0): # new user
             DB.insertUser(googleId,username,email,password,accountType)   # mettere controllo scrittura 
 
-        return googleId
+        user = User(googleId,username,email,accountType)
+        return user

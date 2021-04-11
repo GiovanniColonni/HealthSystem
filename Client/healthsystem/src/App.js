@@ -11,22 +11,34 @@ function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
   
-  const setLogState = useCallback(()=> setLoginState(oldState => [...oldState,{}])) // rendo la callback independete dallo scope
 
-  const funcToPass  =   useMemo(()=>({setLogState}),[])
-  
+  useEffect( () => {
+      async function checkUser(){
+        if(loginState === true){
+          API.isAuthenticated()
+            .then((userJson) => setUser(userJson))
+            .catch((err)=> setLoginState(false))
+          }else{
+            return(<Redirect to={"/login"} />)
+          }
+      }
+      
+      checkUser()
+    },[loginState,setUser]
+  ) 
+
   return (
     <div className="App">
 
       <Switch>
        
         <Route exact path={"/login"}>
-          <Login stateSetter={funcToPass}/>
+          <Login setLoginState={setLoginState} setUser={setUser}/>
         </Route>
 
         <Route exact path={"/home"}>
           <div>
-            <h1>AAAA</h1>
+            <h1>Home</h1>
           </div>
         </Route>
 

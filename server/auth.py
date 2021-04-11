@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, g
+from flask import Blueprint, request, redirect, g, jsonify
 from flask import current_app as app
 
 from flask_restx import Api,Resource,fields
@@ -65,7 +65,7 @@ class CurrentUser(Resource):
     def get(self):
         return jsonify({
             'googleId': current_user.id,
-            'username': current_user.name,
+            'username': current_user.username,
             'email': current_user.email,
             'userType': current_user.userType
         })
@@ -93,7 +93,6 @@ class CurrentUser(Resource):
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         username = identity["name"]
-        print(f"username {username}")
         user = user_manager.insertUserOrNothing(googleId,username,email,"fakePass","unknow")
 
         
