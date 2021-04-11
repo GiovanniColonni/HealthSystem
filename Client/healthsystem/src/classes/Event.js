@@ -1,10 +1,11 @@
 export default class Event {
-    constructor(title, start, end, allDay, resource){
+    constructor(title, start, end, allDay, description, conference){
         this.title = title;
         this.start = start;
         this.end = end;
         this.allDay = allDay;
-        this.resource = resource;
+        this.description = description;
+        this.conference = conference
     }
   }
   
