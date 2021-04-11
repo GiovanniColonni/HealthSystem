@@ -35,8 +35,10 @@ with app.app_context():
 # implement the user loader of LoginManager (by flask_login)
 # with the actual implementation
 @login_manager.user_loader 
-def user_loader(googleId):
-    return user_manager.lookupUser(googleId)
+def user_loader(id):
+    print("this is the id ")
+    print(id)
+    return user_manager.lookupUser(id)
 
 
 def csrf_protection(fn):

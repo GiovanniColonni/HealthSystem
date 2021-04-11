@@ -58,3 +58,13 @@ class DBConnection:
         cursor.close()
 
         return records
+
+
+    def getAll(self):
+        query = "SELECT * FROM account"
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        records = cursor.fetchall()
+        cursor.close()
+
+        return records

@@ -10,9 +10,14 @@ class UserManager(object):
     def getDBConnection(self):
         return DBConnection()
     
-    def lookup_user(self, googleId): # the name is inerithed from UserManager object
+    def lookup_user(self, email):
         DB = self.getDBConnection()
-        DB.getUserById(googleId)
+        email = "giovacolo97@gmail.com"
+        
+        r = DB.getUserByEmail(email)
+        for rec in r:
+            u  = User(rec[3],rec[4],rec[0],rec[2])
+        return u
 
     def insertUserOrNothing(self,googleId,username,email,password,accountType):
         DB = self.getDBConnection()
