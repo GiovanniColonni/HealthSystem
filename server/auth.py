@@ -76,10 +76,6 @@ class CurrentUser(Resource):
         email = request.form.get('email')
         googleId = request.form.get('googleId')
         
-        print("google id : ")
-        print(googleId)
-        # controllare parametri input
-
         if id_token is None:
             return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
 

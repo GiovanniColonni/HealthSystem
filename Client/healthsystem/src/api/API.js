@@ -3,16 +3,20 @@ import axios from 'axios'
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-async function Login(id_token,email,googleId){
+async function postLogin(id_token,email,googleId){
         var formData = new FormData()
-        formData.set("id_token",resp.tokenObj.id_token)
-        formData.set("email",resp.profileObj.email)
-        formData.set("googleId",resp.profileObj.googleId)
-        let resp = await axios.post("/login",formData)
-
-        if(resp.status === 200){
-            return true
-        }else{
+        formData.set("id_token",id_token)
+        formData.set("email",email)
+        formData.set("googleId",googleId)
+        
+        try{
+            let resp = await axios.post("/login",formData)
+            
+            if (resp.status === 200){
+              return true
+            }
+            
+        }catch(e){
             return false
         }
 }
@@ -42,5 +46,5 @@ async function getEvents(id){
 }
 
 
-const API = {Login,isAuthenticated}
+const API = {postLogin,isAuthenticated}
 export default API;

@@ -4,6 +4,8 @@ import {Redirect, useHistory} from "react-router"
 
 import axios from 'axios'
 
+import API from "../api/API"
+
 // per csfr protection
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -16,28 +18,20 @@ function Login({setLoginState,setUser,loginState}){
 
     let loginSuccess = function(resp){
         
-        // mettere questo su file API
+        const id_token = resp.tokenObj.id_token
+        const email = resp.profileObj.email
+        const googleId = resp.profileObj.googleId
 
-        var formData = new FormData()
-        async function complete(){
-        
-        formData.set("id_token",resp.tokenObj.id_token)
-        formData.set("email",resp.profileObj.email)
-        formData.set("googleId",resp.profileObj.googleId)
-
-        try{
-          let resp = await axios.post("/login",formData)
+        async function completeLogin(){
+          API.postLogin(id_token,email,googleId)
+          .then((logState) => setLoginState(logState))
+          .catch((err) => setLoginState(false))
           
-          if (resp.status === 200){
-            setLoginState(true)
-          }
-          
-        }catch(e){
-          setLoginState(false)
+          history.push('/home')
+      
         }
-        history.push('/home')
-      }
-      complete()
+      
+        completeLogin()
       
     }
 
