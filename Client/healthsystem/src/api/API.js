@@ -28,6 +28,19 @@ async function isAuthenticated(){
         
 }
 
+// update this function
+async function getEvents(id){
+    return new Promise((resolve,reject) =>{
+        fetch("/events",{method: 'GET'})
+            .then((response) =>{
+
+            })
+            .catch((err) =>{
+
+            });
+    })
+}
+
 
 const API = {Login,isAuthenticated}
 export default API;
