@@ -10,21 +10,27 @@ import API from "./api/API"
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
+  const [username,setUserName] = useState("")
   
+  let history = useHistory()
 
   useEffect( () => {
       async function checkUser(){
-        if(loginState === true){
           API.isAuthenticated()
-            .then((userJson) => setUser(userJson))
-            .catch((err)=> setLoginState(false))
-          }else{
-            return(<Redirect to={"/login"} />)
+            .then((userJson) =>{ 
+                     setLoginState(true)
+                     setUserName(userJson.username)
+                     setUser(userJson)})
+            .catch((err)=> {
+            setLoginState(false) 
+            history.push("/login")
+            console.log(err)})
+            
           }
-      }
+
+        checkUser()
       
-      checkUser()
-    },[loginState,setUser]
+    },[loginState,setUser,setUserName]
   ) 
 
   return (
@@ -33,12 +39,13 @@ function App() {
       <Switch>
        
         <Route exact path={"/login"}>
-          <Login setLoginState={setLoginState} setUser={setUser}/>
+          <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
 
         <Route exact path={"/home"}>
           <div>
-            <h1>Home</h1>
+            <h1>Home of {username}</h1>
+            {loginState && <h1>Protected</h1>}
           </div>
         </Route>
 

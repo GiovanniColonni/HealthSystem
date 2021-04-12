@@ -1,6 +1,6 @@
 import React from "react"
 import GoogleLogin from 'react-google-login';
-import {useHistory} from "react-router"
+import {Redirect, useHistory} from "react-router"
 
 import axios from 'axios'
 
@@ -8,7 +8,7 @@ import axios from 'axios'
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-function Login({setLoginState,setUser}){
+function Login({setLoginState,setUser,loginState}){
  
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
@@ -45,6 +45,9 @@ function Login({setLoginState,setUser}){
         console.log(resp)
     }
 
+    if(loginState === true){
+        return <Redirect to={"/home"} />
+    }
     return(
         
         <GoogleLogin 
@@ -57,7 +60,7 @@ function Login({setLoginState,setUser}){
             scope="openid"
         />
     )
-
+  
 
 }
 

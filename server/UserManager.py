@@ -10,11 +10,11 @@ class UserManager(object):
     def getDBConnection(self):
         return DBConnection()
     
-    def lookup_user(self, email):
+    def lookup_user(self, id):
         DB = self.getDBConnection()
-        email = "giovacolo97@gmail.com"
-        
-        r = DB.getUserByEmail(email)
+        print("ID : ")
+        print(id)
+        r = DB.getUserById(id)
         for rec in r:
             u  = User(rec[3],rec[4],rec[0],rec[2])
         return u

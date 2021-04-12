@@ -36,8 +36,6 @@ with app.app_context():
 # with the actual implementation
 @login_manager.user_loader 
 def user_loader(id):
-    print("this is the id ")
-    print(id)
     return user_manager.lookupUser(id)
 
 
@@ -78,7 +76,8 @@ class CurrentUser(Resource):
         email = request.form.get('email')
         googleId = request.form.get('googleId')
         
-    
+        print("google id : ")
+        print(googleId)
         # controllare parametri input
 
         if id_token is None:
@@ -105,3 +104,4 @@ class CurrentUser(Resource):
         return self.get()
 
 
+    
