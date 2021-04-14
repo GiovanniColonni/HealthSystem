@@ -1,24 +1,39 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+
+var navstyle = {
+    nav: {
+        bg: "light",
+        borderColor: "#e3e3e3",
+        borderBottomStyle: "solid" 
+    },
+    collapse: {
+        color: "#FF9052"
+    }
+}
 
 export default function NavigationBar() {
     return (
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                </NavDropdown>
+        <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
+            <Navbar.Brand href="#home">
+            <img
+                alt=""
+                src="../icons/greeCross.png"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+            />{' '}
+            My Health Way
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" className={navstyle.collapse}/>
+            <Navbar.Collapse id="basic-navbar-nav" >
+                <Nav className="mr-auto" >
+                <Nav.Link href="#calendar">My Appointements</Nav.Link>
+                <Nav.Link href="#patientlist">My Patient list</Nav.Link>
+                </Nav>
+                <Nav>
+                    <Nav.Link href="#myprofile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

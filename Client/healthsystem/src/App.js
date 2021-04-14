@@ -8,7 +8,6 @@ import Login from "./components/Login"
 import API from "./api/API"
 import BigCalendar from "./components/BigCalendar"
 import NavigationBar from './components/NavigationBar';
-
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
