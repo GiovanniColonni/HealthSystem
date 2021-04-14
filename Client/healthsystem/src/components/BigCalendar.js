@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import Event from '../classes/Event'
 import EventModal from '../components/EventModal'
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import API from '../api/API';
 
 const localizer = momentLocalizer(moment)
 
@@ -13,8 +14,18 @@ export default function BigCalendar() {
   const [show, setShow] = useState(false);
   const [eventClk, setEventClk] = useState(null)
   const handleClose = () => setShow(false);
-  let ev = new Event("Title1",moment().toDate(),moment().add(30,"minutes").toDate(),false,"This is a description",null)
-  // REMEMBER TO USE .toDate(); moment() don't work with bigCalendar
+  let ev = []
+  useEffect(() => {
+    // REMEMBER to change the doctorId=6; retrieve it from cookies
+    API.getEvents(6,'doctor')
+      .then((events) =>{
+        setEvents(events)
+      })
+      .catch((err)=>{
+
+      });
+  }, []);
+  // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
   const [events, setEvents] = useState([ev])
   return (
     <>
