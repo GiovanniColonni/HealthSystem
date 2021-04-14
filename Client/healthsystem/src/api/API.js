@@ -5,23 +5,33 @@ import moment from 'moment'
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
-async function postToLogin(){
-    // api per prendere il link verso cui fare il redirect
-    return new Promise((resolve,reject)=>{
-        fetch("/login",{method:'POST',"Access-Control-Allow-Origin":"http://accounts.google.com/"})
-    })
+async function postLogin(id_token,email,googleId){
+        var formData = new FormData()
+        formData.set("id_token",id_token)
+        formData.set("email",email)
+        formData.set("googleId",googleId)
+        
+        try{
+            let resp = await axios.post("/login",formData)
+            
+            if (resp.status === 200){
+              return true
+            }
+            
+        }catch(e){
+            return false
+        }
 }
 
 async function isAuthenticated(){
-    
-    const resp = await axios("/login")
-    const userJson = await resp.json()
-    
-    if (resp.ok){
-        return userJson
+    // bisognerebbe fare controllo errore   
+    const resp = await axios.get("/login")
+    if (resp.status === 200){
+        return resp.data
     }else{
-        throw("error") // sostituire con oggetto errore
+        throw "error" // fare gestione più precisa dell'erroe
     }
+        
 }
 
 // update this function
@@ -48,5 +58,5 @@ async function getEvents(id,type){
 }
 
 
-const API = {postToLogin, isAuthenticated,getEvents}
+const API = {postLogin,isAuthenticated,getEvents}
 export default API;
