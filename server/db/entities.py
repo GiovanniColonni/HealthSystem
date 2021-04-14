@@ -14,7 +14,7 @@ class Account(Base):
     email = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable=False)
     type = Column(String(50), nullable=False)
-    googleId = Column(INTEGER(11), primary_key=True)
+    googleId = Column(String(50), primary_key=True)
     username = Column(String(50))
 
 
@@ -72,9 +72,10 @@ class Schedule(Base):
     id = Column(INTEGER(11), primary_key=True, comment='description is used to write notes about the examination ')
     patientId = Column(ForeignKey('patient.id'), nullable=False, index=True)
     doctorId = Column(ForeignKey('doctor.id'), nullable=False, index=True)
-    date = Column(Date, nullable=False)
+    dateStart = Column(String(50), nullable=False)
     typeExamination = Column(String(45), nullable=False)
     description = Column(String(500))
+    dateEnd = Column(String(50), nullable=False)
 
     doctor = relationship('Doctor')
     patient = relationship('Patient')

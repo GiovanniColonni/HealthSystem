@@ -1,10 +1,9 @@
 from flask import Flask, g
 from flask_restx import Api
+from pony.flask import example
 
 from config import SECRET_KEY
-from db.queries.DeleteQuery import DeleteQuery
-from db.queries.InsertQuery import InsertQuery
-from db.queries.SelectQuery import SelectQuery
+from route.doctor import doctor
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -20,6 +19,7 @@ with app.app_context():
     from auth import auth
 
 app.register_blueprint(auth)
+app.register_blueprint(doctor)
 
 
 @app.teardown_appcontext
@@ -42,5 +42,7 @@ if __name__ == "__main__":
     user_data = account.delete_account_by_email("test@gmail.com")
     doctor = SelectQuery()
     print(doctor.select_doctor_by_patient(2).email)
+    doctor = SelectQuery()
+    doctor.select_event_by_doctor(6)
     """
     start()
