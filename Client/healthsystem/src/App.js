@@ -7,6 +7,7 @@ import {useHistory} from "react-router"
 import Login from "./components/Login"
 import API from "./api/API"
 import BigCalendar from "./components/BigCalendar"
+import NavigationBar from './components/NavigationBar';
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -15,6 +16,7 @@ function App() {
   
   let history = useHistory()
 
+  {/*
   useEffect( () => {
       async function checkUser(){
           API.isAuthenticated()
@@ -32,26 +34,34 @@ function App() {
         checkUser()
       
     },[loginState,setUser,setUserName]
-  ) 
+  ) */}
 
   return (
     <div className="App">
 
       <Switch>
-       
+        {/*
         <Route exact path={"/login"}>
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
+          <NavigationBar />
         </Route>
+        */}
 
+        {/*
         <Route exact path={"/home"}>
           <div>
             <h1>Home of {username}</h1>
             {loginState && <h1>Protected</h1>}
           </div>
         </Route>
+        */}
 
         <Route exact path={"/calendar"}>
           <BigCalendar />
+        </Route>
+
+        <Route exact path={"/menubar"}>
+          <NavigationBar />
         </Route>
 
       </Switch>
