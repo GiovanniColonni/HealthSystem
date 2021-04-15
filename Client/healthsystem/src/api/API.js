@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Event from '../classes/Event'
+import moment from 'moment'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -33,18 +35,28 @@ async function isAuthenticated(){
 }
 
 // update this function
-async function getEvents(id){
-    return new Promise((resolve,reject) =>{
-        fetch("/events",{method: 'GET'})
-            .then((response) =>{
-
-            })
-            .catch((err) =>{
-
+async function getEvents(id,type){
+    if(type === 'doctor'){
+        const events = await axios.get('/doctor/event',{
+            params:{
+                doctorId: id
+            }
+        })
+        .then((response) =>{ 
+            let events = []
+            response.data.forEach(element => {
+                console.log(element.typeExamination)
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,"put conference in db"))
             });
-    })
+            console.log(events)
+            return events
+        })
+        .catch((err) => console.log("error"))
+        return events
+        //tornare i dati 
+    }
 }
 
 
-const API = {postLogin,isAuthenticated}
+const API = {postLogin,isAuthenticated,getEvents}
 export default API;
