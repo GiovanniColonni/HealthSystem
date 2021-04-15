@@ -1,5 +1,6 @@
 export default class Event {
-    constructor(title, start, end, allDay, description, conference){
+    constructor(id, title, start, end, allDay, description, conference){
+        this.id = id;
         this.title = title;
         this.start = start;
         this.end = end;
