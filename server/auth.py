@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, g
+from flask import Blueprint, request, redirect, g, jsonify
 from flask import current_app as app
 
 from flask_restx import Api,Resource,fields
@@ -35,8 +35,8 @@ with app.app_context():
 # implement the user loader of LoginManager (by flask_login)
 # with the actual implementation
 @login_manager.user_loader 
-def user_loader(googleId):
-    return user_manager.lookupUser(googleId)
+def user_loader(id):
+    return user_manager.lookupUser(id)
 
 
 def csrf_protection(fn):
@@ -65,7 +65,7 @@ class CurrentUser(Resource):
     def get(self):
         return jsonify({
             'googleId': current_user.id,
-            'username': current_user.name,
+            'username': current_user.username,
             'email': current_user.email,
             'userType': current_user.userType
         })
@@ -76,9 +76,6 @@ class CurrentUser(Resource):
         email = request.form.get('email')
         googleId = request.form.get('googleId')
         
-    
-        # controllare parametri input
-
         if id_token is None:
             return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
 
@@ -93,7 +90,6 @@ class CurrentUser(Resource):
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         username = identity["name"]
-        print(f"username {username}")
         user = user_manager.insertUserOrNothing(googleId,username,email,"fakePass","unknow")
 
         
@@ -104,3 +100,4 @@ class CurrentUser(Resource):
         return self.get()
 
 
+    

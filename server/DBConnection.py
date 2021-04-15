@@ -31,11 +31,11 @@ class DBConnection:
         cursor.close()
         # qui close db
 
-    def insertUser(self, uniqueId, username, email, password, accountType):
+    def insertUser(self, googleId, username, email, password, accountType):
         code = 0
-        query = "INSERT INTO account VALUES ( %(email)s, %(password)s, %(accountType)s, %(uniqueId)s, %(username)s )"
+        query = "INSERT INTO account VALUES ( %(email)s, %(password)s, %(accountType)s, %(googleId)s, %(username)s )"
         cursor = self.conn.cursor()
-        cursor.execute(query, {"email": email, "password": password, "accountType": accountType, "uniqueId": uniqueId,
+        cursor.execute(query, {"email": email, "password": password, "accountType": accountType, "googleId": googleId,
                                "username": username})
         self.conn.commit()
         if cursor.rowcount != 1:
@@ -45,7 +45,7 @@ class DBConnection:
         return code
 
     def getUserById(self, id):
-        query = "SELECT * FROM account WHERE gogoleId = %(id)s"
+        query = "SELECT * FROM account WHERE googleId = %(id)s"
         cursor = self.conn.cursor()
         cursor.execute(query, {"id": id})
         records = cursor.fetchall()
@@ -56,6 +56,15 @@ class DBConnection:
         query = "SELECT * FROM account WHERE email = %(email)s"
         cursor = self.conn.cursor()
         cursor.execute(query, {"email": email})
+        records = cursor.fetchall()
+        cursor.close()
+
+        return records
+
+    def getAll(self):
+        query = "SELECT * FROM account"
+        cursor = self.conn.cursor()
+        cursor.execute(query)
         records = cursor.fetchall()
         cursor.close()
 
