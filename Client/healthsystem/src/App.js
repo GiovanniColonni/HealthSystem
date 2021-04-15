@@ -4,9 +4,12 @@ import './App.css';
 import React,{useState,useEffect, useCallback, useMemo} from "react"
 import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
 import {useHistory} from "react-router"
-import Login from "./components/Login"
+
 import API from "./api/API"
+
 import BigCalendar from "./components/BigCalendar"
+import Login from "./components/Login"
+import FirstAccess from "./components/FirstAccess"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -21,7 +24,12 @@ function App() {
             .then((userJson) =>{ 
                      setLoginState(true)
                      setUserName(userJson.username)
-                     setUser(userJson)})
+                     setUser(userJson)
+                      const t = userJson["userType"]
+                       if("unknow"){
+                          history.push("/firstAccess")
+                       }
+                    })
             .catch((err)=> {
             setLoginState(false) 
             history.push("/login")
@@ -48,6 +56,10 @@ function App() {
             <h1>Home of {username}</h1>
             {loginState && <h1>Protected</h1>}
           </div>
+        </Route>
+
+        <Route exact to={"/firstAccess"}>
+            <FirstAccess/>            
         </Route>
 
         <Route exact path={"/calendar"}>
