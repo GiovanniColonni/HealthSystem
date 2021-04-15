@@ -59,7 +59,7 @@ function App() {
         </Route>
 
         <Route exact to={"/firstAccess"}>
-            <FirstAccess/>            
+            <FirstAccess user={user}/>            
         </Route>
 
         <Route exact path={"/calendar"}>

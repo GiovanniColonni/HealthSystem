@@ -28,3 +28,5 @@ class SelectQuery:
                 .filter(doctorId == Schedule.doctorId) \
                 .all()
             return events
+
+    

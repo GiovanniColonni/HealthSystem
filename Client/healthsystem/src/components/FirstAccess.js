@@ -1,12 +1,17 @@
 import React from "react"
 import Button from "@material-ui/core/Button"
 
+import API from "../api/API"
 
-function FirstAccess(){
+function FirstAccess({user}){
     
     let buttonClick = (e) => {
-      
-      console.log(e)
+      let googleId = user["googleId"]
+      let type = e
+      API.changeUserType(user["googleId"],type)
+        .then(console.log("ok"))
+        .catch(console.log("no ok"))
+      return
     }
 
 
