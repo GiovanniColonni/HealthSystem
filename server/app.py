@@ -3,7 +3,7 @@ from flask_restx import Api
 from pony.flask import example
 
 from config import SECRET_KEY
-from route.doctor import doctor
+from blueprint.doctor import doctor
 
 app = Flask(__name__)
 app.config.from_object(__name__)
