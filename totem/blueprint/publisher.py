@@ -40,7 +40,7 @@ class Publisher(Resource):
            
     def takeMeasure(self):
         c = 0
-        
+        ## leggere input da seriale con arduino inserito
         mqtt.publish("prova/provaThread","Start message trasmission",retain=True)
         
         for c in range(256):
