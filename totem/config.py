@@ -2,16 +2,18 @@ import os
 
 # Flask configuration
 SECRET_KEY = os.urandom(24)
-TOPIC_NAME = "prova"
-
+FLASK_HOST = '0.0.0.0'
+ 
 # Google Authentication configuration
 GOOGLE_CLIENT_ID = "844949237967-h0pnqs3orkq4159ngua6s4jp0fdqatl4.apps.googleusercontent.com"
 
 
 # MQTT conifugration
-MQTT_BROKER_URL = "localhost"
+MQTT_BROKER_URL = "192.168.1.202"
 MQTT_BROKER_PORT = 1883
 MQTT_REFRESH_TIME = 1.0
+
+TOPIC_NAME = "prova"
 
 # DB configuration
 DB_HOST_ADDRESS = '82.50.172.4'

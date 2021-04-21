@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restx import Api
 from flask_mqtt import Mqtt
 
-from config import SECRET_KEY,TOPIC_NAME,MQTT_BROKER_PORT,MQTT_BROKER_URL,MQTT_REFRESH_TIME
+from config import SECRET_KEY,TOPIC_NAME,MQTT_BROKER_PORT,MQTT_BROKER_URL,MQTT_REFRESH_TIME,FLASK_HOST
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -29,4 +29,4 @@ app.register_blueprint(publisher)
 if __name__ == "__main__":
     # use_reloader is usefull only in debug mode, and it's a way to reload the code when
     # it changes (like nodemon) but with flask MQTT must be disabled otherwise will fail
-    app.run(debug=False,use_reloader=False)
+    app.run(host=FLASK_HOST,debug=False,use_reloader=False)
