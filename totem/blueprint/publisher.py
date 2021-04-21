@@ -29,6 +29,11 @@ class Publisher(Resource):
         else:
             return "measurerement in progress ",HTTPStatus.CONTINUE    
         '''
+        # trovare modo per bloccare una misura se un'altra è già in corso 
+        # oppure, meglio, far inivare sul payload della get (forse diventa post a questo punto)
+        # un nome/codice della misura in modo da metterla in un topic differente altrimenti 
+        # collidono sullo stesso topic e non va bene
+
         t = threading.Thread(target=self.takeMeasure,daemon=True)
         t.start()
         return "starting measurement",HTTPStatus.OK
