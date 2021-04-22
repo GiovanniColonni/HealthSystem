@@ -39,8 +39,10 @@ int simulatePressureMeasurement(int type){
     // else : continuos monitoring
     int cont = 1;  // sostituire con lettura pin
     String cmd = "";
+    Serial.println("Start");
     if(type == 1){
           pressureMeasure();
+          Serial.println("Stop");
       }else{
           while(cont){
             pressureMeasure();
@@ -48,7 +50,7 @@ int simulatePressureMeasurement(int type){
             // fare qui digital read del bottone e cambiare cont
             cmd = kp.getKey();
             if(cmd == "F"){
-             Serial.println("STOP");
+             Serial.println("Stop");
              cont = 0;
              }
           }
@@ -61,8 +63,10 @@ int simulateHRMeasurement(int type){
   // else : continuos monitoring  
   int cont = 1;
   String cmd = "";
+  Serial.println("Start");
   if(type == 1){
       heartRateMeasure();
+      Serial.println("Stop");
     }else{
       while(cont){
         heartRateMeasure();
@@ -70,7 +74,7 @@ int simulateHRMeasurement(int type){
         // fare qui digital read del bottone e cambiare cont
         cmd = kp.getKey(); // conversione a string necessaria altrimenti non va
         if(cmd == "F"){
-          Serial.println("STOP");
+          Serial.println("Stop");
           cont = 0;
         }
       }
@@ -83,15 +87,17 @@ int simulateSaturimeterMeasurement(int type){
   // else : continuos monitoring  
   int cont = 1;
   String cmd = "";
+  Serial.println("Start");
   if(type == 1){
       saturimeterMeasure();
+      Serial.println("Stop");
     }else{
       while(cont){
         saturimeterMeasure();
         delay(Tmeasurement);
         cmd = kp.getKey();
         if(cmd == "F"){
-          Serial.println("STOP");
+          Serial.println("Stop");
           cont = 0;
         }
       }

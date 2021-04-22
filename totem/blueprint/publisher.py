@@ -4,6 +4,7 @@ from flask_mqtt import Mqtt, MQTT_ERR_SUCCESS
 
 import threading
 import time
+import pyserial
 
 from http import HTTPStatus
 

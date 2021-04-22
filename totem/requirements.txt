@@ -5,6 +5,7 @@ google~=3.0.0
 cachecontrol~=0.12.6
 google.auth
 flask-restx
+pyserial
 mysql~=0.0.2
 flask_mqtt
 SQLAlchemy~=1.4.7
