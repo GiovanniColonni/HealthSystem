@@ -12,6 +12,10 @@ SERIAL_PORT = "/dev/ttyUSB0"
 SERIAL_BOUND_SPEED = 9600
 
 # MQTT conifugration
+MQTT_BROKER_ID = 1 # questo serve soltanto per prova, dovrà essere il google id
+MQTT_USERNAME = "username" # solo prova, da sostituire con username di google
+MQTT_PASSWORD = "password" # da sostituire con una generata random dal server e memorizzata
+
 MQTT_BROKER_URL = "192.168.1.202"
 MQTT_BROKER_PORT = 1883
 MQTT_REFRESH_TIME = 1.0

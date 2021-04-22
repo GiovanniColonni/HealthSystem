@@ -9,11 +9,21 @@ app.config.from_object(__name__)
 app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
+
 # MQTT configuration
+
+MQTT_CLIENT_ID = 1 # questo serve soltanto per prova, dovrà essere il google id
+MQTT_USERNAME = "username" # solo prova, da sostituire con username di google
+MQTT_PASSWORD = "password" # da sostituire con una generata random dal server e memorizzata
+
+
 app.config['MQTT_BROKER_URL'] = MQTT_BROKER_URL 
 app.config['MQTT_BROKER_PORT'] =  MQTT_BROKER_PORT
 app.config['MQTT_REFRESH_TIME'] = MQTT_REFRESH_TIME
 
+app.config['MQTT_CLIENT_ID'] = MQTT_CLIENT_ID 
+app.config['MQTT_USERNAME'] = MQTT_USERNAME 
+app.config['MQTT_PASSWORD'] = MQTT_PASSWORD 
 
 api = Api(app=app,title="Totem")
 
