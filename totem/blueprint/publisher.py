@@ -8,7 +8,7 @@ import serial
 
 from http import HTTPStatus
 
-from ..config import SERIAL_PORT, SERIAL_BOUND_SPEED
+from config import SERIAL_PORT, SERIAL_BOUND_SPEED
 
 publisher = Blueprint("publisher",__name__)
 publisher_api = Api(publisher)
