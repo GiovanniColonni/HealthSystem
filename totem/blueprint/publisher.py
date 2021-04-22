@@ -4,7 +4,7 @@ from flask_mqtt import Mqtt, MQTT_ERR_SUCCESS
 
 import threading
 import time
-import pyserial
+import serial
 
 from http import HTTPStatus
 
@@ -39,15 +39,25 @@ class Publisher(Resource):
         t.start()
         return "starting measurement",HTTPStatus.OK
            
-    def takeMeasure(self):
-        c = 0
-        ## leggere input da seriale con arduino inserito
-        mqtt.publish("prova/provaThread","Start message trasmission",retain=True)
-        
-        for c in range(256):
-        
-            time.sleep(1)
-            result,mid = mqtt.publish("prova/provaThread",f"messaggio n {c}",retain=True)
-        
-        mqtt.publish("prova/provaThread","End message trasmission",retain=True)
+    def takeMeasure(self): # this function is executed by a thread
+        # su const config.py
+        Port = "/dev/ttyUSB0" 
+        BoundSpeed = 9600
+
+        ser = serial.Serial(Port,BoundSpeed,timeout=1)
+        ser.flush()
+
+
+        mqtt.publish("prova/provaThread","Start message trasmission",retain=False)
+        cont = 1
+        while cont:
+            if ser.in_waiting > 0:
+                line = ser.readLine().decode('utf-8').rstrip()
+                print(line)
+                mqtt.publish("prova/provaThread",line,retain=False)
+                if(line == "Stop"):
+                    print(f"[Flask] End of Trasmission")
+                    mqtt.publish("prova/provaThread","End message tramission",retain=False)
+                
+                    return 0
         
