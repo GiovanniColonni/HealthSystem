@@ -7,7 +7,7 @@ google.auth
 flask-restx
 mysql~=0.0.2
 flask-mqtt
-
+paho-mqtt
 
 SQLAlchemy~=1.4.7
 auth~=0.5.3

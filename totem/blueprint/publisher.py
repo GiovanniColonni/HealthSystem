@@ -8,7 +8,7 @@ import serial
 
 from http import HTTPStatus
 
-from config import SERIAL_PORT, SERIAL_BOUND_SPEED
+from config import SERIAL_PORT, SERIAL_BOUND_SPEED, MQTT_QOS
 
 publisher = Blueprint("publisher",__name__)
 publisher_api = Api(publisher)
@@ -34,21 +34,24 @@ class Publisher(Resource):
         return "starting measurement",HTTPStatus.OK
            
     def takeMeasure(self): # this function is executed by a thread
+        # and read the serial port in order to take sensor data to send 
+        # to the broker
         
         ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1) # controllare eventuali errori   
         ser.flush()
+        topicName = "prova/provaThread" # deve essere input
         
-        mqtt.publish("prova/provaThread","Start message trasmission",retain=False)
+        mqtt.publish(topicName,"Start message trasmission",qos=MQTT_QOS,retain=False)
         print("[Flask] Start of the Trasmission")
         
         cont = 1
         while cont:
             if ser.in_waiting > 0:
                 line = ser.readline().decode('utf-8').rstrip()
-                mqtt.publish("prova/provaThread",line,retain=False)
+                mqtt.publish(topicName,line,qos=MQTT_QOS,etain=False)
                 if(line == "Stop"):
                     print(f"[Flask] End of Trasmission")
-                    mqtt.publish("prova/provaThread","End message tramission",retain=False)
+                    mqtt.publish(topicName,"End message tramission",qos=MQTT_QOS,retain=False)
                 
                     return 0
         

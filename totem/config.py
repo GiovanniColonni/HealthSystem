@@ -22,6 +22,7 @@ MQTT_REFRESH_TIME = 1.0
 
 TOPIC_NAME = "prova"
 
+MQTT_QOS = 2
 # DB configuration
 DB_HOST_ADDRESS = '82.50.172.4'
 DB_USER = 'root'
