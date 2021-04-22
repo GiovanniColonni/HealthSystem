@@ -48,7 +48,7 @@ class Publisher(Resource):
         while cont:
             if ser.in_waiting > 0:
                 line = ser.readline().decode('utf-8').rstrip()
-                mqtt.publish(topicName,line,qos=MQTT_QOS,etain=False)
+                mqtt.publish(topicName,line,qos=MQTT_QOS,retain=False)
                 if(line == "Stop"):
                     print(f"[Flask] End of Trasmission")
                     mqtt.publish(topicName,"End message tramission",qos=MQTT_QOS,retain=False)
