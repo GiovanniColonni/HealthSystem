@@ -23,6 +23,20 @@ async function postLogin(id_token,email,googleId){
         }
 }
 
+async function changeUserType(id,type){
+    let formData = new FormData()
+    formData.set("googleId",id)
+    formData.set("userType",type)
+    try{
+        let resp = await axios.post("/updateType",formData)
+        if(resp.status === 200){
+            return true
+        }
+    }catch (e){
+        return false
+    }
+}
+
 async function isAuthenticated(){
     // bisognerebbe fare controllo errore   
     const resp = await axios.get("/login")
@@ -58,5 +72,5 @@ async function getEvents(id,type){
 }
 
 
-const API = {postLogin,isAuthenticated,getEvents}
+const API = {postLogin,isAuthenticated,getEvents,changeUserType}
 export default API;

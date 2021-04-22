@@ -99,7 +99,7 @@ void loop() {
   //Serial.write("1");
   int simulation = 1; // dato in input
   switch(simulation){
-    
+       // sostituire switch con griglia di bottoni
       case 1: 
               simulatePressureMeasurement(0);
               break;
