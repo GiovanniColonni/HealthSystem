@@ -16,6 +16,7 @@ class Account(Base):
     userType = Column(String(50), nullable=False)
     id = Column(String(50), primary_key=True)
     username = Column(String(50))
+    pushToken = Column(String(45))
 
 
 class Doctor(Base):
