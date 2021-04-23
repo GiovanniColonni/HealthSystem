@@ -56,6 +56,7 @@ int simulatePressureMeasurement(int type){
             cmd = kp.getKey();
             if(cmd == "F"){
              cont = 0;
+             Serial.println("Stop");
              }
           }
       }
@@ -78,6 +79,7 @@ int simulateHRMeasurement(int type){
         cmd = kp.getKey(); // conversione a string necessaria altrimenti non va
         if(cmd == "F"){
           cont = 0;
+          Serial.println("Stop");
         }
       }
     }
@@ -98,6 +100,7 @@ int simulateSaturimeterMeasurement(int type){
         cmd = kp.getKey();
         if(cmd == "F"){
           cont = 0;
+          Serial.println("Stop");
         }
       }
     }
