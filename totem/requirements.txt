@@ -7,7 +7,6 @@ google.auth
 flask-restx
 serial
 mysql~=0.0.2
-flask_mqtt
 SQLAlchemy~=1.4.7
 auth~=0.5.3
 requests~=2.25.1

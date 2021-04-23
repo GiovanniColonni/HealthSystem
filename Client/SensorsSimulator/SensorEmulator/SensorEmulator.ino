@@ -1,5 +1,11 @@
 // configuration of the keypad
+
+// start and wait for arduino serial communication message based + checksum
+// serial comunication profile
+
+
 #include <Keypad.h>
+#include <ArduinoJson.h>
 
 const byte rows = 4;
 const byte cls = 4;
@@ -39,10 +45,9 @@ int simulatePressureMeasurement(int type){
     // else : continuos monitoring
     int cont = 1;  // sostituire con lettura pin
     String cmd = "";
-    Serial.println("Start");
+    
     if(type == 1){
           pressureMeasure();
-          Serial.println("Stop");
       }else{
           while(cont){
             pressureMeasure();
@@ -50,7 +55,6 @@ int simulatePressureMeasurement(int type){
             // fare qui digital read del bottone e cambiare cont
             cmd = kp.getKey();
             if(cmd == "F"){
-             Serial.println("Stop");
              cont = 0;
              }
           }
@@ -63,10 +67,9 @@ int simulateHRMeasurement(int type){
   // else : continuos monitoring  
   int cont = 1;
   String cmd = "";
-  Serial.println("Start");
+ 
   if(type == 1){
       heartRateMeasure();
-      Serial.println("Stop");
     }else{
       while(cont){
         heartRateMeasure();
@@ -74,7 +77,6 @@ int simulateHRMeasurement(int type){
         // fare qui digital read del bottone e cambiare cont
         cmd = kp.getKey(); // conversione a string necessaria altrimenti non va
         if(cmd == "F"){
-          Serial.println("Stop");
           cont = 0;
         }
       }
@@ -87,17 +89,14 @@ int simulateSaturimeterMeasurement(int type){
   // else : continuos monitoring  
   int cont = 1;
   String cmd = "";
-  Serial.println("Start");
   if(type == 1){
       saturimeterMeasure();
-      Serial.println("Stop");
     }else{
       while(cont){
         saturimeterMeasure();
         delay(Tmeasurement);
         cmd = kp.getKey();
         if(cmd == "F"){
-          Serial.println("Stop");
           cont = 0;
         }
       }
@@ -106,26 +105,53 @@ int simulateSaturimeterMeasurement(int type){
  }
 
 int saturimeterMeasure(){
-  Serial.print("Operc: "); // operc = percentuale ossigeno
-  Serial.println(random(Operc-10,Operc));
+  const int capacity = JSON_OBJECT_SIZE(1);
+  char output[14];
+
+  StaticJsonDocument<capacity> measure;
+  measure["Operc"] = random(Operc-10,Operc);
+
+  serializeJson(measure,output);
+  Serial.println(output);
   
+  return 0;
+
   }
 int heartRateMeasure(){
-    Serial.print("HRate: ");
-    Serial.println(random(EarthRateMin,EarthRateMax));
+    const int capacity = JSON_OBJECT_SIZE(1); // number of field
+    char output[14];
+
+    StaticJsonDocument<capacity> measure;
+    measure["Hrate"] = random(EarthRateMin,EarthRateMax);
+    serializeJson(measure,output);
+    Serial.println(output);
+    
     return 0;
   }
 int pressureMeasure(){ // one measure of pression
+  const int capacity = JSON_OBJECT_SIZE(3); // number of field
+  char output[32];
+  
+  StaticJsonDocument<capacity> measure;
+  measure["Max"] = random (MaxPressureMIN,MaxPressureMAX);
+  measure["Min"] = random (MinPressureMIN,MinPressureMAX);
+  measure["HRate"] = random (EarthRateMin,EarthRateMax);
+
+  serializeJson(measure, output);
+  Serial.println(output);
+
+  
+  
   // this 
   // Max: 115 / 130 mmHg
   // Min: 75 / 85 mmHg
   // EarthRate: 
-  Serial.print("Max: ");
-  Serial.println(random (MaxPressureMIN,MaxPressureMAX));  // max
-  Serial.print("Min: ");
-  Serial.println(random (MinPressureMIN,MinPressureMAX)); // min
-  Serial.print("HRate: ");
-  Serial.println(random (EarthRateMin,EarthRateMax));  // hr
+  // Serial.print("Max: ");
+  // Serial.println(random (MaxPressureMIN,MaxPressureMAX));  // max
+  // Serial.print("Min: ");
+  // Serial.println(random (MinPressureMIN,MinPressureMAX)); // min
+  // Serial.print("HRate: ");
+  // Serial.println(random (EarthRateMin,EarthRateMax));  // hr
   
   return 0;  
 }
@@ -147,8 +173,7 @@ void loop() {
 
   
     
-  if(cmd == "1"){
-    
+  if(cmd == "1"){ 
     simulatePressureMeasurement(1);          
   }else if (cmd == "2"){
     simulateSaturimeterMeasurement(1);
