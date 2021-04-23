@@ -12,7 +12,7 @@ app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
 # MQTT configuration
 
-MQTT_CLIENT_ID = 1 # questo serve soltanto per prova, dovrà essere il google id
+MQTT_CLIENT_ID = "Client-flask" # questo serve soltanto per prova, dovrà essere il google id
 MQTT_USERNAME = "username" # solo prova, da sostituire con username di google
 MQTT_PASSWORD = "password" # da sostituire con una generata random dal server e memorizzata
 
