@@ -62,7 +62,7 @@ if __name__ == "__main__":
     print(doctor.select_doctor_by_patient(2).email)
     doctor = SelectQuery()
     doctor.select_event_by_doctor(6)
-    """
     account = UpdateQuery()
     account.updateUserType("1234", "patient")
+    """
     start()
