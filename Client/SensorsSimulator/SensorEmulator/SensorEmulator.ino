@@ -1,3 +1,22 @@
+// configuration of the keypad
+#include <Keypad.h>
+
+const byte rows = 4;
+const byte cls = 4;
+
+char keyMap[rows][cls] = {
+  {'1','2','3','4'},
+  {'5','6','7','8'},
+  {'9','0','A','B'},
+  {'C','D','E','F'}
+ };
+
+byte pinRows[rows] = {2,3,4,5};
+byte pinCls[cls] = {6,7,8,9};
+
+Keypad kp = Keypad(makeKeymap(keyMap),pinRows,pinCls,rows,cls);
+//-------------------------
+
 int buttonPin = 28;
 
 // Costants Definition
@@ -15,18 +34,25 @@ const int EarthRateMax = 100; // questi sono soltanto valori di riferimento
 const int Operc = 100; // Oxigen perc
 const int Tmeasurement = 1000 ; // ms from one measure to another
 
-
 int simulatePressureMeasurement(int type){
     // if type = 1 : single measurement
     // else : continuos monitoring
     int cont = 1;  // sostituire con lettura pin
+    String cmd = "";
+    Serial.println("Start");
     if(type == 1){
           pressureMeasure();
+          Serial.println("Stop");
       }else{
           while(cont){
             pressureMeasure();
             delay(Tmeasurement);
             // fare qui digital read del bottone e cambiare cont
+            cmd = kp.getKey();
+            if(cmd == "F"){
+             Serial.println("Stop");
+             cont = 0;
+             }
           }
       }
       return 0;
@@ -36,13 +62,21 @@ int simulateHRMeasurement(int type){
   // if type = 1 : single measurement
   // else : continuos monitoring  
   int cont = 1;
+  String cmd = "";
+  Serial.println("Start");
   if(type == 1){
       heartRateMeasure();
+      Serial.println("Stop");
     }else{
       while(cont){
         heartRateMeasure();
         delay(Tmeasurement);
         // fare qui digital read del bottone e cambiare cont
+        cmd = kp.getKey(); // conversione a string necessaria altrimenti non va
+        if(cmd == "F"){
+          Serial.println("Stop");
+          cont = 0;
+        }
       }
     }
   return 0;
@@ -52,13 +86,20 @@ int simulateSaturimeterMeasurement(int type){
   // if type = 1 : single measurement
   // else : continuos monitoring  
   int cont = 1;
+  String cmd = "";
+  Serial.println("Start");
   if(type == 1){
       saturimeterMeasure();
+      Serial.println("Stop");
     }else{
       while(cont){
         saturimeterMeasure();
         delay(Tmeasurement);
-        // fare qui digital read del bottone e cambiare cont
+        cmd = kp.getKey();
+        if(cmd == "F"){
+          Serial.println("Stop");
+          cont = 0;
+        }
       }
     }
   return 0;
@@ -66,7 +107,7 @@ int simulateSaturimeterMeasurement(int type){
 
 int saturimeterMeasure(){
   Serial.print("Operc: "); // operc = percentuale ossigeno
-  Serial.println();
+  Serial.println(random(Operc-10,Operc));
   
   }
 int heartRateMeasure(){
@@ -92,23 +133,35 @@ int pressureMeasure(){ // one measure of pression
 void setup() {
   Serial.begin(9600);
   pinMode(buttonPin,INPUT);
-  Serial.write("Start Sensor Emulator \n");
+  Serial.write('Start Sensor Emulator \n');
 }
 
+String cmd = "" ;
+
 void loop() {
-  //Serial.write("1");
-  int simulation = 1; // dato in input
-  switch(simulation){
-       // sostituire switch con griglia di bottoni
-      case 1: 
-              simulatePressureMeasurement(0);
-              break;
-      case 2:
-              simulateSaturimeterMeasurement(0);
-              break;
-      case 3:
-              simulateHeartRateMeasurement(0);
-              break;
-      }  
+  char key = kp.getKey();
   
+  if(key){
+    cmd = key;   
+   }
+
+  
+    
+  if(cmd == "1"){
+    
+    simulatePressureMeasurement(1);          
+  }else if (cmd == "2"){
+    simulateSaturimeterMeasurement(1);
+  }else if(cmd == "3"){
+    simulateHRMeasurement(1);          
+  }else if(cmd == "4"){
+    simulatePressureMeasurement(0);
+  }else if(cmd == "5"){
+    simulateSaturimeterMeasurement(0);    
+  }else if(cmd == "6"){
+    simulateHRMeasurement(0);
+  }
+  // gli altri tasti sono per simulazione di situzioni critiche 
+  
+  cmd = "";
 }
