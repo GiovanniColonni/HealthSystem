@@ -47,7 +47,7 @@ class ChangeType(Resource):
 
         print(userId)
         print(userType)
-        UpdateQuery.updateUserType(userId,userType)
+        UpdateQuery.updateUserType(userId)
 
         return "OK",200         
 
@@ -63,4 +63,6 @@ if __name__ == "__main__":
     doctor = SelectQuery()
     doctor.select_event_by_doctor(6)
     """
+    account = UpdateQuery()
+    account.updateUserType("1234", "patient")
     start()

@@ -1,13 +1,13 @@
 from db import DatabaseSession
 from db.entities import Account
 
+
 class UpdateQuery:
 
-    def updateUserType(self,id,userType):
+    def updateUserType(self, userId, userType):
         with DatabaseSession() as session:
-            session.update(Account) \
-                .where(id == Account.googleId) \
-                .values(type = userType)
-
-            print("Done ??")
-            return 1
+            account = session.query(Account) \
+                .filter(userId == Account.id).first()
+            account.userType = userType
+            session.commit()
+            return True

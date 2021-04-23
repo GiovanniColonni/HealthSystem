@@ -13,8 +13,8 @@ class Account(Base):
 
     email = Column(String(50), nullable=False, unique=True)
     password = Column(String(50), nullable=False)
-    type = Column(String(50), nullable=False)
-    googleId = Column(String(50), primary_key=True)
+    userType = Column(String(50), nullable=False)
+    id = Column(String(50), primary_key=True)
     username = Column(String(50))
 
 
