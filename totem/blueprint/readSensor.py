@@ -34,12 +34,13 @@ class Publisher(Resource):
         while cont:
             if ser.in_waiting > 0:
                 line = ser.readline().decode('utf-8').rstrip()
-            if(line != ""):
-	            data = json.loads(line)
+                if(line != ""):
+                    data = json.loads(line)
                     print("json :")
                     print(data)
                 if(line == "Stop"):
                     print(f"[Flask] End sensor trasmission")
-                
-                    return 0
+                    cont = 0
+        
+        return 0
         
