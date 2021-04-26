@@ -25,7 +25,7 @@ class Publisher(Resource):
              
     def takeMeasure(self):
         
-        ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1) # controllare eventuali errori   
+        ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1)
         ser.flush()
         print("[Flask] Start sensor monitoring")
         
