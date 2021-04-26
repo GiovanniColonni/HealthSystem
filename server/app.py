@@ -35,7 +35,7 @@ def teardown_db(exe):
 
 
 def start():
-    app.run(ssl_context='adhoc')
+    app.run(host="0.0.0.0",ssl_context='adhoc')
 
 @api.route("/updateType")
 class ChangeType(Resource):
