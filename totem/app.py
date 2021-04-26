@@ -22,4 +22,4 @@ app.register_blueprint(readSensor)
 if __name__ == "__main__":
     # use_reloader is usefull only in debug mode, and it's a way to reload the code when
     # it changes (like nodemon) but with flask MQTT must be disabled otherwise will fail
-    app.run(host=FLASK_HOST,debug=False,use_reloader=False)
+    app.run(host=FLASK_HOST,debug=False,use_reloader=False,ssl_context='adhoc')

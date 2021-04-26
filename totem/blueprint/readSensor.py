@@ -24,20 +24,6 @@ class Publisher(Resource):
         return "starting measurement",HTTPStatus.OK
              
     def takeMeasure(self):
-        Operc_schema = {
-                        "type":"object",
-                        "properties":{"Operc":{"type":"number"}}
-                       }
-        Pressure_schema = {
-                           "type":"object",
-                           "properties":{"Max":{"type":"number"},"Min":{"type":"number"},"HRate":{"type":"number"}}
-                          }
-        Hrate_schema = {
-            "type":"object",
-            "properties":{"HRate":{"type":"number"}
-            }
-
-        # prendo i valori di soglia relativi all'utente oppure generali ?
         
         ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1) # controllare eventuali errori   
         ser.flush()
@@ -54,16 +40,16 @@ class Publisher(Resource):
                         if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
                             print("Operc sotto la soglia")
 
-                    else if("Max" in data):
-                            if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] || SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
+                    elif("Max" in data):
+                            if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
                                 print("Max pressure fuori dalla soglia")
-                            if(SENSOR_PRESSURE_THRESHOLD["Min"] < data["MinMin"] || SENSOR_PRESSURE_THRESHOLD["Min"] > data["MaxMin"] ):
+                            if(SENSOR_PRESSURE_THRESHOLD["Min"] < data["MinMin"] or SENSOR_PRESSURE_THRESHOLD["Min"] > data["MaxMin"] ):
                                 print("Min pressure fuori dalla soglia")
-                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] || SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 print("HRate fuori dalla soglia")
                                            
-                    else if("HRate" in data): 
-                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] || SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                    elif("HRate" in data): 
+                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 print("HRate fuori dalla soglia")
                             
                 if(line == "Stop"):
