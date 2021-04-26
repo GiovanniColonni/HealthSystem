@@ -52,18 +52,5 @@ class ChangeType(Resource):
 
         return "OK", 200
 
-
 if __name__ == "__main__":
-    """
-    account = InsertQuery()
-    user_data = account.create_account("test@gmail.com", "lucaV", "ciao", "patient", 12234)
-    account = DeleteQuery()
-    user_data = account.delete_account_by_email("test@gmail.com")
-    doctor = SelectQuery()
-    print(doctor.select_doctor_by_patient(2).email)
-    doctor = SelectQuery()
-    doctor.select_event_by_doctor(6)
-    account = UpdateQuery()
-    account.updateUserType("1234", "patient")
-    """
     start()
