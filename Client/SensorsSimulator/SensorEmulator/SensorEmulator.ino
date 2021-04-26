@@ -125,7 +125,7 @@ int heartRateMeasure(){
     char output[14];
 
     StaticJsonDocument<capacity> measure;
-    measure["Hrate"] = random(EarthRateMin,EarthRateMax);
+    measure["HRate"] = random(EarthRateMin,EarthRateMax);
     serializeJson(measure,output);
     Serial.println(output);
     
@@ -142,20 +142,6 @@ int pressureMeasure(){ // one measure of pression
 
   serializeJson(measure, output);
   Serial.println(output);
-
-  
-  
-  // this 
-  // Max: 115 / 130 mmHg
-  // Min: 75 / 85 mmHg
-  // EarthRate: 
-  // Serial.print("Max: ");
-  // Serial.println(random (MaxPressureMIN,MaxPressureMAX));  // max
-  // Serial.print("Min: ");
-  // Serial.println(random (MinPressureMIN,MinPressureMAX)); // min
-  // Serial.print("HRate: ");
-  // Serial.println(random (EarthRateMin,EarthRateMax));  // hr
-  
   return 0;  
 }
 
