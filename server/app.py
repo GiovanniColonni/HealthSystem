@@ -3,6 +3,7 @@ from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
 from config import SECRET_KEY
+from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
 
@@ -49,7 +50,7 @@ class ChangeType(Resource):
         print(userType)
         UpdateQuery.updateUserType(userId)
 
-        return "OK",200         
+        return "OK", 200
 
 
 if __name__ == "__main__":

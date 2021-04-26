@@ -12,7 +12,6 @@ class Account(Base):
     __tablename__ = 'account'
 
     email = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
     userType = Column(String(50), nullable=False)
     id = Column(String(50), primary_key=True)
     username = Column(String(50))

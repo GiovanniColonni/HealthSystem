@@ -6,21 +6,21 @@ from ..entities import Account
 
 class InsertQuery:
 
-    def create_account(self, email, username, password, type, googleId):
+    def create_account(self, email, username, type, id, push_token):
         """
         Creates a new account
         :param email: user's email
         :param username: username
-        :param password: password
         :param type: type
-        :param googleId: googleId
+        :param id: id
+        :param push_token: push_token
         """
         user_entity = Account
         instance = user_entity(email=email,
                                username=username,
-                               password=password,
                                type=type,
-                               googleId=googleId
+                               id=id,
+                               push_token=push_token
                                )
 
         try:

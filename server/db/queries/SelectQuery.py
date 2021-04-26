@@ -29,4 +29,13 @@ class SelectQuery:
                 .all()
             return events
 
-    
+    def select_user_by_id(self, userId):
+        """
+        :param userId:
+        :return: user entry
+        """
+        with DatabaseSession() as session:
+            account = session.query(Account) \
+                .filter(userId == Account.id) \
+                .first()
+            return account
