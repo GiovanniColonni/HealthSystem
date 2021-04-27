@@ -1,6 +1,7 @@
 #!/bin/bash
 # se si ha ufw > ufw allow 5000
 # installare prima nginx
+echo "Start HealthSystem"
 cp revProxy.conf /etc/nginx/site-avaible/
 ln -s /etc/nginx/site-avaible/revProxy.conf /etc/nginx/site-enabled/revProxy.conf # se da errore cancellare soft link in site-enabled
 nginx -t # se mostra errori modificare revProxy
