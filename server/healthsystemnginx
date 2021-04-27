@@ -1,9 +1,7 @@
 server{
     listen 80;
-    server_name 0.0.0.0:5000;
 
     location / {
-        include proxy_params;
-        proxy_pass http://unix:/home/colo/Desktop/Polito/LaboratoryEmbedded/Progetto/ProgettoEmbedded/server/healthsystem.sock;
+        proxy_pass http://0.0.0.0:5000;
     }
 }

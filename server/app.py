@@ -2,7 +2,7 @@ from flask import Flask, g, request
 from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
-from config import SECRET_KEY
+from config import SECRET_KEY, FLASK_HOST
 from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
@@ -34,9 +34,6 @@ def teardown_db(exe):
         pass
 
 
-def start():
-    app.run(host="0.0.0.0",ssl_context='adhoc')
-
 @api.route("/updateType")
 class ChangeType(Resource):
     # questo serve soltanto a fare l'update del tipo di user
@@ -53,4 +50,4 @@ class ChangeType(Resource):
         return "OK", 200
 
 if __name__ == "__main__":
-    start()
+    app.run(host=FLASK_HOST,ssl_context='adhoc')
