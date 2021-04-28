@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useState} from "react"
 import GoogleLogin from 'react-google-login';
 import {Redirect, useHistory} from "react-router"
 
@@ -14,7 +14,7 @@ function Login({setLoginState,setUser,loginState}){
  
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
-    let accessingError = false
+    let [accessError,setAccessError] = useState(false)
 
     let history = useHistory()
 
@@ -27,9 +27,8 @@ function Login({setLoginState,setUser,loginState}){
         async function completeLogin(){
           API.postLogin(id_token,email,googleId)
           .then((logState) => {
-              console.log(logState)
+            setAccessError(!logState)
               if(logState === false){
-                accessingError = true
                 history.push("/login")
               }else{
               history.push('/home')
@@ -68,7 +67,7 @@ function Login({setLoginState,setUser,loginState}){
             redirectUri="postmessage"
             scope="openid"
         />
-        {accessingError && <h1>Errorre di accesso</h1>}
+        {accessError && <h1>Errorre di accesso</h1>}
         </div>
     )
   
