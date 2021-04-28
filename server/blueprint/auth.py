@@ -90,7 +90,7 @@ class CurrentUser(Resource):
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         username = identity["name"]
-        user = user_manager.insertUserOrNothing(googleId,username,email,"fakePass","unknow")
+        user = user_manager.insertUserOrNothing(googleId,username,email,"unknow")
 
         
         if(login_user(user, remember=True) == False):

@@ -28,8 +28,8 @@ class SelectQuery:
                 .filter(doctorId == Schedule.doctorId) \
                 .all()
             return events
-
-    def select_user_by_id(self, userId):
+        
+    def get_user_by_id(userId):
         """
         :param userId:
         :return: user entry
