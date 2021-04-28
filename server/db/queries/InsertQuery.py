@@ -6,7 +6,7 @@ from ..entities import Account
 
 class InsertQuery:
 
-    def create_account(self, email, username, type, id, push_token):
+    def create_account(email, username, user_type, id, push_token):
         """
         Creates a new account
         :param email: user's email
@@ -18,7 +18,7 @@ class InsertQuery:
         user_entity = Account
         instance = user_entity(email=email,
                                username=username,
-                               userType=type,
+                               userType=userType,
                                id=id,
                                pushToken=push_token
                                )

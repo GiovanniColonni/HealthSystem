@@ -14,6 +14,8 @@ function Login({setLoginState,setUser,loginState}){
  
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
+    let accessingError = false
+
     let history = useHistory()
 
     let loginSuccess = function(resp){
@@ -24,10 +26,22 @@ function Login({setLoginState,setUser,loginState}){
 
         async function completeLogin(){
           API.postLogin(id_token,email,googleId)
-          .then((logState) => setLoginState(logState))
-          .catch((err) => setLoginState(false))
+          .then((logState) => {
+              console.log(logState)
+              if(logState === false){
+                accessingError = true
+                history.push("/login")
+              }else{
+              history.push('/home')
+              setLoginState(logState)
+              }
+            })
+          .catch((err) => {
+                history.push('/login')
+                setLoginState(false)
+            })
           
-          history.push('/home')
+          
       
         }
       
@@ -40,10 +54,11 @@ function Login({setLoginState,setUser,loginState}){
     }
 
     if(loginState === true){
+        console.log("qui 2")
         return <Redirect to={"/home"} />
     }
     return(
-        
+       <div> 
         <GoogleLogin 
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Log in with google"
@@ -53,6 +68,8 @@ function Login({setLoginState,setUser,loginState}){
             redirectUri="postmessage"
             scope="openid"
         />
+        {accessingError && <h1>Errorre di accesso</h1>}
+        </div>
     )
   
 

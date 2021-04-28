@@ -1,0 +1,12 @@
+[Unit]
+Description= uWSGI instance of the healthsystem
+After= network.target
+
+[Service]
+User=colo
+Group=www-data
+WorkingDirectory=/home/colo/Desktop/Polito/LaboratoryEmbedded/Progetto/ProgettoEmbedded/server
+ExecStart=/home/colo/Desktop/Polito/LaboratoryEmbedded/Progetto/ProgettoEmbedded/server/uwsgi --ini healthsystem.ini
+
+[Install]
+WantedBy=multi-user.target

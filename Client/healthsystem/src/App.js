@@ -22,13 +22,20 @@ function App() {
       async function checkUser(){
           API.isAuthenticated()
             .then((userJson) =>{ 
-                     setLoginState(true)
-                     setUserName(userJson.username)
-                     setUser(userJson)
+                     
+                     if(userJson.id === null){
+                      setLoginState(false)
+                      history.push("/login")
+                    }else{
+                      setLoginState(true)
+                      setUserName(userJson.username)
+                      setUser(userJson)
                       const t = userJson["userType"]
-                       if("unknow"){
+                      if(t == "unknow"){
                           history.push("/firstAccess")
-                       }
+                      }
+                    }
+                     
                     })
             .catch((err)=> {
             setLoginState(false) 

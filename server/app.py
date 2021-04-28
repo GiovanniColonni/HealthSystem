@@ -2,8 +2,7 @@ from flask import Flask, g, request
 from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
-from config import SECRET_KEY
-from db.queries.InsertQuery import InsertQuery
+from config import SECRET_KEY, FLASK_HOST
 from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
@@ -35,9 +34,6 @@ def teardown_db(exe):
         pass
 
 
-def start():
-    app.run()
-
 @api.route("/updateType")
 class ChangeType(Resource):
     # questo serve soltanto a fare l'update del tipo di user
@@ -53,20 +49,5 @@ class ChangeType(Resource):
 
         return "OK", 200
 
-
 if __name__ == "__main__":
-    """
-    account = InsertQuery()
-    user_data = account.create_account("test@gmail.com", "lucaV", "ciao", "patient", 12234)
-    account = DeleteQuery()
-    user_data = account.delete_account_by_email("test@gmail.com")
-    doctor = SelectQuery()
-    print(doctor.select_doctor_by_patient(2).email)
-    doctor = SelectQuery()
-    doctor.select_event_by_doctor(6)
-    account = UpdateQuery()
-    account.updateUserType("1234", "patient")
-    """
-    doctor = InsertQuery()
-    doctor.create_account("email","luca","patient","asdfcia","fdajsiofd")
-    start()
+    app.run(host=FLASK_HOST,ssl_context='adhoc')
