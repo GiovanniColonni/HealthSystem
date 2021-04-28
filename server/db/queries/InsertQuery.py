@@ -18,7 +18,7 @@ class InsertQuery:
         user_entity = Account
         instance = user_entity(email=email,
                                username=username,
-                               userType=userType,
+                               userType=user_type,
                                id=id,
                                pushToken=push_token
                                )

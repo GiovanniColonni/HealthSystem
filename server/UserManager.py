@@ -12,17 +12,13 @@ class UserManager(object):
         return DBConnection()
     
     def lookup_user(self, id):
-        DB = self.getDBConnection()
+        
         r = SelectQuery.get_user_by_id(id)
-        for rec in r:
-            u  = User(rec[3],rec[4],rec[0],rec[2])
+        u  = User(r.id,r.username,r.email,r.userType)
         return u
 
     def insertUserOrNothing(self,googleId,username,email,accountType):
-        DB = self.getDBConnection()
         user = SelectQuery.get_user_by_id(googleId)
-        
-        print(user)
         if(user != None): # new user
             # DB.insertUser(googleId,username,email,password,accountType)   # mettere controllo scrittura 
             InsertQuery.create_account(email,username,accountType,googleId,"") # push token ?
