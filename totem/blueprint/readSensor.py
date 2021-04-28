@@ -28,7 +28,7 @@ class Publisher(Resource):
         ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1)
         ser.flush()
         print("[Flask] Start sensor monitoring")
-        
+        # sostituire le print con le post al link per le notifiche
         cont = 1
         while cont:
             if ser.in_waiting > 0:

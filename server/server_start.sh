@@ -13,6 +13,7 @@ then
 
 elif [ ${fs} = "n" ]
 then
+    service nginx start
     uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app --enable-threads
 else
     echo "not valid..exit"
