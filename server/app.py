@@ -3,6 +3,7 @@ from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
 from config import SECRET_KEY
+from db.queries.InsertQuery import InsertQuery
 from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
@@ -66,4 +67,6 @@ if __name__ == "__main__":
     account = UpdateQuery()
     account.updateUserType("1234", "patient")
     """
+    doctor = InsertQuery()
+    doctor.create_account("email","luca","patient","asdfcia","fdajsiofd")
     start()
