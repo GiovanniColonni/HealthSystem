@@ -3,6 +3,7 @@ from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
 from config import SECRET_KEY, FLASK_HOST
+from db.queries.InsertQuery import InsertQuery
 from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
