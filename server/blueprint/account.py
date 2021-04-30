@@ -16,7 +16,7 @@ class Account(Resource):
     def get(self,action):
         return "",HTTPStatus.NOT_IMPLEMENTED
 
-    
+    @login_required
     def post(self,action):
         u = UpdateQuery()
         if(action == "submitFirstAccess"): 
