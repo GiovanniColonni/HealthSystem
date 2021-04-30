@@ -10,7 +10,6 @@ import requests
 from http import HTTPStatus
 
 from google_token import * 
-from DBConnection import DBConnection
 
 from config import GOOGLE_CLIENT_ID
 from UserManager import UserManager
@@ -51,7 +50,7 @@ def csrf_protection(fn):
 def user_loader(user_id):
     return user_manager.lookup_user(user_id)
 
-@apiLogin.route("/login")
+@apiLogin.route("/login",methods=["GET","POST"])
 class CurrentUser(Resource):
 
 
@@ -67,7 +66,8 @@ class CurrentUser(Resource):
             'googleId': current_user.id,
             'username': current_user.username,
             'email': current_user.email,
-            'userType': current_user.userType
+            'userType': current_user.userType,
+            'pushToken':current_user.pushToken
         })
     
     @csrf_protection
@@ -90,7 +90,7 @@ class CurrentUser(Resource):
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         username = identity["name"]
-        user = user_manager.insertUserOrNothing(googleId,username,email,"unknow")
+        user = user_manager.insertUserOrNothing(googleId,username,email,"unknow","")
 
         
         if(login_user(user, remember=True) == False):

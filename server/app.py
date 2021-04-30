@@ -16,7 +16,7 @@ api = Api(app=app, title="HealthSystem")
 app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
-# dbConn = DBConnection()
+
 
 with app.app_context():
     from blueprint.auth import auth
@@ -25,14 +25,14 @@ with app.app_context():
 app.register_blueprint(auth)
 app.register_blueprint(doctor)
 
-
+# togliere
 @app.teardown_appcontext
 def teardown_db(exe):
     db = g.pop('db', None)
     if db is not None:
         # qui chiudere connessione al db
         pass
-
+# togliere
 
 @api.route("/updateType")
 class ChangeType(Resource):
