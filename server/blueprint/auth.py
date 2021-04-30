@@ -50,7 +50,7 @@ def csrf_protection(fn):
 def user_loader(user_id):
     return user_manager.lookup_user(user_id)
 
-@apiLogin.route("/login",methods=["GET","POST"])
+@apiLogin.route("/login",methods=["GET","POST","DELETE"])
 class CurrentUser(Resource):
 
 
@@ -98,6 +98,10 @@ class CurrentUser(Resource):
             return "Error while login",HTTPStatus.INTERNAL_SERVER_ERROR
 
         return self.get()
-
-
+    
+    @csrf_protection
+    @login_required
+    def delete(self):
+        logout_user()
+        return "",HTTPStatus.NO_CONTENT
     

@@ -22,7 +22,9 @@ app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 with app.app_context():
     from blueprint.auth import auth
     from blueprint.doctor import doctor
-
+    from blueprint.account import account
+    
+app.register_blueprint(account)
 app.register_blueprint(auth)
 app.register_blueprint(doctor)
 
