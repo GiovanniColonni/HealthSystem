@@ -29,7 +29,7 @@ class SelectQuery:
                 .all()
             return events
         
-    def get_user_by_id(userId):
+    def get_user_by_id(self, userId):
         """
         :param userId:
         :return: user entry
