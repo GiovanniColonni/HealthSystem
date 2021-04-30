@@ -51,6 +51,4 @@ class ChangeType(Resource):
         return "OK", 200
 
 if __name__ == "__main__":
-    account = InsertQuery()
-    account.create_account("ciao","ciao","doctor","10d0f","ciao")
     app.run(host=FLASK_HOST,ssl_context='adhoc')
