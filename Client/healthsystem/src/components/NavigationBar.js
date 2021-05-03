@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Notifications from './Notifications';
 
 var navstyle = {
     nav: {
@@ -13,13 +14,14 @@ var navstyle = {
     }
 }
 
+
 export default function NavigationBar() {
     return (
         <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
             <Navbar.Brand href="#home">
             <img
                 alt=""
-                src="../icons/greeCross.png"
+                src="/icons/greeCross.png"
                 width="30"
                 height="30"
                 className="d-inline-block align-top"
@@ -33,6 +35,7 @@ export default function NavigationBar() {
                 <Nav.Link href="#patientlist">My Patient list</Nav.Link>
                 </Nav>
                 <Nav>
+                    <Notifications />
                     <Nav.Link href="#myprofile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
