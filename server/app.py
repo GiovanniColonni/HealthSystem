@@ -23,34 +23,13 @@ with app.app_context():
     from blueprint.auth import auth
     from blueprint.doctor import doctor
     from blueprint.account import account
-    
+    from blueprint.totem import totem
+
 app.register_blueprint(account)
 app.register_blueprint(auth)
 app.register_blueprint(doctor)
+app. register_blueprint(totem)
 
-# togliere
-@app.teardown_appcontext
-def teardown_db(exe):
-    db = g.pop('db', None)
-    if db is not None:
-        # qui chiudere connessione al db
-        pass
-# togliere
-
-@api.route("/updateType")
-class ChangeType(Resource):
-    # questo serve soltanto a fare l'update del tipo di user
-
-    @login_required
-    def post(self):
-        userId = request.form.get("googleId")
-        userType = request.form.get("userType")
-
-        print(userId)
-        print(userType)
-        UpdateQuery.updateUserType(userId)
-
-        return "OK", 200
 
 if __name__ == "__main__":
     app.run(host=FLASK_HOST,ssl_context='adhoc')
