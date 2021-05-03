@@ -51,23 +51,57 @@ function App() {
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
 
-        <Route exact path={"/home"}>
-          <div>
-            <h1>Home of {username}</h1>
-            {loginState && <h1>Protected</h1>}
-          </div>
-        </Route>
-
         <Route exact to={"/firstAccess"}>
             <FirstAccess user={user}/>            
         </Route>
 
-        <Route exact path={"/calendar"}>
-          <BigCalendar />
+        {/* Change depending of the user type */}
+        <Route exact path={"/home"}>
+          <div>
+            <NavigationBar />
+            <h1>Home of {username}</h1>
+            <BigCalendar />
+          </div>
         </Route>
 
-        <Route exact path={"/menubar"}>
-          <NavigationBar />
+        {/* Only accessible for doctor users */}
+        <Route exact path={"/patientList"}>
+          <div>
+            <NavigationBar />
+            <h1>Patient List</h1>
+          </div>
+        </Route>
+
+        {/* Changes depending on the patient: from patient list of current doctor */}
+        <Route exact path={"/patientDetails"}>
+          <div>
+            <NavigationBar />
+            <h1>Patient Details of XXX</h1>
+          </div>
+        </Route>
+
+        {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
+        <Route exact path={"/patient/sensor"}>
+          <div>
+            <NavigationBar />
+            <h1>Sensor Details of Patient XXX</h1>
+          </div>
+        </Route>
+
+        {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
+        <Route exact path={"/patient/appointment"}>
+          <div>
+            <NavigationBar />
+            <h1>Appointement Details of Patient XXX, Date XXX</h1>
+          </div>
+        </Route>
+
+        {/* Changes depending on the user type: patient has his doctor */}
+        <Route exact path={"/personalProfile"} >
+          <div>
+            <NavigationBar />
+            <h1>Profile of {username}</h1>
+          </div>
         </Route>
 
       </Switch>
