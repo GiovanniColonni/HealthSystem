@@ -1,7 +1,9 @@
 import './App.css';
 import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
 import Login from "./components/Login"
-
+import Api from "./api/Api"
+import React,{useState,useEffect, useCallback, useMemo} from "react"
+import {useHistory} from "react-router"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -12,7 +14,7 @@ function App() {
 
   useEffect( () => {
       async function checkUser(){
-          API.isAuthenticated()
+          Api.isAuthenticated()
             .then((userJson) =>{ 
                      
                      if(userJson.id === null){

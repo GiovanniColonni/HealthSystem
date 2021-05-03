@@ -33,9 +33,9 @@ with app.app_context():
     login_manager.init_app(app)
 
 # implement the user loader of LoginManager (by flask_login)
-# with the actual implementation
 @login_manager.user_loader 
 def user_loader(id):
+    print("prima")
     return user_manager.lookupUser(id)
 
 
@@ -49,6 +49,7 @@ def csrf_protection(fn):
 
 @login_manager.user_loader
 def user_loader(user_id):
+    print("seconda")
     return user_manager.lookup_user(user_id)
 
 @apiLogin.route("/login")

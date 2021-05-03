@@ -19,4 +19,5 @@ app.register_blueprint(readSensor)
 
 
 if __name__ == "__main__":
-    app.run(host=FLASK_HOST,ssl_context='adhoc')
+    #app.run(host=FLASK_HOST,ssl_context='adhoc')
+    app.run(host=FLASK_HOST)

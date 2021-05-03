@@ -1,27 +1,36 @@
-from DBConnection import DBConnection
 from user import User
+
+import requests
+
+
+base_url = "https://0.0.0.0:5000" 
 
 class UserManager(object):
 
     def __init__(self):        
-        pass
-    
+        self.users = []
 
-    def getDBConnection(self):
-        return DBConnection()
-    
+    def postLoginUser(self,googleId,username,email,password,accountType):
+        url = base_url + "/login"
+
+        formData = {"googleId":googleId,"email":email,"email":email,"password":password,"accountType":accountType}
+        r = requests.post(url,data=formData)
+        
+        print(r.json())
+
+        if(r.status_code == "200"):
+            return "r.payload"
+        pass
+
     def lookup_user(self, id):
-        DB = self.getDBConnection()
-        r = DB.getUserById(id)
-        for rec in r:
-            u  = User(rec[3],rec[4],rec[0],rec[2])
-        return u
+        for u in users:
+            if u.id == id:
+                return u
+        return None
 
     def insertUserOrNothing(self,googleId,username,email,password,accountType):
-        DB = self.getDBConnection()
-        record = DB.getUserByEmail(email)
-        if(len(record) == 0): # new user
-            DB.insertUser(googleId,username,email,password,accountType)   # mettere controllo scrittura 
-
+        # call /totem/postUserLogin
+        user_to_return = self.postLoginUser(googleId,username,email,password,accountType)       
         user = User(googleId,username,email,accountType)
+        self.users.append(user)
         return user

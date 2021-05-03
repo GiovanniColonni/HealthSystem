@@ -2,13 +2,8 @@ import React,{useState} from "react"
 import GoogleLogin from 'react-google-login';
 import {Redirect, useHistory} from "react-router"
 
-import axios from 'axios'
+import Api from "../api/Api"
 
-import API from "../api/API"
-
-// per csfr protection
-axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
-axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 function Login({setLoginState,setUser,loginState}){
  
@@ -25,7 +20,7 @@ function Login({setLoginState,setUser,loginState}){
         const googleId = resp.profileObj.googleId
 
         async function completeLogin(){
-          API.postLogin(id_token,email,googleId)
+          Api.login(id_token,email,googleId)
           .then((logState) => {
             setAccessError(!logState)
               if(logState === false){

@@ -50,7 +50,7 @@ def csrf_protection(fn):
 def user_loader(user_id):
     return user_manager.lookup_user(user_id)
 
-@apiLogin.route("/login",methods=["GET","POST","DELETE"])
+@apiLogin.route("/login/<string:loginType>",methods=["GET","POST","DELETE"])
 class CurrentUser(Resource):
 
 
@@ -61,7 +61,7 @@ class CurrentUser(Resource):
     })
 
     @login_required
-    def get(self):
+    def get(self,loginType):
         return jsonify({
             'googleId': current_user.id,
             'username': current_user.username,
@@ -71,7 +71,10 @@ class CurrentUser(Resource):
         })
     
     @csrf_protection
-    def post(self):
+    def post(self,loginType):
+        
+        # modificare questo in base al tipo di login
+
         id_token = request.form.get('id_token')
         email = request.form.get('email')
         googleId = request.form.get('googleId')
@@ -99,6 +102,7 @@ class CurrentUser(Resource):
 
         return self.get()
     
+
     @csrf_protection
     @login_required
     def delete(self):
