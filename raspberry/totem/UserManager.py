@@ -3,7 +3,7 @@ from user import User
 import requests
 
 
-base_url = "https://0.0.0.0:5000" 
+base_url = "http://0.0.0.0:5000" 
 
 class UserManager(object):
 
@@ -12,18 +12,18 @@ class UserManager(object):
 
     def postLoginUser(self,googleId,username,email,password,accountType):
         url = base_url + "/login"
-
+        headers = [{"X-Requested-With":"XmlHttpRequest"},{"Access-Control":"XmlHttpRequest"}]
         formData = {"googleId":googleId,"email":email,"email":email,"password":password,"accountType":accountType}
-        r = requests.post(url,data=formData)
+        r = requests.post(url=url,headers=headers,data=formData)
         
         print(r.json())
 
         if(r.status_code == "200"):
             return "r.payload"
-        pass
+        
 
     def lookup_user(self, id):
-        for u in users:
+        for u in self.users:
             if u.id == id:
                 return u
         return None
