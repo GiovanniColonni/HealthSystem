@@ -16,7 +16,7 @@ class InsertQuery:
         :param push_token: push_token
         """
         user_entity = Account
-        instance = user_entity(email=self,
+        instance = user_entity(email=email,
                                username=username,
                                userType=user_type,
                                id=id,

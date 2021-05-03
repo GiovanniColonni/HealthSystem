@@ -42,6 +42,7 @@ function FirstAccess({user}){
           {(userType === "Patient") && <TextField onChange={(e)=> onChangeCF(e)} id="filled-basic" label="Fiscal Code"/>}
           <TextField id="date" onChange={(e) => onChangeBirthdate(e)} label="Birthday" defaultValue="1980-01-01"   InputLabelProps={{shrink: true,}}/>
           <Button id={4} onClick={()=> submit()} variant={"contained"} color={"secondary"}>Submit Form</Button>
+          <h1>Fai un accesso da mobile per inizializzare le notifiche</h1>
       </>)
     }
     return(<form>
