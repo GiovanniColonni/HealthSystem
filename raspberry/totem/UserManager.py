@@ -3,7 +3,7 @@ from user import User
 import requests
 
 
-base_url = "https://0.0.0.0:5000" 
+base_url = "http://192.168.1.202:5000" 
 
 class UserManager(object):
 
@@ -23,7 +23,7 @@ class UserManager(object):
         pass
 
     def lookup_user(self, id):
-        for u in users:
+        for u in self.users:
             if u.id == id:
                 return u
         return None

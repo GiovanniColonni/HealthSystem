@@ -76,7 +76,7 @@ class CurrentUser(Resource):
         id_token = request.form.get('id_token')
         email = request.form.get('email')
         googleId = request.form.get('googleId')
-        
+        print("start login")
         if id_token is None:
             return "NO ID token provided", HTTPStatus.FORBIDDEN # cambiare in httpstatus.Forbidden
 
@@ -89,7 +89,7 @@ class CurrentUser(Resource):
         if('sub' not in identity or 'name' not in identity or 'picture' not in identity):
 
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
-
+        print("here")
         username = identity["name"]
         user = user_manager.insertUserOrNothing(googleId,username,email,"fakePass","unknow")
 
