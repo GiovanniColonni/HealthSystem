@@ -5,7 +5,7 @@ from sqlalchemy.orm import defer
 
 class SelectQuery:
 
-    def select_doctor_by_patient(self, patientId):
+    def select_doctor_by_patient(patientId):
         with DatabaseSession() as session:
             doctor = session.query(Doctor, Patient) \
                 .with_entities(Doctor) \
@@ -14,7 +14,7 @@ class SelectQuery:
                 .first()
             return doctor
 
-    def select_event_by_doctor(self, doctorId):
+    def select_event_by_doctor(doctorId):
         """
         :param doctorId:
         :return: a list of Event objects
@@ -28,5 +28,14 @@ class SelectQuery:
                 .filter(doctorId == Schedule.doctorId) \
                 .all()
             return events
-
-    
+        
+    def get_user_by_id(self,userId):
+        """
+        :param userId:
+        :return: user entry
+        """
+        with DatabaseSession() as session:
+            account = session.query(Account) \
+                .filter(userId == Account.id) \
+                .first()
+            return account

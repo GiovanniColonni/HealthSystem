@@ -22,6 +22,37 @@ async function postLogin(id_token,email,googleId){
             return false
         }
 }
+async function logout(){
+    try{
+        let resp = await axios.delete("/login")
+        if(resp.status === 204){
+            return true
+        }
+        return false
+    }catch(e){
+        return false
+    }
+}
+async function submitFirstAccess(id,name,surname,birthday,cf,userType){
+    let formData = new FormData()
+    
+    formData.set("googleId",id)
+    formData.set("name",name)
+    formData.set("surname",surname)
+    formData.set("birthday",birthday)
+    formData.set("cf",cf)
+    formData.set("userType",userType)
+
+    try{
+        let resp = await axios.post("/account/submitFirstAccess")
+        if(resp.status === 200){
+            return true
+        }
+        return false
+    }catch (e){
+        return false
+    }
+}
 
 async function changeUserType(id,type){
     let formData = new FormData()
@@ -72,5 +103,5 @@ async function getEvents(id,type){
 }
 
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType}
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess}
 export default API;

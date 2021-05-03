@@ -5,12 +5,12 @@ from flask_login import UserMixin
 
 class User(UserMixin):
     
-    def __init__(self,googleId,username,email,userType,pushToken):
+    def __init__(self,googleId,username,email,userType):
         self.id = googleId # id required by UserMixin
         self.username = username
         self.email = email
         self.userType = userType
-        self.pushToken = pushToken
+
     def updateType(userType):
         self.type = userType
 

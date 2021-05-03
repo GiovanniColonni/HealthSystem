@@ -12,7 +12,8 @@
   "dependencies": {
     "expo": "^40.0.1",
     "react": "17.0.1",
-    "react-native": "0.63.2" 
+    "react-native": "0.63.2",
+    "expo-notifications": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "7.13.10",
