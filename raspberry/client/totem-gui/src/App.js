@@ -50,13 +50,22 @@ function App() {
  */
   
   let buttonClick1 = () => {
-    let resp = await axios.get("/totem/measure")
-    print(resp)
+   let f = () => {try{
+	let resp = await axios.get("/totem/measure")
+	print(reso)
+	}catch(e){
+	console.log("e")
+	}}
+    return f()
   }
 
   let buttonClick2 = () => {
-    let resp = await axios.get("/postMeasure")
-    print(resp)
+	let f = () =>{
+	 let resp = await axios.get("/login")
+	 console.log("resp")
+	}    
+	return f()
+	
   }
 
   return(
