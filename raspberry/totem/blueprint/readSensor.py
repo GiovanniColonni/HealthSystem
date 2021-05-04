@@ -13,11 +13,11 @@ readSensor = Blueprint("readSensor",__name__)
 readSensor_api = Api(readSensor)
 
 
-@readSensor_api.route("/Measure")
+@readSensor_api.route("/totem/measure")
 class Publisher(Resource):
     
     def get(self):
-        
+        return "ok",HTTPStatus.OK
         # deamon = True so rthe program isn't prevent to exit
         t = threading.Thread(target=self.takeMeasure,daemon=True)
         t.start()

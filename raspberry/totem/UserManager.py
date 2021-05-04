@@ -11,7 +11,7 @@ class UserManager(object):
 
     def postLoginUser(self,googleId,username,email,password,accountType):
         url = base_url + "/login"
-        headers = [{"X-Requested-With":"XmlHttpRequest"},{"Access-Control":"XmlHttpRequest"}]
+        headers = {{"X-Requested-With":"XmlHttpRequest"},{"Access-Control":"XmlHttpRequest"}}
         formData = {"googleId":googleId,"email":email,"email":email,"password":password,"accountType":accountType}
         r = requests.post(url=url,headers=headers,data=formData)
         

@@ -7,11 +7,11 @@ totem = Blueprint("totem",__name__)
 totemApi = Api(totem)
 
 
-@totemApi.route("/totem/<string:action>")
+@totemApi.route("/postMeasure")
 class Totem(Resource):
 
     def get(self,action):
-        return "",HTTPStatus.NOT_IMPLEMENTED
+        return "ok",HTTPStatus.OK
 
     def post(self,action):
         pass
