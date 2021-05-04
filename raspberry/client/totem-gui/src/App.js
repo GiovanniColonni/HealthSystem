@@ -50,9 +50,9 @@ function App() {
  */
   
   let buttonClick1 = () => {
-   let f = () => {try{
+   let f = async () => {try{
 	let resp = await axios.get("/totem/measure")
-	print(reso)
+	console.log(resp)
 	}catch(e){
 	console.log("e")
 	}}
@@ -60,7 +60,7 @@ function App() {
   }
 
   let buttonClick2 = () => {
-	let f = () =>{
+	let f = async () =>{
 	 let resp = await axios.get("/login")
 	 console.log("resp")
 	}    
