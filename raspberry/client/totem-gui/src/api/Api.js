@@ -49,7 +49,60 @@ async function logout(){
         return false
     }
 }
+//--------- API del Totem
+const prefix = "/totem"
 
+async function startMeasure(mode){
+    // mode = single,continue 
 
-let Api = {login,logout,isAuthenticated}
+    const url = prefix + "/measure"
+    let form = new FormData()
+    form.set("mode",mode)
+
+    try{
+        let resp = await axios.post(url)
+        
+        if(resp.status === 200){
+            return true
+        }
+        return false
+    }catch(e){
+        return false
+    }
+    
+}
+async function stopMeasure(){
+     // DELETE su /totem/measure
+    const url = prefix + "/measure"
+
+    try{
+        let resp = await axios.delete(url)
+        
+        if(resp.status === 200){
+            return true
+        }
+        return false
+    }catch(e){
+        return false
+    }
+}
+
+async function getMeasure(){
+   const url = prefix + "/measure"
+    
+    try{
+        let resp = await axios.get(url)
+        
+        if(resp.status === 200){
+            // prendere payload
+            return ""
+        }
+        return false
+    }catch(e){
+        return false
+    }
+
+}
+
+let Api = {login,logout,isAuthenticated,startMeasure,getMeasure,stopMeasure}
 export default Api;

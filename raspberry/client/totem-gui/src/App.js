@@ -13,9 +13,10 @@ function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
   const [username,setUserName] = useState("")
+  const [measure,setMeasure] = useState({name:"",state:"",active:false})
   
   let history = useHistory()
-  /*
+  
   useEffect( () => {
     
       async function checkUser(){
@@ -31,7 +32,7 @@ function App() {
                       setUser(userJson)
                       const t = userJson["userType"]
                       if(t == "unknow"){
-                          history.push("/firstAccess")
+                          history.push("/home")
                       }
                     }
                      
@@ -47,36 +48,8 @@ function App() {
       
     },[loginState,setUser,setUserName]
   ) 
- */
+ 
   
-  let buttonClick1 = () => {
-   let f = async () => {try{
-	let resp = await axios.get("/totem/measure")
-	console.log(resp)
-	}catch(e){
-	console.log("e")
-	}}
-    return f()
-  }
-
-  let buttonClick2 = () => {
-	let f = async () =>{
-	 let resp = await axios.get("/login")
-	 console.log("resp")
-	}    
-	return f()
-	
-  }
-
-  return(
-    <div className="App">
-       <Button id={1} onClick={(e) => buttonClick1()} variant={"contained"} color={"primary"}>Doctor</Button>
-       <Button id={1} onClick={(e) => buttonClick2()} variant={"contained"} color={"primary"}>Doctor</Button>
-    </div>
-  )
-}
-
-  /*
   return (
     <div className="App">
       <Switch>
@@ -87,11 +60,15 @@ function App() {
           <div>
             <h1>Home of {username}</h1>
             {loginState && <h1>Protected</h1>}
+            <Link to path="/measure">Start a measure</Link>
           </div>
+          </Route>
+          <Route exact path="/measure">
+            <Measure setMeasure={setMeasure} />
           </Route>
       </Switch>
     </div>
   );
 }
-*/
+
 export default App;
