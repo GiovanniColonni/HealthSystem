@@ -6,15 +6,24 @@ import Api from "../api/Api"
 // serve un timer
 
 function Measure ({setMeasure}) {
+    
+    let [mProgres,setMProgres] = useState(false)
 
-    let onStartMeasure = () => {}
-    let onStopMeasure = () => {}
+    let onStartMeasure = () => {
+        setMProgres(true)
+    }
+
+    let onStopMeasure = () => {
+        setMProgres(false)
+    }
     
     return(
         <div>
-            <h1>Start a measure</h1>
-            
+            <Button onClick={()=>onStartMeasure()} variant="contained">Start Measure</Button>            
+            <Button onClick={()=>onStopMeasure()} variant="contained">Stop Measure</Button>
+            {mProgres && <h1>Measure in progress</h1>}
         </div>
+       
     )
 
 }

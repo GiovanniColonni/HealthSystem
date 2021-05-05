@@ -1,38 +1,56 @@
-from flask import Blueprint, current_app as app, request, jsonify
+from flask import Blueprint, current_app as app, request, jsonify, g
 from flask_restx import Resource,Api
+import sqlite3
 
 import threading
 import time
 import serial
+import datetime
 
 from http import HTTPStatus
 import json
 
-from config import SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
+from config import DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
 
 readSensor = Blueprint("readSensor",__name__)
-global measure_in_progress
-measure_in_progress = False
-global measure 
-measure = {"name":"","status":""}
-thread = None
 
-@readSensor.route("/totem/measure",methods=['GET','POST','DELETE'])
+
+
+def connect_db():
+    return sqlite3.connect(DATABASE_PATH)
+
+@readSensor.route("/totem/measure",methods=['GET','POST'])
 def manageSensor():
     
-    
-    print(measure_in_progress)
     if request.method == "GET":
         # GET
-        if(not measure_in_progress):
-            return "",HTTPStatus.NO_CONTENT
+        measure = {"mtype":"","thReached":"","val":"","inProgress":"","dateMeasure":""}
+        query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
+        params = [1]
+        db = connect_db()
+        db_cur = db.cursor()
+        
+        row = db_cur.execute(query_get_measure,params)
+        if row == None:
+            return jsonify(measure),HTTPStatus.OK
+        
+        entry = row.fetchone()
+        
+        measure["mtype"] = entry[1]
+        measure["thReached"] = entry[2]
+        measure["val"] = entry[3]
+        measure["inProgress"] = entry[4]
+        measure["dateMeasure"] = entry[5]
+        
+        db_cur.close()
+        db.close()
+
         return jsonify(measure),HTTPStatus.OK
 
     if request.method == "POST":
         # POST
-        if(measure_in_progress):
-            return "only one measure in place at a time",HTTPStatus.CONFLICT
         mode = request.form.get("mode") 
+        # controllare che non ci sia già una misura attiva
 
         # deamon = True so rthe program isn't prevent to exit
         thread = threading.Thread(target=takeMeasure,daemon=True)
@@ -40,24 +58,27 @@ def manageSensor():
         measure_in_progress = True
         return "starting measurement",HTTPStatus.OK
         
-    if request.method == "DELETE":
-        if(not measure_in_progress):
-            return "",HTTPStatus.NO_CONTENT
-        measure_in_progress= False # questo stoppa anche il thread
-        measure = {"name":"","status":""}
-        pass
-
 def takeMeasure():
         
-        global measure_in_progress
-        global measure
+        db = sqlite3.connect(DATABASE_PATH)
+        db_cur = db.cursor()
+        
+        query_start_measure = "INSERT INTO Measure(mtype,thReached,val,inProgress,dateMeasure) VALUES (?,?,?,?,?)"
+        # type : c/s thReaced: true=1/false=2 val : measure value inProgress : 1/0
+        params = ["type",0,0,1,datetime.date.today()]
+        query_insert_measure = "UPDATE Measure SET thReached = 1, val = ? WHERE inProgress = 1"
+        query_end_measure = "UPDATE Measure SET inProgress = 0"
 
+        db_cur.execute(query_start_measure,params)
+        db.commit()
+        
         ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1)
         ser.flush()
         print("[Flask] Start sensor monitoring")
         # sostituire le print con le post al link per le notifiche
+        
         cont = 1
-        while cont or measure_in_progress:
+        while cont:
             if ser.in_waiting > 0:
                 line = ser.readline().decode('utf-8').rstrip()
                 if(line != ""):
@@ -65,22 +86,43 @@ def takeMeasure():
 
                     if("Operc" in data):
                         if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
+                            params = [data["Operc"]]
+                            db_cur.execute(query_insert_measure,params)
+                            db.commit()
                             print("Operc sotto la soglia")
 
                     elif("Max" in data):
                             if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
+                                params = [d]
+                                db_cur.execute(query_insert_measure,params)
+                                db.commit()
                                 print("Max pressure fuori dalla soglia")
                             if(SENSOR_PRESSURE_THRESHOLD["Min"] < data["MinMin"] or SENSOR_PRESSURE_THRESHOLD["Min"] > data["MaxMin"] ):
+                                d = data["MinMin"] if data["MinMin"] < SENSOR_PRESSURE_THRESHOLD["Min"] else data["MaxMin"]
+                                params = [d]
+                                db_cur.execute(query_insert_measure,params)
+                                db.commit()
                                 print("Min pressure fuori dalla soglia")
+
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                                params = [data["HRate"]]
+                                db_cur.execute(query_insert_measure,params)
+                                db.commit()
                                 print("HRate fuori dalla soglia")
                                            
                     elif("HRate" in data): 
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                                params = data["HRate"]
+                                db_cur.execute(query_insert_measure,params)
+                                db.commit()
                                 print("HRate fuori dalla soglia")
                             
                 if(line == "Stop"):
+                    db_cur.execute(query_end_measure)
+                    db.commit()
                     print(f"[Flask] End sensor monitoring")
+                    db_cur.close()
+                    db.close()
                     cont = 0
         
         return 0

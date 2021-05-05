@@ -6,6 +6,8 @@ import React,{useState,useEffect, useCallback, useMemo} from "react"
 import {useHistory} from "react-router"
 import Button from "@material-ui/core/Button"
 
+import Measure from "./components/Measure"
+
 import axios from "axios"
 
 
