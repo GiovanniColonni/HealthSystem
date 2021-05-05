@@ -33,9 +33,7 @@ function App() {
                       setUserName(userJson.username)
                       setUser(userJson)
                       const t = userJson["userType"]
-                      if(t == "unknow"){
-                          history.push("/home")
-                      }
+                      
                     }
                      
                     })
@@ -58,15 +56,14 @@ function App() {
           <Route exact path={"/login"}>
               <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
-          <Route exact path={"home"}>
+          <Route exact path={"/home"}>
           <div>
-            <h1>Home of {username}</h1>
-            {loginState && <h1>Protected</h1>}
-            <Link to path="/measure">Start a measure</Link>
+            <h1>Home</h1>
+            <Link to="/measure">Start a measure</Link>
           </div>
           </Route>
           <Route exact path="/measure">
-            <Measure setMeasure={setMeasure} />
+            <Measure setMeasure={setMeasure} measure={measure} />
           </Route>
       </Switch>
     </div>

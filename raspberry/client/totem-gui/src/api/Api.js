@@ -95,7 +95,8 @@ async function getMeasure(){
         
         if(resp.status === 200){
             // prendere payload
-            return ""
+            console.log(resp.data)
+            return resp.data
         }
         return false
     }catch(e){
