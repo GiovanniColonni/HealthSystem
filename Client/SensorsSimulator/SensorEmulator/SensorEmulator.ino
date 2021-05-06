@@ -38,7 +38,10 @@ const int EarthRateMax = 100; // questi sono soltanto valori di riferimento
 // tachicardia sopra i 100
 
 const int Operc = 100; // Oxigen perc
-const int Tmeasurement = 1000 ; // ms from one measure to another
+const int Tmeasurement = 5000 ; // ms from one measure to another
+
+
+int critic = 0;
 
 int simulatePressureMeasurement(int type){
     // if type = 1 : single measurement
@@ -112,8 +115,11 @@ int saturimeterMeasure(){
   char output[14];
 
   StaticJsonDocument<capacity> measure;
-  measure["Operc"] = random(Operc-10,Operc);
-
+  if(critic == 0){
+    measure["Operc"] = random(Operc-3,Operc);
+  }else{
+    measure["Operc"] = random(Operc-10,Operc);
+  }
   serializeJson(measure,output);
   Serial.println(output);
   
@@ -125,7 +131,11 @@ int heartRateMeasure(){
     char output[14];
 
     StaticJsonDocument<capacity> measure;
-    measure["HRate"] = random(EarthRateMin,EarthRateMax);
+    if(critic == 0){
+      measure["HRate"] = random(EarthRateMin,EarthRateMax);
+    }else{
+      measure["HRate"] = random(EarthRateMin-20,EarthRateMax+20);      
+    }
     serializeJson(measure,output);
     Serial.println(output);
     
@@ -136,10 +146,16 @@ int pressureMeasure(){ // one measure of pression
   char output[32];
   
   StaticJsonDocument<capacity> measure;
-  measure["Max"] = random (MaxPressureMIN,MaxPressureMAX);
-  measure["Min"] = random (MinPressureMIN,MinPressureMAX);
-  measure["HRate"] = random (EarthRateMin,EarthRateMax);
-
+  if(critic == 0){
+    measure["Max"] = random (MaxPressureMIN,MaxPressureMAX);
+    measure["Min"] = random (MinPressureMIN,MinPressureMAX);
+    measure["HRate"] = random (EarthRateMin,EarthRateMax);
+  }else{
+    measure["Max"] = random (MaxPressureMIN-20,MaxPressureMAX+20);
+    measure["Min"] = random (MinPressureMIN-20,MinPressureMAX+20);
+    measure["HRate"] = random (EarthRateMin-20,EarthRateMax+20);      
+  }
+  
   serializeJson(measure, output);
   Serial.println(output);
   return 0;  
@@ -174,8 +190,18 @@ void loop() {
     simulateSaturimeterMeasurement(0);    
   }else if(cmd == "6"){
     simulateHRMeasurement(0);
+  }else if(cmd == "7"){
+    critic = 1;
+    simulatePressureMeasurement(0);
+  }else if(cmd == "8"){
+    critic = 1;
+    simulateSaturimeterMeasurement(0);
+  }else if(cmd == "9"){
+    critic = 1;
+    simulateHRMeasurement(0);
   }
   // gli altri tasti sono per simulazione di situzioni critiche 
   
   cmd = "";
+  critic = 0;
 }
