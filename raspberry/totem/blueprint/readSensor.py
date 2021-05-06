@@ -52,10 +52,10 @@ def manageSensor():
         mode = request.form.get("mode") 
         # controllare che non ci sia già una misura attiva
 
-        # deamon = True so rthe program isn't prevent to exit
         thread = threading.Thread(target=takeMeasure,daemon=True)
         thread.start()
         measure_in_progress = True
+
         return "starting measurement",HTTPStatus.OK
         
 def takeMeasure():
@@ -63,10 +63,10 @@ def takeMeasure():
         db = sqlite3.connect(DATABASE_PATH)
         db_cur = db.cursor()
         
-        query_start_measure = "INSERT INTO Measure(mtype,thReached,val,inProgress,dateMeasure) VALUES (?,?,?,?,?)"
+        query_start_measure = "INSERT INTO Measure(mtype,thReached,inProgress,dateMeasure,measureValue) VALUES (?,?,?,?,?)"
         # type : c/s thReaced: true=1/false=2 val : measure value inProgress : 1/0
-        params = ["type",0,0,1,datetime.date.today()]
-        query_insert_measure = "UPDATE Measure SET thReached = 1, val = ? WHERE inProgress = 1"
+        params = ["type",0,1,datetime.date.today(),""]
+        query_insert_measure = "UPDATE Measure SET thReached = ?, measureVlaue = ? WHERE inProgress = 1"
         query_end_measure = "UPDATE Measure SET inProgress = 0"
 
         db_cur.execute(query_start_measure,params)
@@ -80,50 +80,44 @@ def takeMeasure():
         cont = 1
         while cont:
             if ser.in_waiting > 0:
+                
                 line = ser.readline().decode('utf-8').rstrip()
+                
+                if(line == "Stop"):
+                        db_cur.execute(query_end_measure)
+                        db.commit()
+                        print(f"[Flask] End sensor monitoring")
+                        db_cur.close()
+                        db.close()
+                        break;
+
                 if(line != ""):
                     data = json.loads(line)
+                    tr  = 0
 
                     if("Operc" in data):
+
                         if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
-                            params = [data["Operc"]]
-                            db_cur.execute(query_insert_measure,params)
-                            db.commit()
-                            print("Operc sotto la soglia")
-
+                            tr= 1
+                        
                     elif("Max" in data):
+                            tr = 0
                             if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
-                                params = [d]
-                                db_cur.execute(query_insert_measure,params)
-                                db.commit()
-                                print("Max pressure fuori dalla soglia")
+                                tr = 1
+                                
                             if(SENSOR_PRESSURE_THRESHOLD["Min"] < data["MinMin"] or SENSOR_PRESSURE_THRESHOLD["Min"] > data["MaxMin"] ):
-                                d = data["MinMin"] if data["MinMin"] < SENSOR_PRESSURE_THRESHOLD["Min"] else data["MaxMin"]
-                                params = [d]
-                                db_cur.execute(query_insert_measure,params)
-                                db.commit()
-                                print("Min pressure fuori dalla soglia")
-
+                                tr = 1                                
+                                
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
-                                params = [data["HRate"]]
-                                db_cur.execute(query_insert_measure,params)
-                                db.commit()
-                                print("HRate fuori dalla soglia")
-                                           
+                                tr = 1
+                                      
                     elif("HRate" in data): 
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
-                                params = data["HRate"]
-                                db_cur.execute(query_insert_measure,params)
-                                db.commit()
-                                print("HRate fuori dalla soglia")
+                                tr = 1
                             
-                if(line == "Stop"):
-                    db_cur.execute(query_end_measure)
-                    db.commit()
-                    print(f"[Flask] End sensor monitoring")
-                    db_cur.close()
-                    db.close()
-                    cont = 0
+                params = [tr,line] # no json su db            
+                db_cur.execute(query_insert_measure,params)
+                db.commit()
         
         return 0
         
