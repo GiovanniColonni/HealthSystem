@@ -9,7 +9,6 @@ class UserManager(object):
     
     def lookup_user(self, id):
         s = SelectQuery()
-        print(f"lookup user id : {id}")
         r = s.get_user_by_id(id)
         # controllare se user not null
         u  = User(r.id,r.username,r.email,r.userType,r.pushToken)
