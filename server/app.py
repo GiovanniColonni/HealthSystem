@@ -1,3 +1,4 @@
+import sqlalchemy
 from flask import Flask, g, request
 from flask_restx import Api, Resource
 from pony.flask import example
