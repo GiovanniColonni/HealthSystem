@@ -32,7 +32,7 @@ def manageSensor():
         
         row = db_cur.execute(query_get_measure,params)
         if row == None:
-            return jsonify(measure),HTTPStatus.OK
+            return jsonify(row),HTTPStatus.OK
         
         entry = row.fetchone()
         
