@@ -28,14 +28,14 @@ function Measure ({setMeasure,measure}) {
                         ()=>{
                             // console.log("log")
                             Api.getMeasure().then((m)=>{
-                                
+                                if(measure === "no active measure"){
+                                    setMProgres(false)
+                                    setMeasure("no active measure")
+                                }else{
                                 m.measureValue = JSON.parse(m.measureValue)
                                 setMeasure(m)
-                                // qui fare parsing di m.measureValue prima di settare
-                                // controllare qui se va sopra la soglia oppure no e casomai fare
-                                // la post al main server
-                                // guardare anche se la misura è terminata oppure no
-                                // e casomia settare measureState == "stop"
+                                // se thReached == 1 fare post a link notifiche
+                                }
                             })
                             .catch(()=>{
                                 setMeasureError(true)
@@ -53,7 +53,10 @@ function Measure ({setMeasure,measure}) {
 
     useEffect(()=>{
         
-        
+        if(measure === "no active measure"){
+            clearInterval(interval)
+            console.log("end measure")
+        }
         
     })
     
