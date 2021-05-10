@@ -71,7 +71,7 @@ function Measure ({setMeasure,measure}) {
         <div>
             <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>            
             <Button onClick={()=>onStopMeasure()} variant="contained"> Stop Measure</Button>
-            {mProgres && <h1>Measure in progress : </h1> && <h2>{measure.measureValue}</h2>}
+            {mProgres && <h1>Measure in progress : </h1> && <h2>{JSON.stringify(measure.measureValue)}</h2>}
             {measureError && <h1>Problema con misurazione</h1>}
         </div>
        
