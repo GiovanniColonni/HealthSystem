@@ -31,6 +31,7 @@ function Measure ({setMeasure,measure}) {
                                 if(measure === "no active measure"){
                                     setMProgres(false)
                                     setMeasure("no active measure")
+                                    console.log("qui end measure")
                                 }else{
                                 m.measureValue = JSON.parse(m.measureValue)
                                 setMeasure(m)
@@ -53,7 +54,7 @@ function Measure ({setMeasure,measure}) {
 
     useEffect(()=>{
         
-        if(measure === "no active measure"){
+        if(mProgres === false){
             clearInterval(interval)
             console.log("end measure")
         }
