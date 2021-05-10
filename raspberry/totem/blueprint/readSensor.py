@@ -109,7 +109,7 @@ def takeMeasure():
                             if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
                                 tr = 1
                                 
-                            if(SENSOR_PRESSURE_THRESHOLD["Min"] < data["MinMin"] or SENSOR_PRESSURE_THRESHOLD["Min"] > data["MaxMin"] ):
+                            if(SENSOR_PRESSURE_THRESHOLD["MinMin"] < data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] > data["Min"] ):
                                 tr = 1                                
                                 
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
