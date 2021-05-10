@@ -16,7 +16,8 @@ function App() {
   const [user,setUser] = useState({})
   const [username,setUserName] = useState("")
   const [measure,setMeasure] = useState({name:"",state:"",active:false})
-  
+  const [link,setLink] = useState("https://healthsystem.daily.co/0uNtA7BIXvP50NhUNiTo")
+
   let history = useHistory()
   
   useEffect( () => {
@@ -64,6 +65,9 @@ function App() {
           </Route>
           <Route exact path="/measure">
             <Measure setMeasure={setMeasure} measure={measure} />
+          </Route>
+          <Route exact path="/videoCall">
+            <Button onClick={() => {window.location.href = link}}>Start Call</Button>
           </Route>
       </Switch>
     </div>
