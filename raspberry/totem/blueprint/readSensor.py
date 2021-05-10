@@ -69,7 +69,7 @@ def takeMeasure():
         query_start_measure = "INSERT INTO Measure(mtype,thReached,inProgress,dateMeasure,measureValue) VALUES (?,?,?,?,?)"
         # type : c/s thReaced: true=1/false=2 val : measure value inProgress : 1/0
         params = ["type",0,1,datetime.date.today(),""]
-        query_insert_measure = "UPDATE Measure SET thReached = ?, measureVlaue = ? WHERE inProgress = 1"
+        query_insert_measure = "UPDATE Measure SET thReached = ?, measureValue = ? WHERE inProgress = 1"
         query_end_measure = "UPDATE Measure SET inProgress = 0"
 
         db_cur.execute(query_start_measure,params)
@@ -101,7 +101,7 @@ def takeMeasure():
 
                     if("Operc" in data):
 
-                        if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
+                        if(SENSOR_OPERC_THRESHOLD["MinOperc"] < data["Operc"]):
                             tr= 1
                         
                     elif("Max" in data):
@@ -112,7 +112,7 @@ def takeMeasure():
                             if(SENSOR_PRESSURE_THRESHOLD["MinMin"] < data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] > data["Min"] ):
                                 tr = 1                                
                                 
-                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_PRESSURE_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 tr = 1
                                       
                     elif("HRate" in data): 
