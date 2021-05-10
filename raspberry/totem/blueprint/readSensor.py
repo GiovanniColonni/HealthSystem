@@ -4,7 +4,7 @@ import sqlite3
 
 import threading
 import time
-import serial
+from serial import Serial
 import datetime
 
 from http import HTTPStatus
@@ -31,11 +31,13 @@ def manageSensor():
         db_cur = db.cursor()
         
         row = db_cur.execute(query_get_measure,params)
-        if row == None:
-            return "no active measure",HTTPStatus.OK
-        
+         
         entry = row.fetchone()
         
+        if entry == None:
+            return "no active measure",HTTPStatus.OK
+        
+
         measure["mtype"] = entry[1]
         measure["thReached"] = entry[2]
         measure["inProgress"] = entry[3]
@@ -73,7 +75,7 @@ def takeMeasure():
         db_cur.execute(query_start_measure,params)
         db.commit()
         
-        ser = serial.Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1)
+        ser = Serial(SERIAL_PORT,SERIAL_BOUND_SPEED,timeout=1)
         ser.flush()
         print("[Flask] Start sensor monitoring")
         # sostituire le print con le post al link per le notifiche
