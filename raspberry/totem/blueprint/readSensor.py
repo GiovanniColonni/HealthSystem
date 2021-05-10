@@ -118,9 +118,9 @@ def takeMeasure():
                             if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 tr = 1
                             
-                params = [tr,line] # no json su db            
-                db_cur.execute(query_insert_measure,params)
-                db.commit()
+                    params = [tr,line] # no json su db            
+                    db_cur.execute(query_insert_measure,params)
+                    db.commit()
         
         return 0
         
