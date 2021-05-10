@@ -88,7 +88,7 @@ def takeMeasure():
                 print(line)
                 if(line == "Stop"):
                         print("stop measure")
-			            db_cur.execute(query_end_measure)
+                        db_cur.execute(query_end_measure)
                         db.commit()
                         print(f"[Flask] End sensor monitoring")
                         db_cur.close()
