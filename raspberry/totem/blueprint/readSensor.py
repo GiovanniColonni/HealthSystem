@@ -85,9 +85,10 @@ def takeMeasure():
             if ser.in_waiting > 0:
                 
                 line = ser.readline().decode('utf-8').rstrip()
-                
+                print(line)
                 if(line == "Stop"):
-                        db_cur.execute(query_end_measure)
+                        print("stop measure")
+			db_cur.execute(query_end_measure)
                         db.commit()
                         print(f"[Flask] End sensor monitoring")
                         db_cur.close()
