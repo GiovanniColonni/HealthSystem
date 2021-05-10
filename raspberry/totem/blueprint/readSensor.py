@@ -116,7 +116,7 @@ def takeMeasure():
                                 tr = 1
                                       
                     elif("HRate" in data): 
-                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_HR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 tr = 1
                             
                     params = [tr,line] # no json su db            
