@@ -52,12 +52,10 @@ async function logout(){
 //--------- API del Totem
 const prefix = "/totem"
 
-async function startMeasure(mode){
+async function startMeasure(){
     // mode = single,continue 
 
     const url = prefix + "/measure"
-    let form = new FormData()
-    form.set("mode",mode)
 
     try{
         let resp = await axios.post(url)
@@ -94,7 +92,6 @@ async function getMeasure(){
         let resp = await axios.get(url)
         
         if(resp.status === 200){
-            // prendere payload
             console.log(resp.data)
             return resp.data
         }

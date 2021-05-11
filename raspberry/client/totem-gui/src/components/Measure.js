@@ -17,10 +17,17 @@ function Measure ({setMeasure,measure}) {
     let [period,setPeriod] = useState(5000) // T = 5 secondi intervallo tra due misure
     let [measureError,setMeasureError] = useState(false)
     let [interval,setInt] = useState(0) // intervalId, viene 
-    
+    let [thReached,setThReached] = useState(0)
+
+    let intervalCallback = () => {
+
+
+        Api.onStartMeasure()
+
+    }
     let onStartMeasure = () => {
         
-        Api.startMeasure("c")
+        Api.startMeasure()
             .then((r)=>{
                 if(r){
                     setMProgres(true)
@@ -35,6 +42,7 @@ function Measure ({setMeasure,measure}) {
                                 }else{
                                 m.measureValue = JSON.parse(m.measureValue)
                                 setMeasure(m)
+                                setMeasureError(false)
                                 // se thReached == 1 fare post a link notifiche
                                 }
                             })
@@ -62,9 +70,7 @@ function Measure ({setMeasure,measure}) {
     })
     
     let onStopMeasure = () => {
-        
         clearInterval(interval)
-        
         setMProgres(false)
     }
 

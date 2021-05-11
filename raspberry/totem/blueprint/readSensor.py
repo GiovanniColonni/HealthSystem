@@ -42,8 +42,8 @@ def manageSensor():
         measure["thReached"] = entry[2]
         measure["inProgress"] = entry[3]
         measure["dateMeasure"] = entry[4]
-        measure["name"] = entry[5]
-        measure["measureValue"] = entry[6] 
+        # measure["name"] = entry[5] da togliere
+        measure["measureValue"] = json.loads(entry[6]) 
 
         db_cur.close()
         db.close()
@@ -51,10 +51,19 @@ def manageSensor():
         return jsonify(measure),HTTPStatus.OK
 
     if request.method == "POST":
-        # POST
-        mode = request.form.get("mode") 
-        # controllare che non ci sia già una misura attiva
-
+        
+        query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
+        params = [1]
+        db = connect_db()
+        db_cur = db.cursor()
+        
+        row = db_cur.execute(query_get_measure,params)
+         
+        entry = row.fetchone()
+        
+        if entry != None:
+            return "measure in progress",HTTPStatus.OK
+        
         thread = threading.Thread(target=takeMeasure,daemon=True)
         thread.start()
         measure_in_progress = True
