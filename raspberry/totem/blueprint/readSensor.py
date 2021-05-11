@@ -24,7 +24,7 @@ def manageSensor():
     
     if request.method == "GET":
         # GET
-        measure = {"name":"","measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""}
+        measure = {"measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""}
         query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
         params = [1]
         db = connect_db()
@@ -35,14 +35,13 @@ def manageSensor():
         entry = row.fetchone()
         
         if entry == None:
-            return "no active measure",HTTPStatus.OK
+            return "no active measure",HTTPStatus.NO_CONTENT
         
 
         measure["mtype"] = entry[1]
         measure["thReached"] = entry[2]
         measure["inProgress"] = entry[3]
         measure["dateMeasure"] = entry[4]
-        # measure["name"] = entry[5] da togliere
         measure["measureValue"] = json.loads(entry[6]) 
 
         db_cur.close()
@@ -62,7 +61,7 @@ def manageSensor():
         entry = row.fetchone()
         
         if entry != None:
-            return "measure in progress",HTTPStatus.OK
+            return "measure in progress",HTTPStatus.NO_CONTENT
         
         thread = threading.Thread(target=takeMeasure,daemon=True)
         thread.start()
