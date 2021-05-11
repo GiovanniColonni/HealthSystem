@@ -69,7 +69,7 @@ class Measure(Resource):
 
 def takeMeasure():
         
-        db = sqlite3.connect(DATABASE_PATH)
+        db = sqlite3.connect(LOCAL_DATABASE_PATH)
         db_cur = db.cursor()
         
         query_start_measure = "INSERT INTO Measure(mtype,thReached,inProgress,dateMeasure,measureValue) VALUES (?,?,?,?,?)"
