@@ -24,11 +24,13 @@ if __name__ == "__main__":
     db_conn = sqlite3.connect(LOCAL_DATABASE_PATH)
     db_cursor = db_conn.cursor()
 
-    reset_query = "UPDATE Measure SET inProgress = ?"
-    params = [1]
+    reset_query = "UPDATE Measure SET inProgress = 0 where inProgress = 1"
 
-    db_cursor.execute(reset_query,params)
-    db_cursor.commit()
+    db_cursor.execute(reset_query)
+    
+    c_rows = db_cursor.execute("SELECT * from Measure where inProgress = 1")
+    rows = c_rows.fetchall()
+    print(len(rows))
     db_cursor.close()
     db_conn.close()
     

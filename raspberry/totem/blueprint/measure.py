@@ -24,13 +24,12 @@ class Measure(Resource):
 
     def get(self):
         measure = {"measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""}
-        query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
-        params = [1]
+        query_get_measure = "SELECT * FROM Measure WHERE inProgress = 1"
 
         db = self.getDbConnection()
         
         db_cur = db.cursor()
-        row = db_cur.execute(query_get_measure,params)
+        row = db_cur.execute(query_get_measure)
         entry = row.fetchone()
         
         if entry == None:
@@ -41,7 +40,8 @@ class Measure(Resource):
         measure["thReached"] = entry[2]
         measure["inProgress"] = entry[3]
         measure["dateMeasure"] = entry[4]
-        measure["measureValue"] = json.loads(entry[6]) 
+        print(entry[6])
+        measure["measureValue"] = entry[6] 
 
         db_cur.close()
         db.close()
@@ -57,7 +57,6 @@ class Measure(Resource):
         db_cur = db.cursor()
         row = db_cur.execute(query_get_measure,params)
         entry = row.fetchone()
-        
         if entry != None:
             return "measure in progress",HTTPStatus.NO_CONTENT
         
@@ -75,7 +74,7 @@ def takeMeasure():
         query_start_measure = "INSERT INTO Measure(mtype,thReached,inProgress,dateMeasure,measureValue) VALUES (?,?,?,?,?)"
         # type : c/s thReaced: true=1/false=2 val : measure value inProgress : 1/0
         params = ["type",0,1,datetime.date.today(),""]
-        query_insert_measure = "UPDATE Measure SET thReached = ?, measureVlaue = ? WHERE inProgress = 1"
+        query_insert_measure = "UPDATE Measure SET thReached = ?, measureValue = ? WHERE inProgress = 1"
         query_end_measure = "UPDATE Measure SET inProgress = 0"
 
         db_cur.execute(query_start_measure,params)
@@ -117,7 +116,7 @@ def takeMeasure():
                             if(SENSOR_PRESSURE_THRESHOLD["MinMin"] < data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] > data["Min"] ):
                                 tr = 1                                
                                 
-                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 tr = 1
                                       
                     elif("HRate" in data): 
