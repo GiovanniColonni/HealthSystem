@@ -12,10 +12,10 @@ api = Api(app=app,title="Totem",prefix="/totem")
 
 with app.app_context() :
     from blueprint.readSensor import readSensor
-    from blueprint.measure import Measure
+    from blueprint.measure import measure
 
 app.register_blueprint(readSensor)
-app.register_blueprint(Measure)
+app.register_blueprint(measure)
 
 if __name__ == "__main__":
     #app.run(host=FLASK_HOST,ssl_context='adhoc')

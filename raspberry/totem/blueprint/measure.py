@@ -46,7 +46,7 @@ class Measure(Resource):
         db_cur.close()
         db.close()
 
-        return jsonify(measure),HTTPStatus.OK
+        return measure,HTTPStatus.OK
 
     def post(self):
 
