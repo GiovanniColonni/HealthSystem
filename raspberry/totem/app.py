@@ -12,10 +12,8 @@ app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 api = Api(app=app,title="Totem")
 
 with app.app_context() :
-    from blueprint.readSensor import readSensor
     from blueprint.measure import measure
 
-app.register_blueprint(readSensor)
 app.register_blueprint(measure)
 
 if __name__ == "__main__":
