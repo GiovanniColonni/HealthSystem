@@ -63,26 +63,15 @@ async function startMeasure(){
         if(resp.status === 200){
             return true
         }
-        return false
+        if(resp.status === 204){
+            // misura già attiva
+            return false
+        }
+        
     }catch(e){
         return false
     }
     
-}
-async function stopMeasure(){
-     // DELETE su /totem/measure
-    const url = prefix + "/measure"
-
-    try{
-        let resp = await axios.delete(url)
-        
-        if(resp.status === 200){
-            return true
-        }
-        return false
-    }catch(e){
-        return false
-    }
 }
 
 async function getMeasure(){
@@ -94,6 +83,9 @@ async function getMeasure(){
         if(resp.status === 200){
             console.log(resp.data)
             return resp.data
+        }
+        if(resp.status === 204){
+            return false
         }
         return false
     }catch(e){

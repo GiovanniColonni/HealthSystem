@@ -26,7 +26,7 @@ function Measure ({setMeasure,measure}) {
 
     }
     let onStartMeasure = () => {
-        
+       if(!mProgres){ 
         Api.startMeasure()
             .then((r)=>{
                 if(r){
@@ -38,7 +38,6 @@ function Measure ({setMeasure,measure}) {
                                 if(m === "no active measure"){
                                     setMProgres(false)
                                     setMeasure("no active measure")
-                                    console.log("qui end measure")
                                 }else{
                                 setMeasure(m)
                                 setMeasureError(false)
@@ -57,6 +56,7 @@ function Measure ({setMeasure,measure}) {
                 }
             })
             .catch()
+        }
     }
 
     useEffect(()=>{
@@ -73,15 +73,10 @@ function Measure ({setMeasure,measure}) {
         
     })
     
-    let onStopMeasure = () => {
-        clearInterval(interval)
-        setMProgres(false)
-    }
-
+    
     return(
         <div>
             <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>            
-            <Button onClick={()=>onStopMeasure()} variant="contained"> Stop Measure</Button>
             {mProgres && <h1>Measure in progress : </h1> && <h2>{JSON.stringify(measure.measureValue)}</h2>}
             {measureError && <h1>Problema con misurazione</h1>}
         </div>

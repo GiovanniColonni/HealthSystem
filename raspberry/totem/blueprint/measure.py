@@ -12,26 +12,25 @@ import json
 
 from config import DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
 
-readSensor = Blueprint("readSensor",__name__)
+measure = Blueprint("measure",__name__)
 
+measure_api = Api(measure)
 
+@measure_api.route("/measure_prova",methods=['GET','POST'])
+class Measure(Resource):
 
-def connect_db():
-    return sqlite3.connect(DATABASE_PATH)
+    def getDbConnection(self):
+        return sqlite3.connect(DATABASE_PATH)
 
-@readSensor.route("/totem/measure",methods=['GET','POST'])
-def manageSensor():
-    
-    if request.method == "GET":
-        # GET
+    def get(self):
         measure = {"measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""}
         query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
         params = [1]
-        db = connect_db()
-        db_cur = db.cursor()
+
+        db = self.getDbConnection()
         
+        db_cur = db.cursor()
         row = db_cur.execute(query_get_measure,params)
-         
         entry = row.fetchone()
         
         if entry == None:
@@ -49,15 +48,14 @@ def manageSensor():
 
         return jsonify(measure),HTTPStatus.OK
 
-    if request.method == "POST":
-        
+    def post(self):
+
         query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
         params = [1]
-        db = connect_db()
+
+        db = self.getDbConnection()
         db_cur = db.cursor()
-        
         row = db_cur.execute(query_get_measure,params)
-         
         entry = row.fetchone()
         
         if entry != None:
@@ -68,7 +66,7 @@ def manageSensor():
         measure_in_progress = True
 
         return "starting measurement",HTTPStatus.OK
-        
+
 def takeMeasure():
         
         db = sqlite3.connect(DATABASE_PATH)
@@ -77,7 +75,7 @@ def takeMeasure():
         query_start_measure = "INSERT INTO Measure(mtype,thReached,inProgress,dateMeasure,measureValue) VALUES (?,?,?,?,?)"
         # type : c/s thReaced: true=1/false=2 val : measure value inProgress : 1/0
         params = ["type",0,1,datetime.date.today(),""]
-        query_insert_measure = "UPDATE Measure SET thReached = ?, measureValue = ? WHERE inProgress = 1"
+        query_insert_measure = "UPDATE Measure SET thReached = ?, measureVlaue = ? WHERE inProgress = 1"
         query_end_measure = "UPDATE Measure SET inProgress = 0"
 
         db_cur.execute(query_start_measure,params)
@@ -108,7 +106,7 @@ def takeMeasure():
 
                     if("Operc" in data):
 
-                        if(SENSOR_OPERC_THRESHOLD["MinOperc"] < data["Operc"]):
+                        if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
                             tr= 1
                         
                     elif("Max" in data):
@@ -119,7 +117,7 @@ def takeMeasure():
                             if(SENSOR_PRESSURE_THRESHOLD["MinMin"] < data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] > data["Min"] ):
                                 tr = 1                                
                                 
-                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_PRESSURE_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
                                 tr = 1
                                       
                     elif("HRate" in data): 

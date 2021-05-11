@@ -15,7 +15,7 @@ function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
   const [username,setUserName] = useState("")
-  const [measure,setMeasure] = useState({name:"",state:"",active:false})
+  const [measure,setMeasure] = useState({})
   const [link,setLink] = useState("https://healthsystem.daily.co/0uNtA7BIXvP50NhUNiTo")
 
   let history = useHistory()
