@@ -52,9 +52,18 @@ def manageSensor():
 
     if request.method == "POST":
         # POST
-        mode = request.form.get("mode") 
-        # controllare che non ci sia già una misura attiva
-
+        query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
+        params = [1]
+        db = connect_db()
+        db_cur = db.cursor()
+        
+        row = db_cur.execute(query_get_measure,params)
+         
+        entry = row.fetchone()
+        
+        if entry != None:
+            return "measure in progress",HTTPStatus.OK
+        
         thread = threading.Thread(target=takeMeasure,daemon=True)
         thread.start()
         measure_in_progress = True
