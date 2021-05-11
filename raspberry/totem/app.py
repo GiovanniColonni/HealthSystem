@@ -8,13 +8,14 @@ app.config.from_object(__name__)
 app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
-api = Api(app=app,title="Totem")
+api = Api(app=app,title="Totem",prefix="/totem")
 
 with app.app_context() :
     from blueprint.readSensor import readSensor
+    from blueprint.measure import Measure
 
 app.register_blueprint(readSensor)
-
+app.register_blueprint(Measure)
 
 if __name__ == "__main__":
     #app.run(host=FLASK_HOST,ssl_context='adhoc')
