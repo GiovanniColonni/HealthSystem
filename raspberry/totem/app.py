@@ -28,5 +28,8 @@ if __name__ == "__main__":
     params = [1]
 
     db_cursor.execute(reset_query,params)
-
-    app.run(host=FLASK_HOST,port=5001) # rimettere porta standard, 5001 solo test
+    db_cursor.commit()
+    db_cursor.close()
+    db_conn.close()
+    
+    app.run(host=FLASK_HOST,port=5001) # rimettere porta standard, 5001 solo test, aggioranre proxy http dopo
