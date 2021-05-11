@@ -94,5 +94,5 @@ async function getMeasure(){
 
 }
 
-let Api = {login,logout,isAuthenticated,startMeasure,getMeasure,stopMeasure}
+let Api = {login,logout,isAuthenticated,startMeasure,getMeasure}
 export default Api;

@@ -24,7 +24,7 @@ if __name__ == "__main__":
     db_conn = sqlite3.connect(LOCAL_DATABASE_PATH)
     db_cursor = db_conn.cursor()
 
-    reset_query = "UPDATE Measure SET mProgress = ?"
+    reset_query = "UPDATE Measure SET inProgress = ?"
     params = [1]
 
     db_cursor.execute(reset_query,params)
