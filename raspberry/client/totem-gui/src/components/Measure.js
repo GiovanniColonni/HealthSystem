@@ -35,7 +35,7 @@ function Measure ({setMeasure,measure}) {
                         ()=>{
                             // console.log("log")
                             Api.getMeasure().then((m)=>{
-                                if(m === "no active measure"){
+                                if(m === false){
                                     setMProgres(false)
                                     setMeasure("no active measure")
                                 }else{
