@@ -42,6 +42,7 @@ function Measure ({setMeasure,measure}) {
                                 }else{
                                 m.measureValue = JSON.parse(m.measureValue)
                                 setMeasure(m)
+                                setMeasureError(false)
                                 // se thReached == 1 fare post a link notifiche
                                 }
                             })

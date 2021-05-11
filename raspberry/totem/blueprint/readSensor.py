@@ -42,8 +42,8 @@ def manageSensor():
         measure["thReached"] = entry[2]
         measure["inProgress"] = entry[3]
         measure["dateMeasure"] = entry[4]
-        measure["name"] = entry[5]
-        measure["measureValue"] = entry[6] 
+        # measure["name"] = entry[5] da togliere
+        measure["measureValue"] = json.loads(entry[6]) 
 
         db_cur.close()
         db.close()
@@ -51,7 +51,7 @@ def manageSensor():
         return jsonify(measure),HTTPStatus.OK
 
     if request.method == "POST":
-        # POST
+        
         query_get_measure = "SELECT * FROM Measure WHERE inProgress = ?"
         params = [1]
         db = connect_db()
