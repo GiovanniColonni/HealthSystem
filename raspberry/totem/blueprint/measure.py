@@ -10,7 +10,7 @@ import datetime
 from http import HTTPStatus
 import json
 
-from config import DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
+from config import LOCAL_DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
 
 measure = Blueprint("measure",__name__)
 
@@ -20,7 +20,7 @@ measure_api = Api(measure)
 class Measure(Resource):
 
     def getDbConnection(self):
-        return sqlite3.connect(DATABASE_PATH)
+        return sqlite3.connect(LOCAL_DATABASE_PATH)
 
     def get(self):
         measure = {"measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""}

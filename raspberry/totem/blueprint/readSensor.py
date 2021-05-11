@@ -10,14 +10,14 @@ import datetime
 from http import HTTPStatus
 import json
 
-from config import DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
+from config import LOCAL_DATABASE_PATH,SERIAL_PORT, SERIAL_BOUND_SPEED, SENSOR_HR_THRESHOLD,SENSOR_OPERC_THRESHOLD,SENSOR_PRESSURE_THRESHOLD
 
 readSensor = Blueprint("readSensor",__name__)
 
 
 
 def connect_db():
-    return sqlite3.connect(DATABASE_PATH)
+    return sqlite3.connect(LOCAL_DATABASE_PATH)
 
 @readSensor.route("/totem/measure_dep",methods=['GET','POST'])
 def manageSensor():

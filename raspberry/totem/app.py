@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_restx import Api
 
-from config import SECRET_KEY,FLASK_HOST
+from config import SECRET_KEY,FLASK_HOST,LOCAL_DATABASE_PATH 
+import sqlite3
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -19,4 +20,13 @@ app.register_blueprint(measure)
 
 if __name__ == "__main__":
     #app.run(host=FLASK_HOST,ssl_context='adhoc')
+    #prima di tutto metto tutte le vecchie misure del DB in stato di fine (inProgress = 0)
+    db_conn = sqlite3.connect(LOCAL_DATABASE_PATH)
+    db_cursor = db_conn.cursor()
+
+    reset_query = "UPDATE Measure SET mProgress = ?"
+    params = [1]
+
+    db_cursor.execute(reset_query,params)
+
     app.run(host=FLASK_HOST,port=5001) # rimettere porta standard, 5001 solo test
