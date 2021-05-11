@@ -61,12 +61,13 @@ function App() {
           <div>
             <h1>Home</h1>
             <Link to="/measure">Start a measure</Link>
-          </div>
+            <Link to="/videocall">Start the appointment</Link>
+	  </div>
           </Route>
           <Route exact path="/measure">
             <Measure setMeasure={setMeasure} measure={measure} />
           </Route>
-          <Route exact path="/videoCall">
+          <Route exact path="/videocall">
             <Button onClick={() => {window.location.href = link}}>Start Call</Button>
           </Route>
       </Switch>
