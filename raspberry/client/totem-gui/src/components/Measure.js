@@ -40,7 +40,6 @@ function Measure ({setMeasure,measure}) {
                                     setMeasure("no active measure")
                                     console.log("qui end measure")
                                 }else{
-                                m.measureValue = JSON.parse(m.measureValue)
                                 setMeasure(m)
                                 setMeasureError(false)
                                 // se thReached == 1 fare post a link notifiche
@@ -65,6 +64,11 @@ function Measure ({setMeasure,measure}) {
         if(mProgres === false){
             clearInterval(interval)
             console.log("end measure")
+        }
+        if(mProgres){
+           if(measure.thReached === 1){
+               // inviare notifica
+           } 
         }
         
     })
