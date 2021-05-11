@@ -8,7 +8,7 @@ app.config.from_object(__name__)
 app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
 
-api = Api(app=app,title="Totem",prefix="/totem")
+api = Api(app=app,title="Totem")
 
 with app.app_context() :
     from blueprint.readSensor import readSensor

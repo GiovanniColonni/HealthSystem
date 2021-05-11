@@ -16,7 +16,7 @@ measure = Blueprint("measure",__name__)
 
 measure_api = Api(measure)
 
-@measure_api.route("/measure_prova",methods=['GET','POST'])
+@measure_api.route("/totem/measure",methods=['GET','POST'])
 class Measure(Resource):
 
     def getDbConnection(self):

@@ -19,7 +19,7 @@ readSensor = Blueprint("readSensor",__name__)
 def connect_db():
     return sqlite3.connect(DATABASE_PATH)
 
-@readSensor.route("/totem/measure",methods=['GET','POST'])
+@readSensor.route("/totem/measure_dep",methods=['GET','POST'])
 def manageSensor():
     
     if request.method == "GET":
