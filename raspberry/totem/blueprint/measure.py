@@ -100,7 +100,13 @@ def takeMeasure():
                         break;
 
                 if(line != ""):
-                    data = json.loads(line)
+                    
+                    try:
+                        data = json.loads(line)
+                    
+                    except():
+                        print(line)
+                        
                     tr  = 0
 
                     if("Operc" in data):

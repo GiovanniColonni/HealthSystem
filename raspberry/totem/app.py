@@ -25,6 +25,7 @@ if __name__ == "__main__":
     reset_query = "UPDATE Measure SET inProgress = 0 where inProgress = 1"
 
     db_cursor.execute(reset_query)
+    db_conn.commit()
     
     c_rows = db_cursor.execute("SELECT * from Measure where inProgress = 1")
     rows = c_rows.fetchall()
