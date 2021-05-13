@@ -16,7 +16,7 @@ measure = Blueprint("measure",__name__)
 
 measure_api = Api(measure)
 
-@measure_api.route("/totem/measure",methods=['GET','POST'])
+@measure_api.route("/totem/measure",methods=['GET','POST','DELETE'])
 class Measure(Resource):
 
     def getDbConnection(self):
@@ -66,7 +66,7 @@ class Measure(Resource):
         return "starting measurement",HTTPStatus.OK
 
     def delete(self):
-        
+
         db_conn = self.getDbConnection()
         db_cur = db_conn.cursor()
         reset_query = "UPDATE Measure SET inProgress = 0"
@@ -116,16 +116,16 @@ def takeMeasure():
                 if(line != ""):
                     
                     try:
-                        data = json.loads(line)
-                    
-                    except():
-                        print(line)
+                        data = json.loads(line) 
+                    except:
+                        print("parsing error")
+                        continue
 
                     tr  = 0
 
                     if("Operc" in data):
 
-                        if(SENSOR_OPERC_THRESHOLD["Operc"] < data["Operc"]):
+                        if(SENSOR_OPERC_THRESHOLD["MinOperc"] < data["Operc"]):
                             tr= 1
                         
                     elif("Max" in data):

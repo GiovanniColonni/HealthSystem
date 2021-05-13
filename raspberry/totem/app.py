@@ -27,9 +27,6 @@ if __name__ == "__main__":
     db_cursor.execute(reset_query)
     db_conn.commit()
     
-    c_rows = db_cursor.execute("SELECT * from Measure where inProgress = 1")
-    rows = c_rows.fetchall()
-    print(len(rows))
     db_cursor.close()
     db_conn.close()
     
