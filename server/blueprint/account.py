@@ -27,7 +27,7 @@ class Account(Resource):
             name = request.form.get("name")
             surname = request.form.get("surname")
             date = request.form.get("birthday")
-            
+            print(f"id : {id}")
             if(not u.update_user_type(id,userType)):
                return "Error",HTTPStatus.INTERNAL_SERVER_ERROR
             # aggiungere dati del paziente/infermiere/dottore

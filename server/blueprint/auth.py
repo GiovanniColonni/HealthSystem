@@ -72,6 +72,9 @@ class CurrentUser(Resource):
     
     @csrf_protection
     def post(self):
+        
+        # modificare questo in base al tipo di login
+
         id_token = request.form.get('id_token')
         email = request.form.get('email')
         googleId = request.form.get('googleId')
@@ -99,6 +102,7 @@ class CurrentUser(Resource):
 
         return self.get()
     
+
     @csrf_protection
     @login_required
     def delete(self):
