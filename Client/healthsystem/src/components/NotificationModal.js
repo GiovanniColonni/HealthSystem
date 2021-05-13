@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import NotificationButton from './NotificationButton';
+import NotificationCard from './NotificationCard';
 
 export default function NotificationModal() {
     const [show, setShow] = useState(false);
@@ -17,7 +18,9 @@ export default function NotificationModal() {
             <Modal.Header closeButton>
             <Modal.Title>Notifications</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Body> 
+                <NotificationCard />
+            </Modal.Body>
             <Modal.Footer>
             </Modal.Footer>
         </Modal>
