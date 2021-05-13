@@ -1,16 +1,16 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Notifications from './Notifications';
+import Image from 'react-bootstrap/Image'
+import NotificationModal from './NotificationModal';
+import Logo from './Logo';
 
 var navstyle = {
     nav: {
         bg: "light",
         borderColor: "#e3e3e3",
-        borderBottomStyle: "solid" 
-    },
-    collapse: {
-        color: "#FF9052"
+        borderBottomStyle: "solid",
+        paddingBottom: "-100px"
     }
 }
 
@@ -19,23 +19,16 @@ export default function NavigationBar() {
     return (
         <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
             <Navbar.Brand href="#home">
-            <img
-                alt=""
-                src="/icons/greeCross.png"
-                width="30"
-                height="30"
-                className="d-inline-block align-top"
-            />{' '}
-            My Health Way
+                <Logo />
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" className={navstyle.collapse}/>
+            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
                 <Nav.Link href="#calendar">My Appointements</Nav.Link>
                 <Nav.Link href="#patientlist">My Patient list</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Notifications />
+                    <NotificationModal />
                     <Nav.Link href="#myprofile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
