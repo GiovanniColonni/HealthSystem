@@ -162,6 +162,7 @@ void setup() {
 
 String cmd = "" ;
 String seq = "";
+
 void loop() {
   
   char key = kp.getKey();
@@ -192,9 +193,9 @@ void loop() {
     critic = 1;
     heartRateMeasure();
     
-  }else if(cmd == "F"){
-    Serial.println("stop");
+  }else if(cmd == "F" and kp.getState() == HOLD){
+    Serial.println("Stop");
     cmd = "";
   }
-  //delay(Tmeasurement);
+  delay(Tmeasurement/4);
 }
