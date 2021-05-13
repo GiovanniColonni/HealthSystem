@@ -65,6 +65,21 @@ class Measure(Resource):
 
         return "starting measurement",HTTPStatus.OK
 
+    def delete(self):
+        
+        db_conn = self.getDbConnection()
+        db_cur = db_conn.cursor()
+        reset_query = "UPDATE Measure SET inProgress = 0"
+
+        db_cur.execute(reset_query)
+
+        db_conn.commit()
+
+        db_cur.close()
+        db_conn.close()
+
+        return "OK",HTTPStatus.OK
+
 def takeMeasure():
         
         db = sqlite3.connect(LOCAL_DATABASE_PATH)
