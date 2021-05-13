@@ -62,7 +62,6 @@ class Measure(Resource):
         
         thread = threading.Thread(target=takeMeasure,daemon=True)
         thread.start()
-        measure_in_progress = True
 
         return "starting measurement",HTTPStatus.OK
 
@@ -106,12 +105,12 @@ def takeMeasure():
                     
                     except():
                         print(line)
-                        
+
                     tr  = 0
 
                     if("Operc" in data):
 
-                        if(SENSOR_THRESHOLD["Operc"] < data["Operc"]):
+                        if(SENSOR_OPERC_THRESHOLD["Operc"] < data["Operc"]):
                             tr= 1
                         
                     elif("Max" in data):
