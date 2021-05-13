@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NotificationModal from './NotificationModal';
+import NotificationMenuModal from './NotificationModal';
 import Image from 'react-bootstrap/Image'
 import CrossIcon from '../icons/greenCross.png';
 
@@ -58,7 +58,7 @@ export default function NavigationBar() {
                 <Nav.Link href="#patientlist">My Patient list</Nav.Link>
                 </Nav>
                 <Nav>
-                    <NotificationModal />
+                    <NotificationMenuModal />
                     <Nav.Link href="#myprofile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
