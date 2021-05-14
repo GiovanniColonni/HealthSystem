@@ -49,18 +49,18 @@ export default function NavigationBar() {
     return (
         <>
         <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
-            <Navbar.Brand href="#home">
+            <Navbar.Brand>
                 <Logo />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
-                <Nav.Link href="#calendar">My Appointements</Nav.Link>
-                <Nav.Link href="#patientlist">My Patient list</Nav.Link>
+                <Nav.Link href="/home">My Appointements</Nav.Link>
+                <Nav.Link href="/patientList">My Patient list</Nav.Link>
                 </Nav>
                 <Nav>
                     <NotificationMenuModal />
-                    <Nav.Link href="#myprofile">My Profile</Nav.Link>
+                    <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
