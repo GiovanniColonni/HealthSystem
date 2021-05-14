@@ -18,33 +18,32 @@ var notifcard = {
     }
 }
 
-export default function NotificationCard() {
+export default function NotificationCard(props) {
     return (
         <>
         <Card className="text-center">
         <Card.Body>
-            <Card.Title>03/05/2019, 2pm</Card.Title>
+            <Card.Title>
+                {props.type === 'join' && props.date}
+                {props.type === 'newpatient' && "New Patient!"}
+            </Card.Title>
             <Card.Text>
-                <UserCard   title={"Patient Name"}
-                            firstCaption={"Some info"}/>
+                <UserCard   title={props.patient}
+                            firstCaption={props.info}/>
             </Card.Text>
-            <Button style={notifcard.btnJoin}>Join Appointement</Button>
-        </Card.Body>
-        </Card>
+            {props.type === 'join' &&
+                <Button style={notifcard.btnJoin}>Join Appointement</Button>}
 
-        <Card className="text-center">
-        <Card.Body>
-            <Card.Title>New Patient!</Card.Title>
-            <Card.Text>
-                <UserCard   title={"Patient Name"}
-                            firstCaption={"Some info"}/>
-            </Card.Text>
-            <IconButton style={notifcard.btnYes}>
-                <FaCheck />
-            </IconButton>
-            <IconButton style={notifcard.btnNo}>
-                <FaTimes />
-            </IconButton>
+            {props.type === 'newpatient' && 
+            <>
+                <IconButton style={notifcard.btnYes}>
+                    <FaCheck />
+                </IconButton>
+                <IconButton style={notifcard.btnNo}>
+                    <FaTimes />
+                </IconButton>
+            </>}
+
         </Card.Body>
         </Card>
         </>

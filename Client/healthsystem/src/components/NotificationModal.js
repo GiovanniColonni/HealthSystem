@@ -1,8 +1,22 @@
 import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import NotificationCard from './NotificationCard';
-import { FaBell, FaRegBell } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
+
+const notifList = [
+    {
+      type: 'join',
+      date: '03/05/2019, 2pm',
+      patient: 'Patient Name',
+      info: 'Some info',
+    },
+    {
+      type: 'newpatient',
+      patient: 'Patient Name',
+      info: 'Some info',
+    },
+  ];
 
 var notifstyle = {
     count: {
@@ -49,14 +63,16 @@ export default function NotificationMenuModal() {
     return (
         <>
 
-        <NotificationButton onClick={handleShow} count="2" />
+        <NotificationButton onClick={handleShow} count={notifList.length} />
 
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Notifications</Modal.Title>
             </Modal.Header>
             <Modal.Body> 
-                <NotificationCard />
+                {notifList.map(notif => (
+                    <NotificationCard type={notif.type} patient={notif.patient} date={notif.date} info={notif.info}/>
+                ))}
             </Modal.Body>
             <Modal.Footer>
             </Modal.Footer>
