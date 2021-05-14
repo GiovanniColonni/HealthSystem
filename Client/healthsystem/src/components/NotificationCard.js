@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import UserCard from './UserCard';
+import {UserCard} from './UserCard';
 import {FaCheck, FaTimes} from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
 

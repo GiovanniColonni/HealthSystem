@@ -40,7 +40,7 @@ var navstyle = {
         bg: "light",
         borderColor: "#e3e3e3",
         borderBottomStyle: "solid",
-        paddingBottom: "-100px"
+        marginBottom: "20px"
     }
 }
 
@@ -48,7 +48,7 @@ var navstyle = {
 export default function NavigationBar() {
     return (
         <>
-        <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
+        <Navbar  bg="light" style={navstyle.nav}>
             <Navbar.Brand>
                 <Logo />
             </Navbar.Brand>

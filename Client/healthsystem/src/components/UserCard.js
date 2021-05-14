@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import {FaUserCircle} from 'react-icons/fa';
+import {useHistory} from "react-router";
 
 var cardstyle = { 
     title: {
@@ -34,16 +35,23 @@ var cardstyle = {
         padding: "5px",
         width: "60%",
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        cursor: "pointer"
     }, icon: {
         height: "50px",
         width: "50px"
     }
 }
   
-export default function UserCard(props) {
+export function UserCard(props) {
+  
+  let history = useHistory()
+
+  const gotoDetails = () =>{ 
+    history.push('\patientDetails');
+  }
       return (
-          <>
+        <div onClick={gotoDetails}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
                 <FaUserCircle style={cardstyle.icon}/>
@@ -52,11 +60,21 @@ export default function UserCard(props) {
             <Item grow minWidth={0}>
               <div style={cardstyle.title}>{props.title}</div>
               <div style={cardstyle.caption}>
-                {props.firstCaption}
+                {props.caption}
               </div>
             </Item>
           </Row>
         </Row>
-          </>
+        </div>
       );
     }
+
+export function UserCardList(props) {
+  return (
+    <>
+      {props.userlist.map(user => (
+          <UserCard title={user.name} caption={user.info}/>
+        ))}
+    </>
+  );
+}
