@@ -1,19 +1,52 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import UserCard from './UserCard';
+import {FaCheck, FaTimes} from 'react-icons/fa';
+import IconButton from '@material-ui/core/IconButton';
+
+var notifcard = {
+    btnJoin: {
+        backgroundColor: "#8BC24A",
+        borderColor: "#8BC24A",
+        fontFamily: "Lato",
+        fontWeight: "bold"
+    }, btnYes: {
+        backgroundColor: "#77D353"
+    }, btnNo: {
+        backgroundColor: "#F95F62"
+    }
+}
 
 export default function NotificationCard() {
     return (
+        <>
         <Card className="text-center">
-        <Card.Header>Featured</Card.Header>
         <Card.Body>
-            <Card.Title>Special title treatment</Card.Title>
+            <Card.Title>03/05/2019, 2pm</Card.Title>
             <Card.Text>
-            With supporting text below as a natural lead-in to additional content.
+                <UserCard   title={"Patient Name"}
+                            firstCaption={"Some info"}/>
             </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
+            <Button style={notifcard.btnJoin}>Join Appointement</Button>
         </Card.Body>
-        <Card.Footer className="text-muted">2 days ago</Card.Footer>
         </Card>
+
+        <Card className="text-center">
+        <Card.Body>
+            <Card.Title>New Patient!</Card.Title>
+            <Card.Text>
+                <UserCard   title={"Patient Name"}
+                            firstCaption={"Some info"}/>
+            </Card.Text>
+            <IconButton style={notifcard.btnYes}>
+                <FaCheck />
+            </IconButton>
+            <IconButton style={notifcard.btnNo}>
+                <FaTimes />
+            </IconButton>
+        </Card.Body>
+        </Card>
+        </>
     );
 }

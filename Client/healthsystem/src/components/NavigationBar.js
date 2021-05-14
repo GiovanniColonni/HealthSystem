@@ -47,6 +47,7 @@ var navstyle = {
 
 export default function NavigationBar() {
     return (
+        <>
         <Navbar fixed="top" bg="light" expand="lg" style={navstyle.nav}>
             <Navbar.Brand href="#home">
                 <Logo />
@@ -63,5 +64,6 @@ export default function NavigationBar() {
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
+        </>
     );
 }

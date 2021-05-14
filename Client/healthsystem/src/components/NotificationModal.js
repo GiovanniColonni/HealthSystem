@@ -49,7 +49,7 @@ export default function NotificationMenuModal() {
     return (
         <>
 
-        <NotificationButton onClick={handleShow} count="3" />
+        <NotificationButton onClick={handleShow} count="2" />
 
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
