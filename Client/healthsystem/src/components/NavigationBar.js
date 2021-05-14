@@ -29,7 +29,7 @@ function Logo() {
         <>
             <div style={logostyle.logo}>
                 <Image src={CrossIcon} style={logostyle.image}/>
-                <p style={logostyle.name}>My Health way</p>
+                <p style={logostyle.name}>My Health Way</p>
             </div>
         </>
     );
