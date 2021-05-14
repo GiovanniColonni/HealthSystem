@@ -11,6 +11,8 @@ import BigCalendar from "./components/BigCalendar";
 import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
+import {UserCardList} from "./components/UserCard";
+
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -67,16 +69,14 @@ function App() {
           <div>
             <NavigationBar />
             <h1>Home of {username}</h1>
-            <BigCalendar />
+            <BigCalendar events=""/>
           </div>
         </Route>
 
         {/* Only accessible for doctor users */}
         <Route exact path={"/patientList"}>
-          <div>
             <NavigationBar />
-            <h1>Patient List</h1>
-          </div>
+            <UserCardList userlist={userlist} />
         </Route>
 
         {/* Changes depending on the patient: from patient list of current doctor */}
@@ -118,3 +118,22 @@ function App() {
 }
 
 export default App;
+
+const userlist = [
+  {
+    name: 'Benedetta',
+    info: 'Some info',
+  },
+  {
+    name: 'Chiara',
+    info: 'Some info',
+  },
+  {
+    name: 'Giuseppe',
+    info: 'Some info',
+  },
+  {
+    name: 'Gabriele',
+    info: 'Some info',
+  },
+];
