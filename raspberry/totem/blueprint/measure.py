@@ -119,7 +119,7 @@ def takeMeasure():
                         data = json.loads(line) 
                     except:
                         print("parsing error")
-                        continue
+                        continue # ricomincia ciclo
 
                     tr  = 0
 
