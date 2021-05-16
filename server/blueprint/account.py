@@ -21,7 +21,7 @@ class Account(Resource):
         u = UpdateQuery()
         if(action == "submitFirstAccess"): 
             userType = request.form.get("userType")
-            id = request.form.get("id")
+            id = request.form.get("googleId")
             if(userType == "patient"):
                 cf = request.form.get("cf")
             name = request.form.get("name")
