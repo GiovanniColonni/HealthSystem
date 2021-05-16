@@ -10,6 +10,7 @@ import API from "./api/API"
 import BigCalendar from "./components/BigCalendar"
 import Login from "./components/Login"
 import FirstAccess from "./components/FirstAccess"
+import IframeJitsi from "./components/IframeJitsi"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -65,12 +66,16 @@ function App() {
           </div>
         </Route>
 
-        <Route exact to={"/firstAccess"}>
+        <Route exact path={"/firstAccess"}>
             <FirstAccess user={user}/>            
         </Route>
 
         <Route exact path={"/calendar"}>
           <BigCalendar />
+        </Route>
+
+        <Route exact path={"/iframe"}>
+          <IframeJitsi />
         </Route>
 
       </Switch>

@@ -17,12 +17,14 @@
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
+    "react-iframe": "^1.8.0",
     "react-popper": "^2.2.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "webpack": "^4.44.2"
   },
-  "proxy": "https://0.0.0.0:5000/",
+  "proxy": "http://0.0.0.0:5000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -46,5 +48,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }
