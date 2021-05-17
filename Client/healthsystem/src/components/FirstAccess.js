@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
+import { Row, Item,Column } from '@mui-treasury/components/flex';
 import API from "../api/API"
+import Logo from "./Logo"
 
 function FirstAccess({user}){
 
@@ -45,14 +47,16 @@ function FirstAccess({user}){
           <h1>Fai un accesso da mobile per inizializzare le notifiche</h1>
       </>)
     }
-    return(<form>
-        <h1>This is your first access please choose who you are </h1>
-
-        <Button id={1} onClick={(e) => buttonClick("Doctor")} variant={"contained"} color={"primary"}>Doctor</Button>
-        <Button id={2} onClick={(e) => buttonClick("Nurse")} variant={"contained"} color={"primary"}>Nurse</Button>
-        <Button id={3} onClick={(e) => buttonClick("Patient")} variant={"contained"} color={"primary"}>Patient</Button>
-        {renderByType()}
-        
+    return(
+      <form>
+        <Column >
+            <h1>We don't know you yet</h1>
+            <Logo />
+            <Button id={1} onClick={(e) => buttonClick("Doctor")} variant={"contained"} color={"primary"}>Doctor</Button>
+            <Button id={2} onClick={(e) => buttonClick("Nurse")} variant={"contained"} color={"primary"}>Nurse</Button>
+            <Button id={3} onClick={(e) => buttonClick("Patient")} variant={"contained"} color={"primary"}>Patient</Button>
+            {renderByType()}
+        </Column>
       </form>)
 }
 

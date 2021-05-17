@@ -22,7 +22,7 @@ function App() {
   
   let history = useHistory()
 
-  /*useEffect( () => {
+  useEffect( () => {
       async function checkUser(){
           API.isAuthenticated()
             .then((userJson) =>{ 
@@ -51,19 +51,19 @@ function App() {
         checkUser()
       
     },[loginState,setUser,setUserName] 
-  ) */
+  ) 
 
   return (
     <div className="App">
 
       <Switch>
-        {/*<Route exact path={"/login"}>
+        <Route exact path={"/login"}>
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
 
         <Route exact to={"/firstAccess"}>
             <FirstAccess user={user}/>            
-        </Route>*/}
+        </Route> 
 
         {/* Change depending of the user type */}
         <Route exact path={"/home"}>
