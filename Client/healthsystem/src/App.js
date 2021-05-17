@@ -12,6 +12,7 @@ import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
 import {UserCardList} from "./components/UserCard";
+import PatientDetails from "./components/PatientDetails";
 
 
 function App() {
@@ -69,7 +70,7 @@ function App() {
           <div>
             <NavigationBar />
             <h1>Home of {username}</h1>
-            <BigCalendar events=""/>
+            <BigCalendar />
           </div>
         </Route>
 
@@ -81,10 +82,8 @@ function App() {
 
         {/* Changes depending on the patient: from patient list of current doctor */}
         <Route exact path={"/patientDetails"}>
-          <div>
-            <NavigationBar />
-            <h1>Patient Details of XXX</h1>
-          </div>
+          <NavigationBar />
+          <PatientDetails />
         </Route>
 
         {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
@@ -122,18 +121,18 @@ export default App;
 const userlist = [
   {
     name: 'Benedetta',
-    info: 'Some info',
+    info: 'Some info'
   },
   {
     name: 'Chiara',
-    info: 'Some info',
+    info: 'Some info'
   },
   {
     name: 'Giuseppe',
-    info: 'Some info',
+    info: 'Some info'
   },
   {
     name: 'Gabriele',
-    info: 'Some info',
+    info: 'Some info'
   },
 ];
