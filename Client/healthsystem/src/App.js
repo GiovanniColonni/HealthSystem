@@ -19,7 +19,7 @@ function App() {
   
   let history = useHistory()
 
-  useEffect( () => {
+  /*useEffect( () => {
       async function checkUser(){
           API.isAuthenticated()
             .then((userJson) =>{ 
@@ -47,8 +47,8 @@ function App() {
 
         checkUser()
       
-    },[loginState,setUser,setUserName]
-  ) 
+    },[loginState,setUser,setUserName] 
+  ) */
 
   return (
     <div className="App">
