@@ -10,7 +10,7 @@ async function postLogin(id_token,email,googleId){
         formData.set("id_token",id_token)
         formData.set("email",email)
         formData.set("googleId",googleId)
-        
+        console.log(id_token,googleId)
         try{
             let resp = await axios.post("/login",formData)
             

@@ -13,7 +13,7 @@ import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
 import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
-
+import IframeJitsi from "./components/IframeJitsi"
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -22,7 +22,7 @@ function App() {
   
   let history = useHistory()
 
-  useEffect( () => {
+  /*useEffect( () => {
       async function checkUser(){
           API.isAuthenticated()
             .then((userJson) =>{ 
@@ -50,8 +50,8 @@ function App() {
 
         checkUser()
       
-    },[loginState,setUser,setUserName]
-  )
+    },[loginState,setUser,setUserName] 
+  ) */
 
   return (
     <div className="App">
@@ -108,6 +108,10 @@ function App() {
             <NavigationBar />
             <h1>Profile of {username}</h1>
           </div>
+        </Route>
+
+        <Route exact path={"/iframe"}>
+          <IframeJitsi />
         </Route>
 
       </Switch>

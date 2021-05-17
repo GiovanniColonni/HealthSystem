@@ -21,7 +21,7 @@ class Account(Resource):
         u = UpdateQuery()
         if(action == "submitFirstAccess"): 
             userType = request.form.get("userType")
-            id = request.form.get("id")
+            id = request.form.get("googleId")
             if(userType == "patient"):
                 cf = request.form.get("cf")
             name = request.form.get("name")
@@ -35,7 +35,7 @@ class Account(Resource):
 
         if(action == "insertToken"):
             
-            id = request.form.get("id")
+            id = request.form.get("googleId")
             pushToken = request.form.get("pushToken")
             if(not u.update_push_token(id,pushToken)):
                 return "Error",HTTPStatus.INTERNAL_SERVER_ERROR
