@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Iframe from 'react-iframe'
 
 export default function IframeJitsi() {
   // Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
+  useEffect( () => {
+  })
   return (
     <Iframe url="https://meet.jit.si/lucatest"
         width="100%"
@@ -12,6 +14,6 @@ export default function IframeJitsi() {
         allow="camera; microphone"
         className="myClassname"
         display="initial"
-        position="relative"/>
+        position="relative"/> 
   );
 }
