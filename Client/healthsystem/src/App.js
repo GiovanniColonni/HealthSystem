@@ -3,13 +3,16 @@ import './App.css';
 
 import React,{useState,useEffect, useCallback, useMemo} from "react"
 import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
-import {useHistory} from "react-router"
+import {useHistory} from "react-router";
 
-import API from "./api/API"
+import API from "./api/API";
 
-import BigCalendar from "./components/BigCalendar"
-import Login from "./components/Login"
-import FirstAccess from "./components/FirstAccess"
+import BigCalendar from "./components/BigCalendar";
+import NavigationBar from './components/NavigationBar';
+import Login from "./components/Login";
+import FirstAccess from "./components/FirstAccess";
+import {UserCardList} from "./components/UserCard";
+import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
 
 function App() {
@@ -54,24 +57,57 @@ function App() {
     <div className="App">
 
       <Switch>
-       
-        <Route exact path={"/login"}>
+        {/*<Route exact path={"/login"}>
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
 
+        <Route exact to={"/firstAccess"}>
+            <FirstAccess user={user}/>            
+        </Route>*/}
+
+        {/* Change depending of the user type */}
         <Route exact path={"/home"}>
           <div>
+            <NavigationBar />
             <h1>Home of {username}</h1>
-            {loginState && <h1>Protected</h1>}
+            <BigCalendar />
           </div>
         </Route>
 
-        <Route exact path={"/firstAccess"}>
-            <FirstAccess user={user}/>            
+        {/* Only accessible for doctor users */}
+        <Route exact path={"/patientList"}>
+            <NavigationBar />
+            <UserCardList userlist={userlist} />
         </Route>
 
-        <Route exact path={"/calendar"}>
-          <BigCalendar />
+        {/* Changes depending on the patient: from patient list of current doctor */}
+        <Route exact path={"/patientDetails"}>
+          <NavigationBar />
+          <PatientDetails />
+        </Route>
+
+        {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
+        <Route exact path={"/patient/sensor"}>
+          <div>
+            <NavigationBar />
+            <h1>Sensor Details of Patient XXX</h1>
+          </div>
+        </Route>
+
+        {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
+        <Route exact path={"/patient/appointment"}>
+          <div>
+            <NavigationBar />
+            <h1>Appointement Details of Patient XXX, Date XXX</h1>
+          </div>
+        </Route>
+
+        {/* Changes depending on the user type: patient has his doctor */}
+        <Route exact path={"/personalProfile"} >
+          <div>
+            <NavigationBar />
+            <h1>Profile of {username}</h1>
+          </div>
         </Route>
 
         <Route exact path={"/iframe"}>
@@ -85,3 +121,22 @@ function App() {
 }
 
 export default App;
+
+const userlist = [
+  {
+    name: 'Benedetta',
+    info: 'Some info'
+  },
+  {
+    name: 'Chiara',
+    info: 'Some info'
+  },
+  {
+    name: 'Giuseppe',
+    info: 'Some info'
+  },
+  {
+    name: 'Gabriele',
+    info: 'Some info'
+  },
+];

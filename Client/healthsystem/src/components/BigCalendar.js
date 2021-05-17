@@ -17,13 +17,13 @@ export default function BigCalendar() {
   let ev = []
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
-    API.getEvents(6,'doctor')
+    /*API.getEvents(6,'doctor')
       .then((events) =>{
         setEvents(events)
       })
       .catch((err)=>{
 
-      });
+      });*/
   }, []);
   // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
   const [events, setEvents] = useState([ev])
