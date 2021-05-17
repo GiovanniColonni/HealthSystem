@@ -43,15 +43,20 @@ async function submitFirstAccess(id,name,surname,birthday,cf,userType){
     formData.set("cf",cf)
     formData.set("userType",userType)
 
-    try{
-        let resp = await axios.post("/account/submitFirstAccess")
-        if(resp.status === 200){
-            return true
-        }
+
+    //let resp = await axios.post("/account/submitFirstAccess")
+    axios({
+        method: "post",
+        url: "/account/submitFirstAccess",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response){
+        console.log(response);
+        return true
+    }).catch(function (response){
+        console.log(response);
         return false
-    }catch (e){
-        return false
-    }
+    });
 }
 
 async function changeUserType(id,type){
