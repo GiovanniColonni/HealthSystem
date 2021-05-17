@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import Iframe from 'react-iframe'
+
+
+
+const demos = {
+  jitsi:
+    '<iframe width="100%" height="566" scrolling="yes" frameborder="no" allow="camera;microphone" src="https://meet.jit.si/lucatest"></iframe>'
+};
+
+function Iframe(props) {
+  return (
+    <div
+      dangerouslySetInnerHTML={{ __html: props.iframe ? props.iframe : "" }}
+    />
+  );
+}
 
 export default function IframeJitsi() {
   // Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
   useEffect( () => {
+    
   })
   return (
-    <Iframe url="https://meet.jit.si/lucatest"
-        width="100%"
-        height="500px"
-        id="myId"
-        allowFullScreen="true"
-        allow="camera; microphone"
-        className="myClassname"
-        display="initial"
-        position="relative"/> 
+    <Iframe iframe={demos["jitsi"]} allow="camera;autoplay" />
   );
 }
