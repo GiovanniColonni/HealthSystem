@@ -18,39 +18,35 @@ import IframeJitsi from "./components/IframeJitsi"
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
-  const [username,setUserName] = useState("")
   
   let history = useHistory()
 
-  useEffect( () => {
-      async function checkUser(){
-          API.isAuthenticated()
-            .then((userJson) =>{ 
-                     
-                     if(userJson.id === null){
-                      setLoginState(false)
-                      history.push("/login")
-                    }else{
-                      setLoginState(true)
-                      setUserName(userJson.username)
-                      setUser(userJson)
-                      const t = userJson["userType"]
-                      if(t == "unknow"){
-                          history.push("/firstAccess")
-                      }
-                    }
-                     
-                    })
-            .catch((err)=> {
-            setLoginState(false) 
-            history.push("/login")
-            console.log(err)})
-            
-          }
-
-        checkUser()
+  async function checkUser(){
+    API.isAuthenticated()
+      .then((userJson) =>{ 
+               if(userJson.id === null){
+                setLoginState(false)
+                history.push("/login")
+              }else{
+                setLoginState(true)
+                setUser(userJson)
+                const t = userJson["userType"]
+                if(t == "unknow"){
+                    history.push("/firstAccess")
+                }
+              }
+               
+              })
+      .catch((err)=> {
+      setLoginState(false) 
+      history.push("/login")
+      console.log(err)})
       
-    },[loginState,setUser,setUserName] 
+    }
+
+  useEffect( () => {
+        checkUser()
+    },[loginState,setUser] 
   ) 
 
   return (
@@ -61,15 +57,21 @@ function App() {
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
 
-        <Route exact to={"/firstAccess"}>
+        <Route exact path={"/firstAccess"}>
             <FirstAccess user={user}/>            
         </Route> 
+
+        <Switch>
+          <Route exact path="/patient/dashboard" >
+            
+          </Route>
+        </Switch>
 
         {/* Change depending of the user type */}
         <Route exact path={"/home"}>
           <div>
             <NavigationBar />
-            <h1>Home of {username}</h1>
+            <h1>Home of {user.username}</h1>
             <BigCalendar />
           </div>
         </Route>
@@ -106,7 +108,7 @@ function App() {
         <Route exact path={"/personalProfile"} >
           <div>
             <NavigationBar />
-            <h1>Profile of {username}</h1>
+            <h1>Profile of {user.username}</h1>
           </div>
         </Route>
 
