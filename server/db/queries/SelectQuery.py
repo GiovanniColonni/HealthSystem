@@ -39,3 +39,26 @@ class SelectQuery:
                 .filter(userId == Account.id) \
                 .first()
             return account
+
+    def get_all_doctor(self):
+        """
+        :return: list of all doctor
+        """
+        with DatabaseSession() as session:
+            doctor = session.query(Doctor) \
+                .all()
+            #for d in doctor:
+             #   print(d.name)
+            return doctor
+
+    def get_patient(self,patientId):
+        """
+
+        :param patientId:
+        :return: patient row
+        """
+        with DatabaseSession() as session:
+            patient = session.query(Patient) \
+                .filter(patientId == Patient.googleId) \
+                .first()
+            return patient

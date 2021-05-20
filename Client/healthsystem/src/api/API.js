@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Event from '../classes/Event'
 import moment from 'moment'
+import Doctor from '../classes/Doctor'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -107,6 +108,20 @@ async function getEvents(id,type){
     }
 }
 
+async function getAllDoctors(){
+    const doctors = await axios.get('/patient/doctors',{
+    })
+    .then((response) =>{ 
+        let doctors = []
+        response.data.forEach(element => {
+            doctors.push(new Doctor(element.name,element.surname,element.date,element.googleId))
+        });
+        return doctors
+    })
+    .catch((err) => console.log("error"))
+    return doctors
+}
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess}
+
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors}
 export default API;

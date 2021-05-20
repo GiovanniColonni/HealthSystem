@@ -1,23 +1,28 @@
 from flask import Blueprint, request, jsonify
-from flask_login import login_required
-import jsonpickle
-
 from db.queries.SelectQuery import SelectQuery
+from flask_login import login_required
 
-doctor = Blueprint('doctor', __name__, url_prefix="/doctor")
+patient = Blueprint('patient', __name__, url_prefix="/patient")
 
-
-@doctor.route('/event')
+@patient.route('/doctors')
 @login_required
-def index():
-    doctor_id = request.args.get('doctorId')
+def get_all_doctors():
     s = SelectQuery()
-    events = s.select_event_by_doctor(doctor_id)
+    events = s.get_all_doctor()
     row_list = []
     for row in events:
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@patient.route('/<patientId>')
+@login_required
+def get_patient(patientId):
+    patient_id = patientId
+    print(patient_id)
+    s = SelectQuery()
+    #request.cookies.get('remember_token').split('|')[0])  # instruction to get googleID from request
+    patient = s.get_patient(patient_id)
+    return jsonify(row2dict(patient))
 
 def row2dict(row):
     """
