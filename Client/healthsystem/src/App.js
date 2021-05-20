@@ -16,11 +16,14 @@ import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
 import {UserContext} from "./context/UserContext"
+import HeaderChooseDoctor from './components/HeaderChooseDoctor';
+import SelectDoctor from "./components/SelectDoctor"
 
 export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
+  const [patient,setPatient] = useState({})
   
   let history = useHistory()
 
@@ -57,10 +60,11 @@ function App() {
               console.log(err)
             })
         } */
-    },[loginState,setUser] 
+    },[loginState] 
   ) 
 const value = {
-  user: user
+  user: user,
+  patient: patient
 }
   return (
     <UserContext.Provider value={user}>
@@ -79,11 +83,19 @@ const value = {
               </Route>
             
               <Route exact path={"/home"}>
-                <div>
-                  <NavigationBar />
-                  <h1>Home of {user.username}</h1>
-                  <BigCalendar />
-                </div>
+                {user.userType !== "Patient" && 
+                  <div>
+                    <HeaderChooseDoctor username={user.username}/>
+                    <SelectDoctor />
+                  </div>
+                }
+                {user.userType === undefined &&
+                  <div>
+                    <NavigationBar />
+                    <h1>Home of {value.user.username}</h1>
+                    <BigCalendar />
+                  </div>
+                }
               </Route>
             {/* Only accessible for doctor users */}
             <Route exact path={"/patientList"}>
