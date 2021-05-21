@@ -11,7 +11,6 @@ async function postLogin(id_token,email,googleId){
         formData.set("id_token",id_token)
         formData.set("email",email)
         formData.set("googleId",googleId)
-        console.log(id_token,googleId)
         try{
             let resp = await axios.post("/login",formData)
             
@@ -46,17 +45,17 @@ async function submitFirstAccess(id,name,surname,birthday,cf,userType){
 
 
     //let resp = await axios.post("/account/submitFirstAccess")
-    axios({
+    return await axios({
         method: "post",
         url: "/account/submitFirstAccess",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
     }).then(function (response){
         console.log(response);
-        return true
+        return response
     }).catch(function (response){
         console.log(response);
-        return false
+        return response
     });
 }
 

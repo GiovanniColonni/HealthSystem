@@ -1,9 +1,11 @@
 import { Button, TextField } from '@material-ui/core';
 import {React, useContext, useState, useEffect} from 'react';
 import { UserContext } from '../context/UserContext';
+import {useHistory} from 'react-router-dom'
 import Logo from './Logo';
 import API from '../api/API'
 import Doctor from '../classes/Doctor';
+import API_patient from '../api/API_patient';
 
 
 const SelectDoctor = (props) =>{
@@ -12,6 +14,7 @@ const SelectDoctor = (props) =>{
     useEffect(() => {
       doctorList()
     }, []);
+    const history = useHistory()
 
     const doctorList = () => {
         //const user = useContext(UserContext)
@@ -25,15 +28,32 @@ const SelectDoctor = (props) =>{
         })
     }
 
+    const updateDoctorIdInPatient = (doctorId,patientId) =>{
+        API_patient.putDoctorIdInPatient(doctorId,patientId)
+            .then((resp) =>{
+                if(resp.status == 200){
+                    history.push("/home")
+                }
+                return true
+            }).catch((err) =>{
+                console.log(err);
+                return false;
+            })
+    }
+
     const DoctorListComponent = () =>{
+        const user = useContext(UserContext);
         return (doctors.map(d => 
-            <li>
-                <div>
-                    <img></img>
-                    <h2>{d.name + " " + d.surname}</h2>
-                    <Button variant="contained">Choose</Button>
-                </div>
-            </li>
+            <>
+                <li>
+                    <div>
+                        <img src={"/patient/doctorImage/"+d.googleId}></img>
+                        <h2>{d.name + " " + d.surname}</h2>
+                        <Button onClick={() => updateDoctorIdInPatient(d.googleId,user.googleId)} variant="contained">Choose</Button>
+                    </div>
+                </li>
+                <h2>My Health way, a new way to communicate and to heal</h2>
+            </>
         ))
     }
 

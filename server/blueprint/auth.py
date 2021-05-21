@@ -6,6 +6,7 @@ from flask_restx import Api, Resource, fields
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 import os
+from db.queries.SelectQuery import SelectQuery
 import requests
 from http import HTTPStatus
 
@@ -56,17 +57,19 @@ class CurrentUser(Resource):
     user = apiLogin.model("User", {
         'google_id': fields.Integer(description=""),
         'name': fields.String(description=""),
-        'email': fields.String(description="")
+        'email': fields.String(description=""),
     })
 
     @login_required
     def get(self):
+        s = SelectQuery()
+        account = s.get_user_by_id(current_user.id)
         return jsonify({
-            'googleId': current_user.id,
-            'username': current_user.username,
-            'email': current_user.email,
-            'userType': current_user.userType,
-            'pushToken': current_user.pushToken
+            'googleId': account.id,
+            'username': account.username,
+            'email': account.email,
+            'userType': account.userType,
+            'pushToken': account.pushToken
         })
 
     @csrf_protection
@@ -91,7 +94,7 @@ class CurrentUser(Resource):
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         username = identity["name"]
-        user = user_manager.insertUserOrNothing(googleId, username, email, "unknow", "")
+        user = user_manager.insertUserOrNothing(googleId, username, email, "unknown", "")
 
         if (login_user(user, remember=True) == False):
             print("login error")

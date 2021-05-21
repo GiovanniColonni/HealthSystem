@@ -2,8 +2,7 @@
 import './App.css';
 
 import React,{useState,useEffect, useCallback, useMemo} from "react"
-import { Switch, BrowserRouter as Router, Route,Link,Redirect } from 'react-router-dom';
-import {useHistory} from "react-router";
+import { Switch, BrowserRouter as Router, Route,Link,Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
 import API_patient from "./api/API_patient"
@@ -23,7 +22,7 @@ export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
-  const [patient,setPatient] = useState({})
+  const [patient,setPatient] = useState()
   
   let history = useHistory()
 
@@ -36,9 +35,35 @@ function App() {
               }else{
                 setLoginState(true)
                 setUser(userJson)
-                const t = userJson["userType"]
-                if(t == "unknow"){
-                    history.push("/firstAccess")
+                const userType = userJson["userType"]
+                switch (userType) {
+                  case "unknown":
+                    history.push("/firstAccess")  
+                    break;
+                  case "Patient":
+                    if(patient === undefined){
+                      API_patient.getPatient(userJson["googleId"])
+                        .then((resp) =>{
+                          if(resp.doctorId === ""){
+                            //doctorId undefined, go to selectDoctor
+                            setPatient(resp)
+                            history.push("/patient/selectDoctor")
+                          }else{
+                            history.push("/home")
+                          }
+                          return true
+                        }).catch((err) =>{
+                          console.log(err)
+                          history.push("/firstAccess")
+                          return false
+                        });
+                    }else{
+                      history.push("/home")
+                    }
+                    break;
+                
+                  default:
+                    break;
                 }
               }
               })
@@ -46,20 +71,10 @@ function App() {
       setLoginState(false) 
       history.push("/login")
       console.log(err)})
-      console.log("if" + user.googleId)
     }
 
   useEffect( () => {
         checkUser()
-        /*if(user.googleId !== undefined){
-          console.log("here")
-          API_patient.getPatient(user.googleId)
-            .then((resp) =>{
-              console.log(resp)
-            }).catch((err) =>{
-              console.log(err)
-            })
-        } */
     },[loginState] 
   ) 
 const value = {
@@ -73,9 +88,8 @@ const value = {
           <Route exact path={"/login"}>
             <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
-          {value.user.googleId && <>
             <Route exact path={"/firstAccess"}>
-                <FirstAccess user={user}/>            
+                <FirstAccess user={value.user}/>      
             </Route> 
 
               <Route exact path="/patient/dashboard" >
@@ -83,19 +97,17 @@ const value = {
               </Route>
             
               <Route exact path={"/home"}>
-                {user.userType !== "Patient" && 
-                  <div>
-                    <HeaderChooseDoctor username={user.username}/>
-                    <SelectDoctor />
-                  </div>
-                }
-                {user.userType === undefined &&
                   <div>
                     <NavigationBar />
                     <h1>Home of {value.user.username}</h1>
                     <BigCalendar />
                   </div>
-                }
+              </Route>
+              <Route exact path={"/patient/selectDoctor"}>
+                  <div>
+                    <HeaderChooseDoctor username={user.username}/>
+                    <SelectDoctor />
+                  </div>
               </Route>
             {/* Only accessible for doctor users */}
             <Route exact path={"/patientList"}>
@@ -136,8 +148,6 @@ const value = {
             <Route exact path={"/iframe"}>
               <IframeJitsi />
             </Route>
-            </>
-          }
         </Switch>
         
       </div>

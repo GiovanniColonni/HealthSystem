@@ -9,6 +9,7 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import API from "../api/API"
+import {useHistory} from "react-router-dom"
 import Logo from "./Logo"
 import doctor from '../icons/doctor.png'
 import nurse from '../icons/nurse.png'
@@ -121,10 +122,15 @@ function FirstAccess({user}){
     let buttonClick = (e) => {
       setUserType(e)
     }
+    const history = useHistory()
     
-    let submit = () =>{
-      API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
-        .then()
+    function submit() {
+      const resp = API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
+        .then((resp) =>{
+          if(resp.status == 200){
+            history.push("/patient/selectDoctor")
+          }
+        })
         .catch()
     }
     let onChangeName = (e) => {

@@ -32,7 +32,7 @@ function Login({setLoginState,setUser,loginState}){
               if(logState === false){
                 history.push("/login")
               }else{
-              history.push('/home')
+              //history.push('/home')
               setLoginState(logState)
               }
             })
@@ -51,10 +51,6 @@ function Login({setLoginState,setUser,loginState}){
 
     let loginFailure = function(resp){
         console.log(resp)
-    }
-
-    if(loginState === true){
-        return <Redirect to={"/home"} />
     }
     return(
        <div> 
