@@ -17,6 +17,7 @@ import IframeJitsi from "./components/IframeJitsi"
 import {UserContext} from "./context/UserContext"
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor"
+import PatientRoute from './components/routes/PatientRoute';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -44,9 +45,10 @@ function App() {
                     if(patient === undefined){
                       API_patient.getPatient(userJson["googleId"])
                         .then((resp) =>{
+                          setPatient(resp)
                           if(resp.doctorId === ""){
                             //doctorId undefined, go to selectDoctor
-                            setPatient(resp)
+                            
                             history.push("/patient/selectDoctor")
                           }else{
                             history.push("/home")
@@ -89,13 +91,10 @@ const value = {
             <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
             <Route exact path={"/firstAccess"}>
-                <FirstAccess user={value.user}/>      
-            </Route> 
-
-              <Route exact path="/patient/dashboard" >
-                
-              </Route>
-            
+                {value.user && value.user.userType !== "unknown" &&
+                <FirstAccess user={value.user}/>  
+                }    
+            </Route>
               <Route exact path={"/home"}>
                   <div>
                     <NavigationBar />
@@ -103,12 +102,7 @@ const value = {
                     <BigCalendar />
                   </div>
               </Route>
-              <Route exact path={"/patient/selectDoctor"}>
-                  <div>
-                    <HeaderChooseDoctor username={user.username}/>
-                    <SelectDoctor />
-                  </div>
-              </Route>
+              <PatientRoute />
             {/* Only accessible for doctor users */}
             <Route exact path={"/patientList"}>
                 <NavigationBar />
