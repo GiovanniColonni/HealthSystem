@@ -14,6 +14,7 @@ import FirstAccess from "./components/FirstAccess";
 import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
+import PersonalProfile from './components/PersonalProfile';
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -106,7 +107,7 @@ function App() {
         <Route exact path={"/personalProfile"} >
           <div>
             <NavigationBar />
-            <h1>Profile of {username}</h1>
+            <PersonalProfile />
           </div>
         </Route>
 
