@@ -37,10 +37,11 @@ function Logo() {
 
 var navstyle = {
     nav: {
+        position: "sticky",
         bg: "light",
         borderColor: "#e3e3e3",
         borderBottomStyle: "solid",
-        marginBottom: "20px"
+        marginBottom: "20px",
     }
 }
 
@@ -55,7 +56,7 @@ export default function NavigationBar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
-                <Nav.Link href="/home">My Appointements</Nav.Link>
+                <Nav.Link href="/home">My Appointments</Nav.Link>
                 <Nav.Link href="/patientList">My Patient list</Nav.Link>
                 </Nav>
                 <Nav>

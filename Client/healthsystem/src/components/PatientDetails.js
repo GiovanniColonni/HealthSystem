@@ -3,15 +3,16 @@ import Image from 'react-bootstrap/Image';
 import PatientAvatar from '../icons/Woman_01.png';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
+import SensorSelector from './SensorSelector';
 
 var detailsstyle = {
     container: {
         width: '80%',
         marginLeft: 'auto',
         marginRight: 'auto'
-    }, title: {
+    }, center: {
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
     }, avatar: {
         maxHeight: "150px",
         maxWidth: "150px"
@@ -56,7 +57,7 @@ export default function PatientDetails(props) {
     return (
         <div style={detailsstyle.container}>
             <Row >
-                <h1 style={detailsstyle.title}>Patient Details</h1>
+                <h1 style={detailsstyle.center}>Patient Details</h1>
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
@@ -86,11 +87,14 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row >
-                <h1 style={detailsstyle.title}>Sensor Details</h1>
+                <h1 style={detailsstyle.center}>Sensor Details</h1>
+            </Row>
+            <Row>
+                <SensorSelector />
             </Row>
             <Divider variant="middle"/>
             <Row>
-                <h1 style={detailsstyle.title}>Appointment List</h1>
+                <h1 style={detailsstyle.center}>Appointment List</h1>
             </Row>
         </div>
     );
