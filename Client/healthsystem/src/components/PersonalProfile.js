@@ -1,9 +1,11 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
 import DoctorAvatar from '../icons/Doctor_01.png';
+import PatientAvatar from '../icons/Woman_01.png';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Button from '@material-ui/core/Button';
 import { FaPen } from 'react-icons/fa';
+import Divider from '@material-ui/core/Divider';
 
 var profilestyle = {
     container: {
@@ -34,6 +36,8 @@ var profilestyle = {
         textAlign: 'left',
     }, editbutton: {
         backgroundColor: "#8BC24A"
+    }, changebutton: {
+        backgroundColor: "#FF9052"
     }, commentblock: {
         marginLeft: "auto"
     }
@@ -44,16 +48,20 @@ export default function PersonalProfile(props) {
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
                 <Column>
-                    <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
+                    {props.user.type === 'doc' && 
+                        <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
+                    }
+                    {props.user.type === 'pat' &&
+                        <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
+                    }
                 </Column>
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            Name Surname
+                            {props.user.name}
                         </div>
                         <div style={profilestyle.caption}>
-                            Some info
-                            Some other info...
+                            Some info...
                         </div>
                     </Item>
                 </Column>
@@ -70,6 +78,36 @@ export default function PersonalProfile(props) {
                     </Item>
                 </Column>
             </Row>
+            {props.user.type === 'pat' 
+                && <>
+                <Divider variant="middle"/>
+                <Row gap={5} p={2.5}>
+                    <Column>
+                        <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
+                    </Column>
+                    <Column>
+                        <Item>
+                            <div style={profilestyle.name}>
+                                {props.doc.name}
+                            </div>
+                            <div style={profilestyle.caption}>
+                                Some info...
+                            </div>
+                        </Item>
+                    </Column>
+                    <Column style={profilestyle.commentblock}>
+                        <Item>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                style={profilestyle.changebutton}
+                            >
+                                Change Doctor
+                            </Button>
+                        </Item>
+                    </Column>
+                </Row></>
+            }
         </div>
     )
 }

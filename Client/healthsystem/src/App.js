@@ -115,7 +115,7 @@ function App() {
         <Route exact path={"/personalProfile"} >
           <div>
             <NavigationBar user={currentUser} />
-            <PersonalProfile user={currentUser}/>
+            <PersonalProfile user={currentUser} doc={doc}/>
           </div>
         </Route>
 
@@ -138,6 +138,11 @@ const currentUser =
     //type: 'doc',
     //name: 'Carlo Cassella',
   };
+
+const doc = 
+{
+  name: 'Carlo Cassela',
+};
 
 const userlist = [
   {
