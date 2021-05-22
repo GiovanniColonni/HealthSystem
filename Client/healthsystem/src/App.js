@@ -15,6 +15,7 @@ import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
 import PersonalProfile from './components/PersonalProfile';
+import { PrescriptionCardList } from './components/PrescriptionCard';
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -108,6 +109,7 @@ function App() {
           <div>
             <NavigationBar user={currentUser} />
             <h1>My Prescriptions</h1>
+            <PrescriptionCardList prescriptionlist={prescList}/>
           </div>
         </Route>
 
@@ -143,6 +145,19 @@ const doc =
 {
   name: 'Carlo Cassela',
 };
+
+const prescList = [
+  {
+    date: "13/02/2021",
+    doctor: "Doctor Strange"
+  },{
+    date: "21/11/2020",
+    doctor: "Doctor Strange"
+  },{
+    date: "13/09/2020",
+    doctor: "Doctor Strange"
+  },
+]
 
 const userlist = [
   {
