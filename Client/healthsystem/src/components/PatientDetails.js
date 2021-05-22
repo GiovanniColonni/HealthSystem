@@ -56,7 +56,7 @@ var detailsstyle = {
 export default function PatientDetails(props) {
     return (
         <div style={detailsstyle.container}>
-            <Row >
+            <Row gap={5} p={2.5}>
                 <h1 style={detailsstyle.center}>Patient Details</h1>
             </Row>
             <Row gap={5} p={2.5}>
@@ -86,14 +86,14 @@ export default function PatientDetails(props) {
                 </Column>
             </Row>
             <Divider variant="middle"/>
-            <Row >
+            <Row gap={5} p={2.5}>
                 <h1 style={detailsstyle.center}>Sensor Details</h1>
             </Row>
-            <Row>
+            <Row gap={5} p={2.5}>
                 <SensorSelector />
             </Row>
             <Divider variant="middle"/>
-            <Row>
+            <Row gap={5} p={2.5}>
                 <h1 style={detailsstyle.center}>Appointment List</h1>
             </Row>
         </div>
