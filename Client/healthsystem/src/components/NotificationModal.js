@@ -11,11 +11,11 @@ const notifList = [
       patient: 'Patient Name',
       info: 'Some info',
     },
-    {
+    /*{
       type: 'newpatient',
       patient: 'Patient Name',
       info: 'Some info',
-    },
+    },*/
   ];
 
 var notifstyle = {
@@ -54,7 +54,7 @@ function NotificationButton(props) {
     );
 }
 
-export default function NotificationMenuModal() {
+export default function NotificationMenuModal({user}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -70,8 +70,9 @@ export default function NotificationMenuModal() {
             <Modal.Title>Notifications</Modal.Title>
             </Modal.Header>
             <Modal.Body> 
+                
                 {notifList.map(notif => (
-                    <NotificationCard type={notif.type} patient={notif.patient} date={notif.date} info={notif.info}/>
+                    <NotificationCard type={notif.type} userType={user.type} patient={notif.patient} date={notif.date} info={notif.info}/>
                 ))}
             </Modal.Body>
             <Modal.Footer>

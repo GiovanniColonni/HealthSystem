@@ -69,7 +69,7 @@ function App() {
         {/* Change depending of the user type */}
         <Route exact path={"/home"}>
           <div>
-            <NavigationBar />
+            <NavigationBar user={currentUser} />
             <h1>Home of {username}</h1>
             <BigCalendar />
           </div>
@@ -77,20 +77,20 @@ function App() {
 
         {/* Only accessible for doctor users */}
         <Route exact path={"/patientList"}>
-            <NavigationBar />
+            <NavigationBar user={currentUser} />
             <UserCardList userlist={userlist} />
         </Route>
 
         {/* Changes depending on the patient: from patient list of current doctor */}
         <Route exact path={"/patientDetails"}>
-          <NavigationBar />
+          <NavigationBar user={currentUser} />
           <PatientDetails />
         </Route>
 
         {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
         <Route exact path={"/patient/sensor"}>
           <div>
-            <NavigationBar />
+            <NavigationBar user={currentUser} />
             <h1>Sensor Details of Patient XXX</h1>
           </div>
         </Route>
@@ -98,16 +98,24 @@ function App() {
         {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
         <Route exact path={"/patient/appointment"}>
           <div>
-            <NavigationBar />
+            <NavigationBar user={currentUser} />
             <h1>Appointement Details of Patient XXX, Date XXX</h1>
+          </div>
+        </Route>
+
+        {/* Only accessible for patient users */}
+        <Route exact path={"/prescriptionList"}>
+          <div>
+            <NavigationBar user={currentUser} />
+            <h1>My Prescriptions</h1>
           </div>
         </Route>
 
         {/* Changes depending on the user type: patient has his doctor */}
         <Route exact path={"/personalProfile"} >
           <div>
-            <NavigationBar />
-            <PersonalProfile />
+            <NavigationBar user={currentUser} />
+            <PersonalProfile user={currentUser}/>
           </div>
         </Route>
 
@@ -122,6 +130,14 @@ function App() {
 }
 
 export default App;
+
+const currentUser = 
+  {
+    type: 'pat',
+    name: 'Carla Reorda',
+    //type: 'doc',
+    //name: 'Carlo Cassella',
+  };
 
 const userlist = [
   {

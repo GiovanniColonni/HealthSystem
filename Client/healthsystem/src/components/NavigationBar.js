@@ -46,7 +46,7 @@ var navstyle = {
 }
 
 
-export default function NavigationBar() {
+export default function NavigationBar({user}) {
     return (
         <>
         <Navbar  bg="light" style={navstyle.nav}>
@@ -57,10 +57,13 @@ export default function NavigationBar() {
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
                 <Nav.Link href="/home">My Appointments</Nav.Link>
-                <Nav.Link href="/patientList">My Patient list</Nav.Link>
+                {user.type === 'doc' && 
+                    <Nav.Link href="/patientList">My Patient list</Nav.Link>}
+                {user.type === 'pat' && 
+                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
                 </Nav>
                 <Nav>
-                    <NotificationMenuModal />
+                    <NotificationMenuModal user={user}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
