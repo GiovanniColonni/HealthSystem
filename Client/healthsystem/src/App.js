@@ -108,7 +108,6 @@ const value = {
               <Home user={currentUser}/>
             </div>
           </Route>
-          <PatientRoute />
 
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
@@ -163,6 +162,7 @@ const value = {
           <Route exact path={"/iframe"}>
             <IframeJitsi />
           </Route>
+          <PatientRoute />
 
         </Switch>
         
