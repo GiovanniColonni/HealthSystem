@@ -78,7 +78,7 @@ export default function PersonalProfile(props) {
                     </Item>
                 </Column>
             </Row>
-            {props.user.type === 'Patient' 
+            {props.user.userType === 'Patient' 
                 && <>
                 <Divider variant="middle"/>
                 <Row gap={5} p={2.5}>
