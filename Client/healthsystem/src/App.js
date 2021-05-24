@@ -54,7 +54,7 @@ function App() {
                             
                             history.push("/patient/selectDoctor")
                           }else{
-                            history.push("/home")
+                            //history.push("/home")
                           }
                           return true
                         }).catch((err) =>{
@@ -96,7 +96,7 @@ const value = {
           </Route>
           
           <Route exact path={"/firstAccess"}>
-            {value.user && value.user.userType !== "unknown" &&
+            {value.user && value.user.userType === "unknown" &&
             <FirstAccess user={value.user}/>  
             }    
           </Route>
@@ -104,7 +104,7 @@ const value = {
           {/* Change depending of the user type */}
           <Route exact path={"/home"}>
             <div>
-              <NavigationBar user={currentUser} />
+              <NavigationBar user={value.user} />
               <Home user={currentUser}/>
             </div>
           </Route>
@@ -112,20 +112,20 @@ const value = {
 
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
-              <NavigationBar user={currentUser} />
+              <NavigationBar user={value.user} />
               <UserCardList userlist={userlist} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
           <Route exact path={"/patientDetails"}>
-            <NavigationBar user={currentUser} />
+            <NavigationBar user={value.user} />
             <PatientDetails />
           </Route>
 
           {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
           <Route exact path={"/patient/sensor"}>
             <div>
-              <NavigationBar user={currentUser} />
+              <NavigationBar user={value.user}/>
               <h1>Sensor Details of Patient XXX</h1>
             </div>
           </Route>
@@ -133,7 +133,7 @@ const value = {
           {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
           <Route exact path={"/patient/appointment"}>
             <div>
-              <NavigationBar user={currentUser} />
+              <NavigationBar user={value.user} />
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
             </div>
           </Route>
@@ -141,7 +141,7 @@ const value = {
           {/* Only accessible for patient users */}
           <Route exact path={"/prescriptionList"}>
             <div>
-              <NavigationBar user={currentUser} />
+              <NavigationBar user={value.user} />
               <h1>My Prescriptions</h1>
               <PrescriptionCardList prescriptionlist={prescList}/>
             </div>
@@ -150,8 +150,13 @@ const value = {
           {/* Changes depending on the user type: patient has his doctor */}
           <Route exact path={"/personalProfile"} >
             <div>
-              <NavigationBar user={currentUser} />
-              <PersonalProfile user={currentUser} doc={doc}/>
+              <NavigationBar user={value.user} />
+              {value.user.userType === "Patient" &&
+                <PersonalProfile user={value.user} doc={doc}/>
+              }
+              {value.user.userType === "Doctor" &&
+                <PersonalProfile user={value.user}/>
+              }
             </div>
           </Route>
 

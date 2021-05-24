@@ -57,9 +57,9 @@ export default function NavigationBar({user}) {
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
                 <Nav.Link href="/home">My Appointments</Nav.Link>
-                {user.type === 'doc' && 
+                {user.userType === 'Doctor' && 
                     <Nav.Link href="/patientList">My Patient list</Nav.Link>}
-                {user.type === 'pat' && 
+                {user.userType === 'Patient' && 
                     <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
                 </Nav>
                 <Nav>

@@ -48,17 +48,17 @@ export default function PersonalProfile(props) {
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
                 <Column>
-                    {props.user.type === 'doc' && 
+                    {props.user.userType === 'doc' && 
                         <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
                     }
-                    {props.user.type === 'pat' &&
+                    {props.user.userType === 'pat' &&
                         <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
                     }
                 </Column>
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            {props.user.name}
+                            {props.user.name} {props.user.surname}
                         </div>
                         <div style={profilestyle.caption}>
                             Some info...
