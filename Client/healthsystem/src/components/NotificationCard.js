@@ -37,7 +37,7 @@ export default function NotificationCard(props) {
                 }
             </Card.Text>
             {props.type === 'join' &&
-                <Button style={notifcard.btnJoin}>Join Appointement</Button>}
+                <Button style={notifcard.btnJoin}>Join Appointment</Button>}
 
             {props.type === 'newpatient' && 
             <>

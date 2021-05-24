@@ -16,6 +16,7 @@ import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
 import PersonalProfile from './components/PersonalProfile';
 import { PrescriptionCardList } from './components/PrescriptionCard';
+import Home from './components/Home';
 
 function App() {
   const [loginState,setLoginState] = useState(false)
@@ -71,8 +72,7 @@ function App() {
         <Route exact path={"/home"}>
           <div>
             <NavigationBar user={currentUser} />
-            <h1>Home of {username}</h1>
-            <BigCalendar />
+            <Home user={currentUser}/>
           </div>
         </Route>
 
