@@ -48,10 +48,10 @@ export default function PersonalProfile(props) {
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
                 <Column>
-                    {props.user.userType === 'doc' && 
+                    {props.user.userType === 'Doctor' && 
                         <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
                     }
-                    {props.user.userType === 'pat' &&
+                    {props.user.userType === 'Patient' &&
                         <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
                     }
                 </Column>
@@ -78,7 +78,7 @@ export default function PersonalProfile(props) {
                     </Item>
                 </Column>
             </Row>
-            {props.user.type === 'pat' 
+            {props.user.type === 'Patient' 
                 && <>
                 <Divider variant="middle"/>
                 <Row gap={5} p={2.5}>
