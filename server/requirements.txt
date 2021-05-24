@@ -1,18 +1,1 @@
-flask~=1.1.2
-flask-Login
-pyOpenSSL
-google~=3.0.0
-cachecontrol~=0.12.6
-google.auth
-flask-restx
-mysql~=0.0.2
-flask-mqtt
-paho-mqtt
-
-SQLAlchemy~=1.4.7
-auth~=0.5.3
-requests~=2.25.1
-oauthlib~=3.1.0
-mysql-connector-python~=8.0.23
-pyopenssl
-uwsgi
+pip freeze > requirements.txt
