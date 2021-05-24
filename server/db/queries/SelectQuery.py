@@ -79,3 +79,13 @@ class SelectQuery:
             if patient is None:
                 return False
             return patient
+
+    def get_patient_list_from_doctor(self, doctorId):
+        """
+        :param doctorId:
+        :return: patient list
+        """
+        with DatabaseSession() as session:
+            patients = session.query(Patient) \
+                .filter(doctorId == Patient.doctorId)
+            return patients

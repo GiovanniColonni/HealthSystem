@@ -18,6 +18,16 @@ def index():
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@doctor.route('/patients')
+@login_required
+def get_patient_list_from_doctor(doctorId):
+    s = SelectQuery()
+    events = s.get_patient_list_from_doctor(doctorId)
+    row_list = []
+    for row in events:
+        row_list.append(row2dict(row))
+    return jsonify(row_list)
+
 
 def row2dict(row):
     """
