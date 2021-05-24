@@ -168,6 +168,14 @@ const value = {
 
 export default App;
 
+const currentUser = 
+  {
+    type: 'pat',
+    name: 'Carla Reorda',
+    //type: 'doc',
+    //name: 'Carlo Cassella',
+  };
+
 const prescList = [
   {
     date: "13/02/2021",

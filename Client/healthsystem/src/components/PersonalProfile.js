@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'react-bootstrap/Image';
 import DoctorAvatar from '../icons/Doctor_01.png';
 import PatientAvatar from '../icons/Woman_01.png';
