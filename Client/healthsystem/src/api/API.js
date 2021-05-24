@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Event from '../classes/Event'
 import moment from 'moment'
+import Doctor from '../classes/Doctor'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -10,7 +11,6 @@ async function postLogin(id_token,email,googleId){
         formData.set("id_token",id_token)
         formData.set("email",email)
         formData.set("googleId",googleId)
-        console.log(id_token,googleId)
         try{
             let resp = await axios.post("/login",formData)
             
@@ -45,17 +45,17 @@ async function submitFirstAccess(id,name,surname,birthday,cf,userType){
 
 
     //let resp = await axios.post("/account/submitFirstAccess")
-    axios({
+    return await axios({
         method: "post",
         url: "/account/submitFirstAccess",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
     }).then(function (response){
         console.log(response);
-        return true
+        return response
     }).catch(function (response){
         console.log(response);
-        return false
+        return response
     });
 }
 
@@ -107,6 +107,20 @@ async function getEvents(id,type){
     }
 }
 
+async function getAllDoctors(){
+    const doctors = await axios.get('/patient/doctors',{
+    })
+    .then((response) =>{ 
+        let doctors = []
+        response.data.forEach(element => {
+            doctors.push(new Doctor(element.name,element.surname,element.date,element.googleId))
+        });
+        return doctors
+    })
+    .catch((err) => console.log("error"))
+    return doctors
+}
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess}
+
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors}
 export default API;

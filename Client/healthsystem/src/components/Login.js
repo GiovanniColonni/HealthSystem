@@ -5,6 +5,7 @@ import {Redirect, useHistory} from "react-router"
 import axios from 'axios'
 
 import API from "../api/API"
+import API_patient from "../api/API_patient"
 
 // per csfr protection
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
@@ -31,7 +32,7 @@ function Login({setLoginState,setUser,loginState}){
               if(logState === false){
                 history.push("/login")
               }else{
-              history.push('/home')
+              //history.push('/home')
               setLoginState(logState)
               }
             })
@@ -50,11 +51,6 @@ function Login({setLoginState,setUser,loginState}){
 
     let loginFailure = function(resp){
         console.log(resp)
-    }
-
-    if(loginState === true){
-        console.log("qui 2")
-        return <Redirect to={"/home"} />
     }
     return(
        <div> 

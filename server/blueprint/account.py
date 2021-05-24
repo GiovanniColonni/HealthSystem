@@ -36,7 +36,7 @@ class Account(Resource):
             print(f"id : {id}")
             if not u.update_user_type(id, userType):
                 return "Error", HTTPStatus.INTERNAL_SERVER_ERROR
-            i.insert_patient(name, surname, None, date, cf, googleId)
+            i.insert_patient(name, surname, "", date, cf, googleId)
             return "OK", HTTPStatus.OK
 
         if action == "insertToken":

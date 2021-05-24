@@ -16,6 +16,7 @@ class Account(Base):
     id = Column(String(50), primary_key=True)
     username = Column(String(50))
     pushToken = Column(String(45))
+    image = Column(String(45))
 
 
 class Doctor(Account):
@@ -32,11 +33,10 @@ class Patient(Account):
 
     name = Column(String(45), nullable=False)
     surname = Column(String(45), nullable=False)
-    doctorId = Column(INTEGER(11))
+    doctorId = Column(String(45))
     date = Column(String(45))
     fiscalCode = Column(String(45))
     googleId = Column(ForeignKey('account.id'), primary_key=True, index=True)
-
 
 class Measure(Base):
     __tablename__ = 'measure'

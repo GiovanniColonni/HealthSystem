@@ -1,5 +1,6 @@
 from db import DatabaseSession
 from db.entities import Account, Doctor, Patient, Schedule
+from flask import Flask, send_file
 from sqlalchemy.orm import defer
 
 
@@ -28,7 +29,7 @@ class SelectQuery:
                 .filter(doctorId == Schedule.doctorId) \
                 .all()
             return events
-        
+
     def get_user_by_id(self,userId):
         """
         :param userId:
@@ -39,3 +40,52 @@ class SelectQuery:
                 .filter(userId == Account.id) \
                 .first()
             return account
+
+    def get_all_doctor(self):
+        """
+        :return: list of all doctor
+        """
+        with DatabaseSession() as session:
+            doctor = session.query(Doctor) \
+                .all()
+            #for d in doctor:
+             #   print(d.name)
+            return doctor
+
+    def get_doctor_image(self,doctorId):
+        """
+        :param doctorId:
+        :return: return the doctor image
+        """
+        with DatabaseSession() as session:
+            image = session.query(Account) \
+                .with_entities(Account.image) \
+                .filter(doctorId == Account.id) \
+                .first()
+            if image is not None:
+                image = image.image
+            return image
+
+    def get_patient(self, patientId):
+        """
+
+        :param patientId:
+        :return: patient row
+        """
+        with DatabaseSession() as session:
+            patient = session.query(Patient) \
+                .filter(patientId == Patient.googleId) \
+                .first()
+            if patient is None:
+                return False
+            return patient
+
+    def get_patient_list_from_doctor(self, doctorId):
+        """
+        :param doctorId:
+        :return: patient list
+        """
+        with DatabaseSession() as session:
+            patients = session.query(Patient) \
+                .filter(doctorId == Patient.doctorId)
+            return patients
