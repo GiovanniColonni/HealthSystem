@@ -6,7 +6,7 @@ async function getPatient(patientId){
     .then((element) =>{
         if(!element.data){
             // Patient not found, insert it
-            return undefined
+            return new Patient()
         }
         const patient = new Patient(element.data.name, element.data.surname, element.data.doctorId, element.data.date, element.data.fiscalCode, element.data.googleId)        
         return patient

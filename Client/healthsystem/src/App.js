@@ -32,6 +32,7 @@ function App() {
       .then((userJson) =>{ 
                if(userJson.id === null){
                 setLoginState(false)
+                console.log("here")
                 history.push("/login")
               }else{
                 setLoginState(true)
@@ -42,7 +43,7 @@ function App() {
                     history.push("/firstAccess")  
                     break;
                   case "Patient":
-                    if(patient === undefined){
+                    if(patient === undefined || patient.doctorId){
                       API_patient.getPatient(userJson["googleId"])
                         .then((resp) =>{
                           setPatient(resp)
@@ -50,8 +51,6 @@ function App() {
                             //doctorId undefined, go to selectDoctor
                             
                             history.push("/patient/selectDoctor")
-                          }else{
-                            //history.push("/home")
                           }
                           return true
                         }).catch((err) =>{
@@ -60,7 +59,6 @@ function App() {
                           return false
                         });
                     }else{
-                      history.push("/home")
                     }
                     break;
                 
@@ -88,6 +86,7 @@ const value = {
       <div className="App">
         <Switch>
           <Route exact path={"/login"}>
+            {loginState && <Redirect to="/home" />}
             <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
             <Route exact path={"/firstAccess"}>

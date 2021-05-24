@@ -150,17 +150,18 @@ function FirstAccess({user}){
       let status = true
       if(name === ""){
         status = false
-        console.log("here")
         setValidateName(true)
       }else{setValidateName(false)}
       if(surname === ""){
         status = false
         setValidateSurname(true)
       }else{setValidateSurname(false)}
-      if(userType === "Patient" && CF === ""){
-        status = false
-        setValidateCF(true)
-      }else{setValidateCF(false)}
+      if(userType === "Patient" || userType === "Doctor" || userType === "Nurse" ){
+        if(userType === "Patient" && CF == ""){
+          status = false
+          setValidateCF(true)
+        }else if(userType === "Patient"){setValidateCF(false)}
+      }else{status = false}
       if(status){
         submit()
       }
@@ -216,7 +217,7 @@ function FirstAccess({user}){
                 </Row> 
                 {(userType === "Patient") && 
                 <Row display="content" padding="10px">                                   
-                  <TextField error={validateSurname} helperText={validateSurname && "The field cannot be empty"} onChange={(e)=> onChangeCF(e)} id="filled-basic" label="Fiscal Code"/>
+                  <TextField error={validateSurname} helperText={validateCF && "The field cannot be empty"} onChange={(e)=> onChangeCF(e)} id="filled-basic" label="Fiscal Code"/>
                 </Row>}
                 <Row display="content" padding="10px">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
