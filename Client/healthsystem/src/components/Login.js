@@ -32,7 +32,8 @@ function Login({setLoginState,setUser,loginState}){
               if(logState === false){
                 history.push("/login")
               }else{
-              //history.push('/home')
+                console.log("completeLogin")
+              history.push('/home')
               setLoginState(logState)
               }
             })

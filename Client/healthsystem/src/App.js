@@ -51,7 +51,7 @@ function App() {
                             
                             history.push("/patient/selectDoctor")
                           }else{
-                            history.push("/home")
+                            //history.push("/home")
                           }
                           return true
                         }).catch((err) =>{
@@ -91,18 +91,17 @@ const value = {
             <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
             <Route exact path={"/firstAccess"}>
-                {value.user && value.user.userType !== "unknown" &&
+                {value.user && value.user.userType === "unknown" &&
                 <FirstAccess user={value.user}/>  
                 }    
             </Route>
-              <Route exact path={"/home"}>
-                  <div>
-                    <NavigationBar />
-                    <h1>Home of {value.user.username}</h1>
-                    <BigCalendar />
-                  </div>
-              </Route>
-              <PatientRoute />
+            <Route exact path={"/home"}>
+                <div>
+                  <NavigationBar />
+                  <h1>Home of {value.user.username}</h1>
+                  <BigCalendar />
+                </div>
+            </Route>
             {/* Only accessible for doctor users */}
             <Route exact path={"/patientList"}>
                 <NavigationBar />
@@ -142,6 +141,7 @@ const value = {
             <Route exact path={"/iframe"}>
               <IframeJitsi />
             </Route>
+            <PatientRoute />
         </Switch>
         
       </div>
