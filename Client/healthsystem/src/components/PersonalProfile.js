@@ -58,7 +58,7 @@ export default function PersonalProfile(props) {
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            {props.user.name} {props.user.surname}
+                            {props.user.username}
                         </div>
                         <div style={profilestyle.caption}>
                             Some info...
