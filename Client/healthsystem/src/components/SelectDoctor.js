@@ -9,11 +9,11 @@ import API_patient from '../api/API_patient';
 
 
 const SelectDoctor = (props) =>{
-    let {username} = props
+    let {user} = props
     const [doctors,setDoctors] = useState([]);
     useEffect(() => {
       doctorList()
-    }, []);
+    }, [user]);
     const history = useHistory()
 
     const doctorList = () => {
@@ -42,7 +42,6 @@ const SelectDoctor = (props) =>{
     }
 
     const DoctorListComponent = () =>{
-        const user = useContext(UserContext);
         return (doctors.map(d => 
             <>
                 <li>

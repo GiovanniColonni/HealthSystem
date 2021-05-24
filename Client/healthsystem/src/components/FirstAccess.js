@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import { Row, Item,Column } from '@mui-treasury/components/flex';
+import { Row, Column } from '@mui-treasury/components/flex';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -14,6 +14,8 @@ import Logo from "./Logo"
 import doctor from '../icons/doctor.png'
 import nurse from '../icons/nurse.png'
 import patient from '../icons/patient.png'
+import API_patient from "../api/API_patient";
+import { UserContext } from "../context/UserContext";
 
 const images = [
   {
@@ -123,12 +125,24 @@ function FirstAccess({user}){
       setUserType(e)
     }
     const history = useHistory()
-    
     function submit() {
       const resp = API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
         .then((resp) =>{
           if(resp.status == 200){
-            history.push("/patient/selectDoctor")
+            switch (userType) {
+              case "Patient":
+                API_patient.getPatient(user["googleId"])
+                  .then((patient) =>{
+                    history.push("/patient/selectDoctor")
+                  })
+                  .catch((err) =>{
+                    console.log(err)
+                  })
+                break;
+            
+              default:
+                break;
+            }
           }
         })
         .catch()
