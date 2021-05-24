@@ -6,6 +6,9 @@ import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Button from '@material-ui/core/Button';
 import { FaPen } from 'react-icons/fa';
 import Divider from '@material-ui/core/Divider';
+import API_doctor from '../api/API_doctor';
+import API_patient from '../api/API_patient';
+
 
 var profilestyle = {
     container: {
@@ -43,22 +46,54 @@ var profilestyle = {
     }
 }
 
-export default function PersonalProfile(props) {
+export default function PersonalProfile({user}) {
+    const [currentuser, setCurrentUser] = useState(null)
+    const [doctor, setDoctor] = useState(null)
+
+    useEffect(() => {
+        
+        if (user.userType == "Patient") {
+            API_patient.getPatient(user.id)
+            .then((patient) =>{
+            setCurrentUser(patient)
+            })
+            .catch((err)=>{
+    
+            });
+            API_doctor.getDoctor(user.doctorId)
+            .then((doctor) =>{
+            setDoctor(doctor)
+            })
+            .catch((err)=>{
+    
+            });
+        } else if (user.userType == "Doctor") {
+            API_doctor.getDoctor(user.doctorId)
+            .then((doctor) =>{
+            setCurrentUser(doctor)
+            })
+            .catch((err)=>{
+    
+            });
+        }
+      }, []);
+
     return (
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
                 <Column>
-                    {props.user.userType === 'Doctor' && 
+                    {user.userType === 'Doctor' && 
                         <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
                     }
-                    {props.user.userType === 'Patient' &&
+                    {user.userType === 'Patient' &&
                         <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
                     }
                 </Column>
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            {props.user.username}
+                            {currentuser.name} 
+                            {currentuser.surname}
                         </div>
                         <div style={profilestyle.caption}>
                             Some info...
@@ -78,7 +113,7 @@ export default function PersonalProfile(props) {
                     </Item>
                 </Column>
             </Row>
-            {props.user.userType === 'Patient' 
+            {user.userType === 'Patient' 
                 && <>
                 <Divider variant="middle"/>
                 <Row gap={5} p={2.5}>
@@ -88,7 +123,7 @@ export default function PersonalProfile(props) {
                     <Column>
                         <Item>
                             <div style={profilestyle.name}>
-                                {props.doc.name}
+                                {doctor.name} {doctor.name}
                             </div>
                             <div style={profilestyle.caption}>
                                 Some info...

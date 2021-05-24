@@ -150,12 +150,7 @@ const value = {
           <Route exact path={"/personalProfile"} >
             <div>
               <NavigationBar user={value.user} />
-              {value.user.userType === "Patient" &&
-                <PersonalProfile user={value.user} doc={doc}/>
-              }
-              {value.user.userType === "Doctor" &&
-                <PersonalProfile user={value.user}/>
-              }
+              <PersonalProfile user={value.user} />
             </div>
           </Route>
 
@@ -172,19 +167,6 @@ const value = {
 }
 
 export default App;
-
-const currentUser = 
-  {
-    type: 'pat',
-    name: 'Carla Reorda',
-    //type: 'doc',
-    //name: 'Carlo Cassella',
-  };
-
-const doc = 
-{
-  name: 'Carlo Cassela',
-};
 
 const prescList = [
   {
