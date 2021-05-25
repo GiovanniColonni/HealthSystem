@@ -64,9 +64,7 @@ function App() {
           <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
         </Route>
           <Route exact path={"/firstAccess"}>
-              {user && user.userType === "unknown" &&
               <FirstAccess user={user} setUser={setUser} />  
-              }    
           </Route>
           <Route exact path={"/home"}>
               <div>
