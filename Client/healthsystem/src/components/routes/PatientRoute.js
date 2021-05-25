@@ -7,7 +7,7 @@ const PatientRoute = (props) =>{
 
     useEffect(() => {
 
-    },[user]) 
+    },[]) 
     return(
         <Route exact path={"/patient/selectDoctor"}>
             <div>

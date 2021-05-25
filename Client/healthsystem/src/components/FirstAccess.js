@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FirstAccess({user}){
+function FirstAccess({user, setUser}){
     const classes = useStyles();
     let [userType,setUserType] = useState("")
     let [name,setName] = useState("")
@@ -131,15 +131,11 @@ function FirstAccess({user}){
           if(resp.status == 200){
             switch (userType) {
               case "Patient":
-                API_patient.getPatient(user["googleId"])
-                  .then((patient) =>{
-                    history.push("/patient/selectDoctor")
-                  })
-                  .catch((err) =>{
-                    console.log(err)
-                  })
+                  let usr = user
+                  usr.userType = "Patient"
+                  setUser(usr)
+                  history.push("/patient/selectDoctor")
                 break;
-            
               default:
                 break;
             }

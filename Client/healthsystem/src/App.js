@@ -31,9 +31,7 @@ function App() {
     API.isAuthenticated()
       .then((userJson) =>{ 
         setLoginState(true)
-        console.log(userJson)
-        if(userJson !== user)
-          setUser(userJson)
+        setUser(userJson)
       })
       .catch((err)=> {
         setLoginState(false) 
@@ -55,6 +53,10 @@ function App() {
     checkUser()
   },[loginState]) 
 
+  const callSetUser = (usr) =>{
+    setUser(usr)
+  }
+
   return (
     <div className="App">
       <Switch>
@@ -63,12 +65,12 @@ function App() {
         </Route>
           <Route exact path={"/firstAccess"}>
               {user && user.userType === "unknown" &&
-              <FirstAccess user={user}/>  
+              <FirstAccess user={user} setUser={setUser} />  
               }    
           </Route>
           <Route exact path={"/home"}>
               <div>
-                <Home user={user}/>
+                <Home user={user} />
                 <NavigationBar />
                 <h1>Home of {user && user.username}</h1>
                 <BigCalendar />
@@ -113,7 +115,7 @@ function App() {
           <Route exact path={"/iframe"}>
             <IframeJitsi />
           </Route>
-          <PatientRoute user={user}/>
+          <PatientRoute user={user} />
       </Switch>
       
     </div>

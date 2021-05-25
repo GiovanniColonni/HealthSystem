@@ -13,7 +13,7 @@ const SelectDoctor = (props) =>{
     const [doctors,setDoctors] = useState([]);
     useEffect(() => {
       doctorList()
-    }, [user]);
+    }, []);
     const history = useHistory()
 
     const doctorList = () => {
