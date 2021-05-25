@@ -129,12 +129,17 @@ function FirstAccess({user, setUser}){
       const resp = API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
         .then((resp) =>{
           if(resp.status == 200){
+            let usr = user
             switch (userType) {
               case "Patient":
-                  let usr = user
                   usr.userType = "Patient"
                   setUser(usr)
                   history.push("/patient/selectDoctor")
+                break;
+              case "Doctor":
+                  usr.userType = "Doctor"
+                  setUser(usr)
+                  history.push("/home")
                 break;
               default:
                 break;
