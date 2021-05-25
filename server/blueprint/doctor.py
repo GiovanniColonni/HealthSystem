@@ -6,7 +6,6 @@ from db.queries.SelectQuery import SelectQuery
 
 doctor = Blueprint('doctor', __name__, url_prefix="/doctor")
 
-
 @doctor.route('/event')
 @login_required
 def index():

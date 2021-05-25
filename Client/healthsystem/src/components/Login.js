@@ -32,17 +32,15 @@ function Login({setLoginState,setUser,loginState}){
               if(logState === false){
                 history.push("/login")
               }else{
-              //history.push('/home')
+                console.log("completeLogin")
+              history.push('/home')
               setLoginState(logState)
               }
             })
           .catch((err) => {
-                history.push('/login')
-                setLoginState(false)
+              history.push('/login')
+              setLoginState(false)
             })
-          
-          
-      
         }
       
         completeLogin()
@@ -52,6 +50,8 @@ function Login({setLoginState,setUser,loginState}){
     let loginFailure = function(resp){
         console.log(resp)
     }
+    if(loginState)
+      return <Redirect to="/home" />
     return(
        <div> 
         <GoogleLogin 

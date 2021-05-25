@@ -37,13 +37,11 @@ def get_doctor_image(doctorId):
 @login_required
 def get_patient(patientId):
     patient_id = patientId
-    print(patient_id)
     s = SelectQuery()
     # request.cookies.get('remember_token').split('|')[0])  # instruction to get googleID from request
     patient = s.get_patient(patient_id)
     if patient is False:
         return jsonify(False)
-    print(patient)
     return jsonify(row2dict(patient))
 
 
