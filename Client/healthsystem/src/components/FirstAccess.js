@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
@@ -120,6 +120,15 @@ function FirstAccess({user, setUser}){
     let [validateCF,setValidateCF] = useState(false)
     let [birthday,setBirthday] = useState(new moment().format('MM/DD/YYYY'))
 
+    useEffect(() => {
+      if(user.userType === "Patient"){
+        console.log("go to Patient")
+        history.push("/patient/selectDoctor")
+      }else if(user.userType === "Doctor"){
+        console.log("go to Doctor")
+        history.push("/home")
+      }
+    },[user.userType]) 
 
     let buttonClick = (e) => {
       setUserType(e)
