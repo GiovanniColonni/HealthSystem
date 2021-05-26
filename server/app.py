@@ -35,5 +35,5 @@ app.register_blueprint(patient)
 
 
 if __name__ == "__main__":
-    #app.run(host=FLASK_HOST,ssl_context='adhoc')
-    app.run(host=FLASK_HOST)
+    app.run(host=FLASK_HOST,ssl_context=("cert/cert.pem","cert/key.pem"))
+    #app.run(host=FLASK_HOST)
