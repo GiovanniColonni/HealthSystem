@@ -24,7 +24,7 @@ export default function Home({user}){
 
     return(
     <>
-    <h1>My Appointments</h1>
+    <h1>My Appointments {user.username}</h1>
     {user.type === 'pat' &&
         <Row gap={2} p={2.5}>
             <Button style={homestyle.btnCreate}>New Appointment</Button>

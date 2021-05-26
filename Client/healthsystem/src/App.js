@@ -105,7 +105,7 @@ const value = {
           <Route exact path={"/home"}>
             <div>
               <NavigationBar user={value.user} />
-              <Home user={currentUser}/>
+              <Home user={value.user}/>
             </div>
           </Route>
 
@@ -167,14 +167,6 @@ const value = {
 }
 
 export default App;
-
-const currentUser = 
-  {
-    type: 'pat',
-    name: 'Carla Reorda',
-    //type: 'doc',
-    //name: 'Carlo Cassella',
-  };
 
 const prescList = [
   {

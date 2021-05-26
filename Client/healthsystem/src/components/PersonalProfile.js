@@ -47,20 +47,21 @@ var profilestyle = {
 }
 
 export default function PersonalProfile({user}) {
-    const [currentuser, setCurrentUser] = useState(null)
-    const [doctor, setDoctor] = useState(null)
+
+    const [currentuser, setCurrentUser] = useState({})
+    const [doctor, setDoctor] = useState()
 
     useEffect(() => {
         
         if (user.userType == "Patient") {
-            API_patient.getPatient(user.id)
+            API_patient.getPatient(user.googleId)
             .then((patient) =>{
             setCurrentUser(patient)
             })
             .catch((err)=>{
     
             });
-            API_doctor.getDoctor(user.doctorId)
+            API_doctor.getDoctor(currentuser.doctorId)
             .then((doctor) =>{
             setDoctor(doctor)
             })
@@ -68,7 +69,7 @@ export default function PersonalProfile({user}) {
     
             });
         } else if (user.userType == "Doctor") {
-            API_doctor.getDoctor(user.doctorId)
+            API_doctor.getDoctor(user.googleId)
             .then((doctor) =>{
             setCurrentUser(doctor)
             })
@@ -77,6 +78,11 @@ export default function PersonalProfile({user}) {
             });
         }
       }, []);
+
+      const value = {
+        user: currentuser,
+        doc: doctor
+      }
 
     return (
         <div style={profilestyle.container}>
@@ -92,8 +98,7 @@ export default function PersonalProfile({user}) {
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            {currentuser.name} 
-                            {currentuser.surname}
+                            {value.user.name + ' ' + value.user.surname}
                         </div>
                         <div style={profilestyle.caption}>
                             Some info...
@@ -123,7 +128,8 @@ export default function PersonalProfile({user}) {
                     <Column>
                         <Item>
                             <div style={profilestyle.name}>
-                                {doctor.name} {doctor.name}
+                                {/*value.doc.name + ' ' + value.doc.surname*/}
+                                TODO, DOCTOR API FROM DATABASE
                             </div>
                             <div style={profilestyle.caption}>
                                 Some info...
