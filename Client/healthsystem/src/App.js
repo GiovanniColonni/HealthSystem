@@ -19,6 +19,7 @@ import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor"
 import PatientRoute from './components/routes/PatientRoute';
 import Home from './components/Home';
+import DoctorRoute from './components/routes/DoctorRoute';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -109,11 +110,19 @@ function App() {
               <h1>Profile of {user && user.username}</h1>
             </div>
           </Route>
+          
+        <Route exact path={"/patient/selectDoctor"}> 
+          <div>
+              <HeaderChooseDoctor username={user.username}/>
+              <SelectDoctor user={user}/>
+          </div>
+        </Route>
+        <Route exact path={"/doctor/meeting"}> 
+          <div>
+            <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
+          </div>
+        </Route>
 
-          <Route exact path={"/iframe"}>
-            <IframeJitsi />
-          </Route>
-          <PatientRoute user={user} />
       </Switch>
       
     </div>
