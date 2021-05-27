@@ -23,7 +23,7 @@ const SelectDoctor = (props) =>{
         .catch((err) =>{
             console.log(err)
         })
-        if(patient.doctorId !== "" && patient.doctorId !== undefined){
+        if(user.userType !== "Patient" || patient.doctorId !== "" && patient.doctorId !== undefined){
             console.log("go to home")
             history.push("/home")
         }

@@ -37,15 +37,16 @@ function Logo() {
 
 var navstyle = {
     nav: {
+        position: "sticky",
         bg: "light",
         borderColor: "#e3e3e3",
         borderBottomStyle: "solid",
-        marginBottom: "20px"
+        marginBottom: "20px",
     }
 }
 
 
-export default function NavigationBar() {
+export default function NavigationBar({user}) {
     return (
         <>
         <Navbar  bg="light" style={navstyle.nav}>
@@ -55,11 +56,14 @@ export default function NavigationBar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
-                <Nav.Link href="/home">My Appointements</Nav.Link>
-                <Nav.Link href="/patientList">My Patient list</Nav.Link>
+                <Nav.Link href="/home">My Appointments</Nav.Link>
+                {user.userType === 'Doctor' && 
+                    <Nav.Link href="/patientList">My Patient list</Nav.Link>}
+                {user.userType === 'Patient' && 
+                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
                 </Nav>
                 <Nav>
-                    <NotificationMenuModal />
+                    <NotificationMenuModal user={user}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

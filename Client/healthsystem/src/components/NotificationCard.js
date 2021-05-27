@@ -28,11 +28,16 @@ export default function NotificationCard(props) {
                 {props.type === 'newpatient' && "New Patient!"}
             </Card.Title>
             <Card.Text>
-                <UserCard   title={props.patient}
-                            firstCaption={props.info}/>
+                {props.userType === 'Doctor' &&
+                    <UserCard   title={props.patient}
+                                firstCaption={props.info}/>
+                }
+                {props.userType === 'Patient' &&
+                    "ACTIVE LINK"
+                }
             </Card.Text>
             {props.type === 'join' &&
-                <Button style={notifcard.btnJoin}>Join Appointement</Button>}
+                <Button style={notifcard.btnJoin}>Join Appointment</Button>}
 
             {props.type === 'newpatient' && 
             <>
