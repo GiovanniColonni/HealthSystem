@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import { Row, Item,Column } from '@mui-treasury/components/flex';
+import { Row, Column } from '@mui-treasury/components/flex';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -14,6 +14,8 @@ import Logo from "./Logo"
 import doctor from '../icons/doctor.png'
 import nurse from '../icons/nurse.png'
 import patient from '../icons/patient.png'
+import API_patient from "../api/API_patient";
+import { UserContext } from "../context/UserContext";
 
 const images = [
   {
@@ -107,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FirstAccess({user}){
+function FirstAccess({user, setUser}){
     const classes = useStyles();
     let [userType,setUserType] = useState("")
     let [name,setName] = useState("")
@@ -118,17 +120,39 @@ function FirstAccess({user}){
     let [validateCF,setValidateCF] = useState(false)
     let [birthday,setBirthday] = useState(new moment().format('MM/DD/YYYY'))
 
+    useEffect(() => {
+      if(user.userType === "Patient"){
+        console.log("go to Patient")
+        history.push("/patient/selectDoctor")
+      }else if(user.userType === "Doctor"){
+        console.log("go to Doctor")
+        history.push("/home")
+      }
+    },[user.userType]) 
 
     let buttonClick = (e) => {
       setUserType(e)
     }
     const history = useHistory()
-    
     function submit() {
       const resp = API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
         .then((resp) =>{
           if(resp.status == 200){
-            history.push("/patient/selectDoctor")
+            let usr = user
+            switch (userType) {
+              case "Patient":
+                  usr.userType = "Patient"
+                  setUser(usr)
+                  history.push("/patient/selectDoctor")
+                break;
+              case "Doctor":
+                  usr.userType = "Doctor"
+                  setUser(usr)
+                  history.push("/home")
+                break;
+              default:
+                break;
+            }
           }
         })
         .catch()
@@ -150,17 +174,18 @@ function FirstAccess({user}){
       let status = true
       if(name === ""){
         status = false
-        console.log("here")
         setValidateName(true)
       }else{setValidateName(false)}
       if(surname === ""){
         status = false
         setValidateSurname(true)
       }else{setValidateSurname(false)}
-      if(userType === "Patient" && CF === ""){
-        status = false
-        setValidateCF(true)
-      }else{setValidateCF(false)}
+      if(userType === "Patient" || userType === "Doctor" || userType === "Nurse" ){
+        if(userType === "Patient" && CF == ""){
+          status = false
+          setValidateCF(true)
+        }else if(userType === "Patient"){setValidateCF(false)}
+      }else{status = false}
       if(status){
         submit()
       }
@@ -216,7 +241,7 @@ function FirstAccess({user}){
                 </Row> 
                 {(userType === "Patient") && 
                 <Row display="content" padding="10px">                                   
-                  <TextField error={validateSurname} helperText={validateSurname && "The field cannot be empty"} onChange={(e)=> onChangeCF(e)} id="filled-basic" label="Fiscal Code"/>
+                  <TextField error={validateSurname} helperText={validateCF && "The field cannot be empty"} onChange={(e)=> onChangeCF(e)} id="filled-basic" label="Fiscal Code"/>
                 </Row>}
                 <Row display="content" padding="10px">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>

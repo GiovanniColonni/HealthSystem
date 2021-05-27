@@ -58,18 +58,25 @@ class InsertQuery:
             print("HANDLE THIS EXCEPTION")
             return False
 
-    def insert_doctor(self, name, surname, date, googleId):
-        user_entity = Doctor
-        instance = user_entity(name=name,
-                               surname=surname,
-                               date=date,
-                               googleId=googleId
-                               )
+    def insert_doctor(self, name, surname, date, fiscalCode, googleId):
         try:
             with DatabaseSession() as session:
-                session.add(instance)
-                session.flush()
-                session.commit()
+                result = connection.execute("INSERT INTO `remoteMonitoring`.`patient` (`name`, `surname`, `doctorId`, `date`, `fiscalCode`, `googleId`) VALUES ('"+name+"', '"+surname+"', '"+doctorId+"', '"+date+"', '"+fiscalCode+"', '"+googleId+"');")
+                #session.add(instance)
+                #session.commit()
+                return True
+        except SQLAlchemyError:
+            print("EXCEPTION!!!")
+            print("HANDLE THIS EXCEPTION")
+            return False
+
+    def insert_doctor(self, name, surname, date, googleId):
+        try:
+            with DatabaseSession() as session:
+                result = connection.execute(
+                    "INSERT INTO `remoteMonitoring`.`doctor` (`name`, `surname`,`date`,`googleId`) VALUES ('" + name + "', '" + surname + "', '" + date + "', '" + googleId + "');")
+                # session.add(instance)
+                # session.commit()
                 return True
         except SQLAlchemyError:
             print("EXCEPTION!!!")
