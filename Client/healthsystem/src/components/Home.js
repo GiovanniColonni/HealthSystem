@@ -3,6 +3,9 @@ import { Redirect, useHistory } from 'react-router';
 import API from '../api/API';
 import API_patient from '../api/API_patient';
 import Patient from '../classes/Patient';
+import { Row, Item } from '@mui-treasury/components/flex';
+import Button from 'react-bootstrap/Button';
+import BigCalendar from './BigCalendar';
 
 var homestyle = {
     btnCreate: {
@@ -19,11 +22,12 @@ var homestyle = {
         width: "80%",
 
     }
+}
 
-const Home = (props) =>{
+
+export default function Home({user}){
     const [patient,setPatient] = useState(new Patient())
     const history = useHistory()
-    let {user} = props
     useEffect(() => {
         if(user.userType === "unknown"){
             console.log("go to firstAccess")
@@ -44,26 +48,18 @@ const Home = (props) =>{
     },[user.userType,patient.doctorId]) 
 
     return(
-     <>
-        
-     </>   
-    )
-}
-
-export default function Home({user}){
-
-    return(
-    <>
-    <h1>My Appointments {user.username}</h1>
-    {user.type === 'pat' &&
-        <Row gap={2} p={2.5}>
-            <Button style={homestyle.btnCreate}>New Appointment</Button>
-        </Row>}
-    <Row gap={2} p={2.5}>
-        <div style={homestyle.calendar}>
-            <BigCalendar />
-        </div>
-    </Row>
-    </>
+        <>
+            <h1>My Appointments {user.username}</h1>
+            {user.userType === 'Patient' &&
+                <Row gap={2} p={2.5}>
+                    <Button style={homestyle.btnCreate}>New Appointment</Button>
+                </Row>
+            }
+            <Row gap={2} p={2.5}>
+                <div style={homestyle.calendar}>
+                    <BigCalendar />
+                </div>
+            </Row>
+        </>
     )
 }
