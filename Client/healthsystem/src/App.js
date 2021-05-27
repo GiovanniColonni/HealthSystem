@@ -2,7 +2,7 @@
 import './App.css';
 
 import React,{useState,useEffect, useCallback, useMemo} from "react"
-import { Switch, BrowserRouter as Router, Route,Link,Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route,Link,Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
 import API_patient from "./api/API_patient"
