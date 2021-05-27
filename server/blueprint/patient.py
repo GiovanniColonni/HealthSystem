@@ -44,6 +44,16 @@ def get_patient(patientId):
         return jsonify(False)
     return jsonify(row2dict(patient))
 
+@patient.route('/event/<patientId>')
+@login_required
+def get_patient_events(patientId):
+    s = SelectQuery()
+    events = s.get_event_by_patient(patientId)
+    row_list = []
+    for row in events:
+        row_list.append(row2dict(row))
+    return jsonify(row_list)
+
 
 @patient.route('/<patientId>', methods=['PUT'])
 @login_required

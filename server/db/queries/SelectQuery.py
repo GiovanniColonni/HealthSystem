@@ -15,7 +15,7 @@ class SelectQuery:
                 .first()
             return doctor
 
-    def select_event_by_doctor(doctorId):
+    def select_event_by_doctor(self,doctorId):
         """
         :param doctorId:
         :return: a list of Event objects
@@ -27,6 +27,21 @@ class SelectQuery:
             events = session.query(Doctor, Schedule) \
                 .with_entities(Schedule) \
                 .filter(doctorId == Schedule.doctorId) \
+                .all()
+            return events
+
+    def get_event_by_patient(self, patientId):
+        """
+        :param patientId:
+        :return: a list of Event objects
+        .. note:: you can access to parameters like this:
+            for ev in event:
+                print(ev.dateStart)
+        """
+        with DatabaseSession() as session:
+            events = session.query(Patient, Schedule) \
+                .with_entities(Schedule) \
+                .filter(patientId == Schedule.patientId) \
                 .all()
             return events
 

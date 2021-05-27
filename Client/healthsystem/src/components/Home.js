@@ -57,7 +57,7 @@ export default function Home({user}){
             }
             <Row gap={2} p={2.5}>
                 <div style={homestyle.calendar}>
-                    <BigCalendar />
+                    <BigCalendar user={user} />
                 </div>
             </Row>
         </>
