@@ -52,21 +52,22 @@ export default function PersonalProfile({user}) {
     const [doctor, setDoctor] = useState()
 
     useEffect(() => {
-        
+        console.log(user)
         if (user.userType == "Patient") {
             API_patient.getPatient(user.googleId)
             .then((patient) =>{
             setCurrentUser(patient)
             })
             .catch((err)=>{
-    
+                console.log(err)
             });
             API_doctor.getDoctor(currentuser.doctorId)
             .then((doctor) =>{
+                console.log(doctor)
             setDoctor(doctor)
             })
             .catch((err)=>{
-    
+                console.log(err)
             });
         } else if (user.userType == "Doctor") {
             API_doctor.getDoctor(user.googleId)
@@ -77,7 +78,7 @@ export default function PersonalProfile({user}) {
     
             });
         }
-      }, []);
+      }, [user.googleId,currentuser.doctorId]);
 
       const value = {
         user: currentuser,
@@ -98,7 +99,7 @@ export default function PersonalProfile({user}) {
                 <Column>
                     <Item>
                         <div style={profilestyle.name}>
-                            {value.user.name + ' ' + value.user.surname}
+                            {currentuser.name + ' ' + currentuser.surname}
                         </div>
                         <div style={profilestyle.caption}>
                             Some info...
@@ -128,8 +129,7 @@ export default function PersonalProfile({user}) {
                     <Column>
                         <Item>
                             <div style={profilestyle.name}>
-                                {/*value.doc.name + ' ' + value.doc.surname*/}
-                                TODO, DOCTOR API FROM DATABASE
+                                {doctor !== undefined && doctor.name + ' ' + doctor.surname}
                             </div>
                             <div style={profilestyle.caption}>
                                 Some info...

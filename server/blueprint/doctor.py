@@ -12,7 +12,7 @@ def get_doctor(doctorId):
     doctor_id = doctorId
     s = SelectQuery()
     # request.cookies.get('remember_token').split('|')[0])  # instruction to get googleID from request
-    doctor = s.get_patient(doctor_id)
+    doctor = s.get_doctor(doctor_id)
     if doctor is False:
         return jsonify(False)
     return jsonify(row2dict(doctor))
