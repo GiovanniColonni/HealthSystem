@@ -86,7 +86,7 @@ async function isAuthenticated(){
 
 // update this function
 async function getEvents(id,type){
-    if(type === 'doctor'){
+    if(type === 'Doctor'){
         const events = await axios.get('/doctor/event',{
             params:{
                 doctorId: id
@@ -96,7 +96,7 @@ async function getEvents(id,type){
             let events = []
             response.data.forEach(element => {
                 console.log(element.typeExamination)
-                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,"put conference in db"))
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
             });
             console.log(events)
             return events
@@ -104,6 +104,19 @@ async function getEvents(id,type){
         .catch((err) => console.log("error"))
         return events
         //tornare i dati 
+    }else if(type === 'Patient'){
+        const events = await axios.get('/patient/event/'+id,{
+        })
+        .then((response) =>{ 
+            let events = []
+            response.data.forEach(element => {
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
+            });
+            console.log(events)
+            return events
+        })
+        .catch((err) => console.log(err))
+        return events
     }
 }
 
