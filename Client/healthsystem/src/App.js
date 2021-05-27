@@ -24,6 +24,7 @@ export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
+  const [URLmeeting,setURLmeeting] = useState("")
   
   let history = useHistory()
 
@@ -98,6 +99,11 @@ function App() {
             <div>
               <NavigationBar user={user} />
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
+            </div>
+          </Route>
+          <Route exact path={"/patient/meeting"}>
+            <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
+              <IframeJitsi URL_meeting={URLmeeting}/>
             </div>
           </Route>
 
