@@ -80,6 +80,20 @@ class SelectQuery:
                 return False
             return patient
 
+    def get_doctor(self, doctorId):
+        """
+
+        :param doctorId:
+        :return: doctor row
+        """
+        with DatabaseSession() as session:
+            doctor = session.query(Doctor) \
+                .filter(doctorId == Doctor.googleId) \
+                .first()
+            if doctor is None:
+                return False
+            return doctor
+
     def get_patient_list_from_doctor(self, doctorId):
         """
         :param doctorId:

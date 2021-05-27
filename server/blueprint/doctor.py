@@ -6,6 +6,17 @@ from db.queries.SelectQuery import SelectQuery
 
 doctor = Blueprint('doctor', __name__, url_prefix="/doctor")
 
+@doctor.route('/<doctorId>')
+@login_required
+def get_doctor(doctorId):
+    doctor_id = doctorId
+    s = SelectQuery()
+    # request.cookies.get('remember_token').split('|')[0])  # instruction to get googleID from request
+    doctor = s.get_patient(doctor_id)
+    if doctor is False:
+        return jsonify(False)
+    return jsonify(row2dict(doctor))
+
 @doctor.route('/event')
 @login_required
 def index():
@@ -21,9 +32,9 @@ def index():
 @login_required
 def get_patient_list_from_doctor(doctorId):
     s = SelectQuery()
-    events = s.get_patient_list_from_doctor(doctorId)
+    patients = s.get_patient_list_from_doctor(doctorId)
     row_list = []
-    for row in events:
+    for row in patients:
         row_list.append(row2dict(row))
     return jsonify(row_list)
 

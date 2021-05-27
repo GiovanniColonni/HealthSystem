@@ -22,11 +22,6 @@ var cardstyle = {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         textAlign: 'left',
-    }, btn: {
-        borderRadius: 20,
-        padding: '0.125rem 0.75rem',
-        borderColor: '#becddc',
-        fontSize: '0.75rem',
     }, border: {
         borderStyle: "solid",
         borderWidth: "1px",

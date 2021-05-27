@@ -14,6 +14,9 @@ import FirstAccess from "./components/FirstAccess";
 import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
+import PersonalProfile from './components/PersonalProfile';
+import { PrescriptionCardList } from './components/PrescriptionCard';
+import Home from './components/Home';
 import {UserContext} from "./context/UserContext"
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor"
@@ -59,6 +62,7 @@ function App() {
   }
 
   return (
+
     <div className="App">
       <Switch>
         <Route exact path={"/login"}>
@@ -69,28 +73,26 @@ function App() {
           </Route>
           <Route exact path={"/home"}>
               <div>
-                <Home user={user} />
-                <NavigationBar />
-                <h1>Home of {user && user.username}</h1>
-                <BigCalendar />
+                <NavigationBar user={value.user} />
+                <Home user={value.user}/>
               </div>
           </Route>
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
-              <NavigationBar />
+              <NavigationBar user={value.user} />
               <UserCardList userlist={userlist} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
           <Route exact path={"/patientDetails"}>
-            <NavigationBar />
+            <NavigationBar user={user} />
             <PatientDetails />
           </Route>
 
           {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
           <Route exact path={"/patient/sensor"}>
             <div>
-              <NavigationBar />
+              <NavigationBar user={user}/>
               <h1>Sensor Details of Patient XXX</h1>
             </div>
           </Route>
@@ -98,22 +100,31 @@ function App() {
           {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
           <Route exact path={"/patient/appointment"}>
             <div>
-              <NavigationBar />
+              <NavigationBar user={user} />
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
+            </div>
+          </Route>
+
+          {/* Only accessible for patient users */}
+          <Route exact path={"/prescriptionList"}>
+            <div>
+              <NavigationBar user={user} />
+              <h1>My Prescriptions</h1>
+              <PrescriptionCardList prescriptionlist={prescList}/>
             </div>
           </Route>
 
           {/* Changes depending on the user type: patient has his doctor */}
           <Route exact path={"/personalProfile"} >
             <div>
-              <NavigationBar />
-              <h1>Profile of {user && user.username}</h1>
+              <NavigationBar user={user} />
+              <PersonalProfile user={user} />
             </div>
           </Route>
           
         <Route exact path={"/patient/selectDoctor"}> 
           <div>
-              <HeaderChooseDoctor username={user.username}/>
+              <HeaderChooseDoctor username={username}/>
               <SelectDoctor user={user}/>
           </div>
         </Route>
@@ -130,6 +141,19 @@ function App() {
 }
 
 export default App;
+
+const prescList = [
+  {
+    date: "13/02/2021",
+    doctor: "Doctor Strange"
+  },{
+    date: "21/11/2020",
+    doctor: "Doctor Strange"
+  },{
+    date: "13/09/2020",
+    doctor: "Doctor Strange"
+  },
+]
 
 const userlist = [
   {
