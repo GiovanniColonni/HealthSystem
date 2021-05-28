@@ -1,5 +1,5 @@
 from db import DatabaseSession
-from db.entities import Account, Doctor, Patient, Schedule
+from db.entities import Account, Doctor, Patient, Schedule, Prescription
 from flask import Flask, send_file
 from sqlalchemy.orm import defer
 
@@ -15,7 +15,7 @@ class SelectQuery:
                 .first()
             return doctor
 
-    def select_event_by_doctor(doctorId):
+    def select_event_by_doctor(self,doctorId):
         """
         :param doctorId:
         :return: a list of Event objects
@@ -27,6 +27,32 @@ class SelectQuery:
             events = session.query(Doctor, Schedule) \
                 .with_entities(Schedule) \
                 .filter(doctorId == Schedule.doctorId) \
+                .all()
+            return events
+
+    def get_event_by_patient(self, patientId):
+        """
+        :param patientId:
+        :return: a list of Event objects
+        .. note:: you can access to parameters like this:
+            for ev in event:
+                print(ev.dateStart)
+        """
+        with DatabaseSession() as session:
+            events = session.query(Patient, Schedule) \
+                .with_entities(Schedule) \
+                .filter(patientId == Schedule.patientId) \
+                .all()
+            return events
+
+    def get_all_patient_prescriptions(self, patientId):
+        """
+        :param patientId:
+        :return: a list of prescriptions
+        """
+        with DatabaseSession() as session:
+            events = session.query(Prescription) \
+                .filter(patientId == Prescription.patientId) \
                 .all()
             return events
 
@@ -66,6 +92,22 @@ class SelectQuery:
                 image = image.image
             return image
 
+    def get_prescription_file(self, patientId, pathFileSystem):
+        """
+        :param patientId:
+        :param pathFileSystem:
+        :return: return the prescription image
+        """
+        with DatabaseSession() as session:
+            file = session.query(Prescription) \
+                .with_entities(Prescription.pathFileSystem) \
+                .filter(patientId == Prescription.patientId) \
+                .filter(pathFileSystem == Prescription.pathFileSystem) \
+                .first()
+            if file is not None:
+                file = file.pathFileSystem
+            return file
+
     def get_patient(self, patientId):
         """
 
@@ -79,6 +121,20 @@ class SelectQuery:
             if patient is None:
                 return False
             return patient
+
+    def get_doctor(self, doctorId):
+        """
+
+        :param doctorId:
+        :return: doctor row
+        """
+        with DatabaseSession() as session:
+            doctor = session.query(Doctor) \
+                .filter(doctorId == Doctor.googleId) \
+                .first()
+            if doctor is None:
+                return False
+            return doctor
 
     def get_patient_list_from_doctor(self, doctorId):
         """

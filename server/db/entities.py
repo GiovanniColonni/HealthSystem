@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, Date, ForeignKey, String
+from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -24,7 +24,7 @@ class Doctor(Account):
 
     name = Column(String(45), nullable=False)
     surname = Column(String(45), nullable=False)
-    date = Column(Date)
+    date = Column(String(45))
     googleId = Column(ForeignKey('account.id'), primary_key=True, index=True)
 
 
@@ -37,6 +37,7 @@ class Patient(Account):
     date = Column(String(45))
     fiscalCode = Column(String(45))
     googleId = Column(ForeignKey('account.id'), primary_key=True, index=True)
+
 
 class Measure(Base):
     __tablename__ = 'measure'
@@ -56,6 +57,7 @@ class Prescription(Base):
     patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
     pathFileSystem = Column(String(100))
     notePrescription = Column(String(500))
+    date = Column(String(45), nullable=False)
 
     patient = relationship('Patient')
 
@@ -70,7 +72,7 @@ class Schedule(Base):
     typeExamination = Column(String(45))
     description = Column(String(500))
     dateEnd = Column(String(50), nullable=False)
-    meetingURL = Column(String(45))
+    meetingURL = Column(String(200))
 
     doctor = relationship('Doctor')
     patient = relationship('Patient')

@@ -6,14 +6,28 @@ import Logo from './Logo';
 import API from '../api/API'
 import Doctor from '../classes/Doctor';
 import API_patient from '../api/API_patient';
+import Patient from '../classes/Patient';
 
 
 const SelectDoctor = (props) =>{
-    let {username} = props
-    const [doctors,setDoctors] = useState([]);
+    let {user} = props
+    const [doctors,setDoctors] = useState([])
+    const [patient,setPatient] = useState(new Patient())
     useEffect(() => {
       doctorList()
-    }, []);
+        API_patient.getPatient(user.googleId)
+        .then((patient) =>{
+            console.log(patient)
+            setPatient(patient)
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+        if(user.userType !== "Patient" || patient.doctorId !== "" && patient.doctorId !== undefined){
+            console.log("go to home")
+            history.push("/home")
+        }
+    }, [patient.doctorId]);
     const history = useHistory()
 
     const doctorList = () => {
@@ -42,7 +56,6 @@ const SelectDoctor = (props) =>{
     }
 
     const DoctorListComponent = () =>{
-        const user = useContext(UserContext);
         return (doctors.map(d => 
             <>
                 <li>

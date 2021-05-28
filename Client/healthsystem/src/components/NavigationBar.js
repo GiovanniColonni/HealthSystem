@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NotificationMenuModal from './NotificationModal';
 import Image from 'react-bootstrap/Image'
 import CrossIcon from '../icons/greenCross.png';
+import API from '../api/API';
+import moment from 'moment';
 
 var logostyle = {
     logo: {
@@ -37,15 +39,55 @@ function Logo() {
 
 var navstyle = {
     nav: {
+        position: "sticky",
         bg: "light",
         borderColor: "#e3e3e3",
         borderBottomStyle: "solid",
-        marginBottom: "20px"
+        marginBottom: "20px",
     }
 }
 
 
-export default function NavigationBar() {
+export default function NavigationBar({user}) {
+    const [events, setEvents] = useState([])
+    const [notifList, setNotifList] = useState([])
+
+    const doEffect = () =>{
+        API.getEvents(user.googleId,user.userType)
+        .then((events) =>{
+        if(events !== undefined){
+            let notifications = []
+            events.forEach(evnt => {
+                //title is typeExamination
+                if(evnt.title === "meeting"){
+                    const initialDifference = moment(evnt.start).diff(moment(),'minutes')
+                    const endDifference = moment().diff(evnt.end,'minutes')
+                    if(initialDifference < 15 && endDifference <= 0){
+                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                    }
+                }
+            });
+            setNotifList(notifications)
+            setEvents(events)
+        }
+        })
+        .catch((err)=>{
+            console.log(err)
+        });
+    }
+
+    useEffect(() => {
+        // REMEMBER to change the doctorId=6; retrieve it from cookies
+        try {
+            doEffect()
+            setInterval(async () => {
+                doEffect()
+            }, 30000);
+          } catch(e) {
+            console.log(e);
+          }
+      }, [user.googleId]);
+
     return (
         <>
         <Navbar  bg="light" style={navstyle.nav}>
@@ -55,11 +97,14 @@ export default function NavigationBar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
-                <Nav.Link href="/home">My Appointements</Nav.Link>
-                <Nav.Link href="/patientList">My Patient list</Nav.Link>
+                <Nav.Link href="/home">My Appointments</Nav.Link>
+                {user.userType === 'Doctor' && 
+                    <Nav.Link href="/patientList">My Patient list</Nav.Link>}
+                {user.userType === 'Patient' && 
+                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
                 </Nav>
                 <Nav>
-                    <NotificationMenuModal />
+                    <NotificationMenuModal user={user} notifList={notifList}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
