@@ -9,8 +9,9 @@ export default function EventModal(props) {
     const [disableButton,setDisableButton] = useState(true)
 
     useEffect( () => {
-        const difference = moment(props.event.start).diff(moment(),'minutes')
-        if(difference < 15 && difference > -15){
+        const initialDifference = moment(props.event.start).diff(moment(),'minutes')
+        const endDifference = moment().diff(props.event.end,'minutes')
+        if(initialDifference < 15 && endDifference <= 0){
             setDisableButton(false)
         }
     },[disableButton])

@@ -112,7 +112,6 @@ async function getEvents(id,type){
             response.data.forEach(element => {
                 events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
             });
-            console.log(events)
             return events
         })
         .catch((err) => console.log(err))

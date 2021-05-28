@@ -1,9 +1,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import {UserCard} from './UserCard';
+import Button from "@material-ui/core/Button"
 import {FaCheck, FaTimes} from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from 'react-router';
 
 var notifcard = {
     btnJoin: {
@@ -19,6 +20,7 @@ var notifcard = {
 }
 
 export default function NotificationCard(props) {
+    const history = useHistory()
     return (
         <>
         <Card className="text-center">
@@ -32,12 +34,23 @@ export default function NotificationCard(props) {
                     <UserCard   title={props.patient}
                                 firstCaption={props.info}/>
                 }
-                {props.userType === 'Patient' &&
-                    "ACTIVE LINK"
+                {/*props.userType === 'Patient' &&
+                     "ACTIVE LINK" */
                 }
             </Card.Text>
-            {props.type === 'join' &&
-                <Button style={notifcard.btnJoin}>Join Appointment</Button>}
+            {props.type === 'join' && 
+                /*<Button style={notifcard.btnJoin}>Join Appointment</Button> */
+                props.userType === "Patient" && 
+                    <Button variant="contained" color="primary" style={notifcard.btnJoin}
+                        onClick={() => history.push({pathname: '/patient/meeting', state:{URL: props.URL}})}>Join Appointment
+                    </Button> 
+            }    
+            {props.type === 'join' &&     
+                props.userType === "Doctor" && 
+                    <Button variant="contained" color="primary" style={notifcard.btnJoin}
+                        onClick={() => history.push({pathname: '/doctor/meeting', state:{URL: props.URL}})}>Join Appointment
+                    </Button>
+            }
 
             {props.type === 'newpatient' && 
             <>
