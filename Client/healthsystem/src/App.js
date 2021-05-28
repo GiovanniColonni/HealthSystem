@@ -135,7 +135,7 @@ function App() {
             <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
           </div>
         </Route>
-
+        <Redirect to="/home" />
       </Switch>
       
     </div>

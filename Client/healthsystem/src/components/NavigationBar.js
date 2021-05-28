@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NotificationMenuModal from './NotificationModal';
 import Image from 'react-bootstrap/Image'
 import CrossIcon from '../icons/greenCross.png';
+import API from '../api/API';
+import moment from 'moment';
 
 var logostyle = {
     logo: {
@@ -47,6 +49,39 @@ var navstyle = {
 
 
 export default function NavigationBar({user}) {
+    const [events, setEvents] = useState([])
+    const [notifList, setNotifList] = useState([])
+    useEffect(() => {
+        // REMEMBER to change the doctorId=6; retrieve it from cookies
+        try {
+            setInterval(async () => {
+                API.getEvents(user.googleId,user.userType)
+                    .then((events) =>{
+                    if(events !== undefined){
+                        let notifications = []
+                        events.forEach(evnt => {
+                            //title is typeExamination
+                            if(evnt.title === "meeting"){
+                                const initialDifference = moment(evnt.start).diff(moment(),'minutes')
+                                const endDifference = moment().diff(evnt.end,'minutes')
+                                if(initialDifference < 15 && endDifference <= 0){
+                                    notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                                }
+                            }
+                        });
+                        setNotifList(notifications)
+                        setEvents(events)
+                    }
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    });
+            }, 15000);
+          } catch(e) {
+            console.log(e);
+          }
+      }, [user.googleId]);
+
     return (
         <>
         <Navbar  bg="light" style={navstyle.nav}>
@@ -63,7 +98,7 @@ export default function NavigationBar({user}) {
                     <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
                 </Nav>
                 <Nav>
-                    <NotificationMenuModal user={user}/>
+                    <NotificationMenuModal user={user} notifList={notifList}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

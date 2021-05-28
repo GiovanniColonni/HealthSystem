@@ -20,7 +20,6 @@ export default function BigCalendar(props) {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
     API.getEvents(user.googleId,user.userType)
       .then((events) =>{
-        console.log(events)
         if(events !== undefined){
           setEvents(events)
         }
