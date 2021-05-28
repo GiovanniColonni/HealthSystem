@@ -112,7 +112,7 @@ function App() {
             <div>
               <NavigationBar user={user} />
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList prescriptionlist={prescList}/>
+              <PrescriptionCardList prescriptionlist={prescList} user={user}/>
             </div>
           </Route>
 

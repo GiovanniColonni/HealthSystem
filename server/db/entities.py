@@ -57,6 +57,7 @@ class Prescription(Base):
     patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
     pathFileSystem = Column(String(100))
     notePrescription = Column(String(500))
+    date = Column(String(45), nullable=False)
 
     patient = relationship('Patient')
 
@@ -71,7 +72,7 @@ class Schedule(Base):
     typeExamination = Column(String(45))
     description = Column(String(500))
     dateEnd = Column(String(50), nullable=False)
-    meetingURL = Column(String(45))
+    meetingURL = Column(String(200))
 
     doctor = relationship('Doctor')
     patient = relationship('Patient')

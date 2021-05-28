@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import { FaFileDownload } from 'react-icons/fa';
 import {useHistory} from "react-router";
 import IconButton from '@material-ui/core/IconButton';
+import API_patient from '../api/API_patient';
+import API_doctor from '../api/API_doctor';
+import Doctor from '../classes/Doctor';
+import moment from 'moment';
 
 var cardstyle = { 
     title: {
@@ -41,12 +45,12 @@ export function PrescriptionCard(props) {
       <Item grow minWidth={0}>
         <div style={cardstyle.title}>{props.title}</div>
         <div style={cardstyle.caption}>
-          {props.caption}
+          {"Doct. "+props.caption}
         </div>
       </Item>
       <Row>
         <IconButton >
-          <FaFileDownload />
+          <FaFileDownload onClick={() =>props.downloadPrescription(props.pathFileSystem, props.title)} />
         </IconButton>
       </Row>
     </Row>
@@ -54,11 +58,60 @@ export function PrescriptionCard(props) {
 }
 
 export function PrescriptionCardList(props) {
+  const [prescriptionList, setPrescriptionList] = useState([]);
+  const [doctor, setDoctor] = useState(new Doctor());
+
+  const downloadPrescription = (pathFileSystem, date) =>{
+    API_patient.getPrescription(pathFileSystem)
+      .then((file) =>{
+        let url = window.URL.createObjectURL(file)
+        let a = document.createElement('a')
+        a.href = url;
+        a.download = date+".pdf";
+        a.click();
+        a.remove() 
+      })
+      .catch((err) =>{
+        console.log(err)
+      })
+  }
+
+  useEffect(() => {
+    // REMEMBER to change the doctorId=6; retrieve it from cookies
+    if(props.user.googleId !== undefined){
+      API_patient.getAllPrescriptions(props.user.googleId)
+        .then((prescription) =>{
+          prescription.sort(function (left, right) {
+            return moment.utc(right.date).diff(moment.utc(left.date))
+          });
+          setPrescriptionList(prescription)
+        })
+        .catch((err) =>{
+          setPrescriptionList([])
+          console.log(err)
+        })
+      API_patient.getPatient(props.user.googleId)
+        .then((patient) =>{
+          API_doctor.getDoctor(patient.doctorId)
+            .then((doct) =>{
+              setDoctor(doct)
+            })
+            .catch((err) =>{
+              console.log(err)
+              setDoctor()
+            })
+        })
+      
+    }
+  }, [props.user.googleId]);
+
   return (
     <>
-      {props.prescriptionlist.map(prescription => (
-          <PrescriptionCard title={prescription.date} caption={prescription.doctor}/>
-        ))}
+      {doctor !== undefined && 
+        prescriptionList.map(prescription => (
+              <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
+        ))
+      }
     </>
   );
 }
