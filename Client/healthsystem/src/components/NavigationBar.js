@@ -51,32 +51,38 @@ var navstyle = {
 export default function NavigationBar({user}) {
     const [events, setEvents] = useState([])
     const [notifList, setNotifList] = useState([])
+
+    const doEffect = () =>{
+        API.getEvents(user.googleId,user.userType)
+        .then((events) =>{
+        if(events !== undefined){
+            let notifications = []
+            events.forEach(evnt => {
+                //title is typeExamination
+                if(evnt.title === "meeting"){
+                    const initialDifference = moment(evnt.start).diff(moment(),'minutes')
+                    const endDifference = moment().diff(evnt.end,'minutes')
+                    if(initialDifference < 15 && endDifference <= 0){
+                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                    }
+                }
+            });
+            setNotifList(notifications)
+            setEvents(events)
+        }
+        })
+        .catch((err)=>{
+            console.log(err)
+        });
+    }
+
     useEffect(() => {
         // REMEMBER to change the doctorId=6; retrieve it from cookies
         try {
+            doEffect()
             setInterval(async () => {
-                API.getEvents(user.googleId,user.userType)
-                    .then((events) =>{
-                    if(events !== undefined){
-                        let notifications = []
-                        events.forEach(evnt => {
-                            //title is typeExamination
-                            if(evnt.title === "meeting"){
-                                const initialDifference = moment(evnt.start).diff(moment(),'minutes')
-                                const endDifference = moment().diff(evnt.end,'minutes')
-                                if(initialDifference < 15 && endDifference <= 0){
-                                    notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
-                                }
-                            }
-                        });
-                        setNotifList(notifications)
-                        setEvents(events)
-                    }
-                    })
-                    .catch((err)=>{
-                        console.log(err)
-                    });
-            }, 15000);
+                doEffect()
+            }, 30000);
           } catch(e) {
             console.log(e);
           }

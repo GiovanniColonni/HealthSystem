@@ -1,5 +1,5 @@
 from db import DatabaseSession
-from db.entities import Account, Doctor, Patient, Schedule
+from db.entities import Account, Doctor, Patient, Schedule, Prescription
 from flask import Flask, send_file
 from sqlalchemy.orm import defer
 
@@ -45,6 +45,17 @@ class SelectQuery:
                 .all()
             return events
 
+    def get_all_patient_prescriptions(self, patientId):
+        """
+        :param patientId:
+        :return: a list of prescriptions
+        """
+        with DatabaseSession() as session:
+            events = session.query(Prescription) \
+                .filter(patientId == Prescription.patientId) \
+                .all()
+            return events
+
     def get_user_by_id(self,userId):
         """
         :param userId:
@@ -80,6 +91,22 @@ class SelectQuery:
             if image is not None:
                 image = image.image
             return image
+
+    def get_prescription_file(self, patientId, pathFileSystem):
+        """
+        :param patientId:
+        :param pathFileSystem:
+        :return: return the prescription image
+        """
+        with DatabaseSession() as session:
+            file = session.query(Prescription) \
+                .with_entities(Prescription.pathFileSystem) \
+                .filter(patientId == Prescription.patientId) \
+                .filter(pathFileSystem == Prescription.pathFileSystem) \
+                .first()
+            if file is not None:
+                file = file.pathFileSystem
+            return file
 
     def get_patient(self, patientId):
         """
