@@ -2,14 +2,14 @@
 import './App.css';
 
 import React,{useState,useEffect} from "react"
-import { Switch, BrowserRouter as Route, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
 
 import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
-import {UserCardList} from "./components/UserCard";
+import { UserCardList } from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi"
 import PersonalProfile from './components/PersonalProfile';
@@ -22,6 +22,7 @@ export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
+  const [URLmeeting,setURLmeeting] = useState("")
   
   let history = useHistory()
 
@@ -56,7 +57,6 @@ function App() {
   }
 
   return (
-    
     <div className="App">
       <Switch>
         <Route exact path={"/login"}>
@@ -73,7 +73,7 @@ function App() {
           </Route>
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
-          <NavigationBar user={user} />
+              <NavigationBar user={user} />
               <UserCardList userlist={userlist} />
           </Route>
 
@@ -98,13 +98,18 @@ function App() {
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
             </div>
           </Route>
+          <Route exact path={"/patient/meeting"}>
+            <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
+              <IframeJitsi URL_meeting={URLmeeting}/>
+            </div>
+          </Route>
 
           {/* Only accessible for patient users */}
           <Route exact path={"/prescriptionList"}>
             <div>
               <NavigationBar user={user} />
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList prescriptionlist={prescList}/>
+              <PrescriptionCardList prescriptionlist={prescList} user={user}/>
             </div>
           </Route>
 
@@ -127,7 +132,7 @@ function App() {
             <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
           </div>
         </Route>
-
+        <Redirect to="/home" />
       </Switch>
       
     </div>

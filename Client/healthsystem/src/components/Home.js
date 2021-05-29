@@ -6,7 +6,6 @@ import BigCalendar from './BigCalendar';
 import Button from 'react-bootstrap/Button';
 import { Row } from '@mui-treasury/components/flex';
 
-
 var homestyle = {
     btnCreate: {
         backgroundColor: "#F95F62",
@@ -24,10 +23,10 @@ var homestyle = {
     }
 }
 
-export default function Home(props){
+
+export default function Home({user}){
     const [patient,setPatient] = useState(new Patient())
     const history = useHistory()
-    let {user} = props
     useEffect(() => {
         if(user.userType === "unknown"){
             console.log("go to firstAccess")
@@ -48,17 +47,18 @@ export default function Home(props){
     },[user.userType,patient.doctorId]) 
 
     return(
-    <>
-    <h1>My Appointments {user.username}</h1>
-    {user.userType === 'Patient' &&
-        <Row gap={2} p={2.5}>
-            <Button style={homestyle.btnCreate}>New Appointment</Button>
-        </Row>}
-    <Row gap={2} p={2.5}>
-        <div style={homestyle.calendar}>
-            <BigCalendar />
-        </div>
-    </Row>
-    </>
+        <>
+            <h1>My Appointments {user.username}</h1>
+            {user.userType === 'Patient' &&
+                <Row gap={2} p={2.5}>
+                    <Button style={homestyle.btnCreate}>New Appointment</Button>
+                </Row>
+            }
+            <Row gap={2} p={2.5}>
+                <div style={homestyle.calendar}>
+                    <BigCalendar user={user} />
+                </div>
+            </Row>
+        </>
     )
 }

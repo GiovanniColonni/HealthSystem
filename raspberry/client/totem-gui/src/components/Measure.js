@@ -17,8 +17,7 @@ function Measure ({setMeasure,measure}) {
     let [period,setPeriod] = useState(5000) // T = 5 secondi intervallo tra due misure
     let [measureError,setMeasureError] = useState(false)
     let [interval,setInt] = useState(0) // intervalId, viene 
-    let [thReached,setThReached] = useState(0)
-
+    
     let intervalCallback = () => {
 
 
@@ -41,7 +40,6 @@ function Measure ({setMeasure,measure}) {
                                 }else{
                                 setMeasure(m)
                                 setMeasureError(false)
-                                // se thReached == 1 fare post a link notifiche
                                 }
                             })
                             .catch(()=>{
@@ -67,7 +65,15 @@ function Measure ({setMeasure,measure}) {
         }
         if(mProgres){
            if(measure.thReached === 1){
-               // inviare notifica
+               Api.postMeasure(JSON.stringify(measure.measureValue),measure.dateMeasure)
+               .then((resp)=>{
+                   if(resp != false){
+                    console.log("Measure seded to main server")
+                   }
+                   console.log("Error posting the measure into main server")
+               }).catch((resp) => {
+                   console.log("Error posting the measure into main server")
+               })
            } 
         }
         

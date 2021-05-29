@@ -3,7 +3,7 @@ from flask import Flask, g, request
 from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
-from config import SECRET_KEY, FLASK_HOST
+from config import SECRET_KEY, FLASK_HOST, CERT_PATH, KEY_PATH
 from db.queries.InsertQuery import InsertQuery
 from db.queries.SelectQuery import SelectQuery
 
@@ -35,5 +35,5 @@ app.register_blueprint(patient)
 
 
 if __name__ == "__main__":
-    #app.run(host=FLASK_HOST,ssl_context='adhoc')
-    app.run(host=FLASK_HOST)
+    app.run(host=FLASK_HOST,ssl_context=(CERT_PATH,KEY_PATH))
+    #app.run(host=FLASK_HOST)
