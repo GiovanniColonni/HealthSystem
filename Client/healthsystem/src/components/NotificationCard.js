@@ -16,6 +16,10 @@ var notifcard = {
         backgroundColor: "#77D353"
     }, btnNo: {
         backgroundColor: "#F95F62"
+    }, card: {
+        width: "60%",
+        marginLeft: "auto",
+        marginRight: "auto",
     }
 }
 
@@ -31,8 +35,10 @@ export default function NotificationCard(props) {
             </Card.Title>
             <Card.Text>
                 {props.userType === 'Doctor' &&
-                    <UserCard   title={props.patient}
-                                firstCaption={props.info}/>
+                    <div>
+                        <UserCard   title={props.patient}
+                                    firstCaption={props.info}/>
+                    </div>
                 }
                 {/*props.userType === 'Patient' &&
                      "ACTIVE LINK" */
