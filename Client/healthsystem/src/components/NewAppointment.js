@@ -7,6 +7,7 @@ import { UserCardNoLink } from './UserCard';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
 import Button from '@material-ui/core/Button';
+import ModalFeedback from './ModalFeedback';
 
 var newappstyle = {
     container: {
@@ -38,6 +39,7 @@ export default function NewAppointment({user}){
     
     const [patient, setPatient] = useState({})
     const [doctor, setDoctor] = useState({})
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         API_patient.getPatient(user.googleId)
@@ -88,9 +90,15 @@ export default function NewAppointment({user}){
                             variant="contained"
                             color="secondary"
                             style={newappstyle.okbutton}
+                            onClick={() => setModalShow(true)}
                         >
                             Validate
                         </Button>
+
+                        <ModalFeedback
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                        />
                     </Row>
                 </Column>
                 <Column style={newappstyle.calendar}  gap={'inherit'}>
