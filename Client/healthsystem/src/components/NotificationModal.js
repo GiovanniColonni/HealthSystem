@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import NotificationCard from './NotificationCard';
 import { FaBell } from 'react-icons/fa';
@@ -48,10 +48,6 @@ export default function NotificationMenuModal(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const {user, notifList} = props
-
-    useEffect(() =>{
-
-    }, [])
 
     return (
         <>

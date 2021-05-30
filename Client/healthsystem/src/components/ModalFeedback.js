@@ -20,6 +20,7 @@ export default function ModalFeedback(props) {
     const gotoHome = () =>{
       history.push('\home');
     }
+
     return (
       <Modal
         {...props}
@@ -32,14 +33,14 @@ export default function ModalFeedback(props) {
           <Typography align="center" variant="subtitle1" style={modalstyle.text}>Go back to home</Typography>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={modalstyle.okbutton}
-            onClick={() => gotoHome()}
-        >
-            OK
-        </Button>
+            <Button
+                variant="contained"
+                color="secondary"
+                style={modalstyle.okbutton}
+                onClick={() => gotoHome()}
+            >
+                OK
+            </Button>
         </Modal.Footer>
       </Modal>
     );
