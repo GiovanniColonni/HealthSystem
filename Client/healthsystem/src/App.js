@@ -1,7 +1,7 @@
 
 import './App.css';
 
-import React,{useState,useEffect} from "react"
+import React,{useState,useEffect} from "react";
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
@@ -11,12 +11,13 @@ import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
 import { UserCardList } from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
-import IframeJitsi from "./components/IframeJitsi"
+import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
 import { PrescriptionCardList } from './components/PrescriptionCard';
 import Home from './components/Home';
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
-import SelectDoctor from "./components/SelectDoctor"
+import SelectDoctor from "./components/SelectDoctor";
+import NewAppointment from "./components/NewAppointment";
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -109,7 +110,15 @@ function App() {
             <div>
               <NavigationBar user={user} />
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList prescriptionlist={prescList} user={user}/>
+              <PrescriptionCardList user={user}/>
+            </div>
+          </Route>
+
+          {/* Only accessible for patient users */}
+          <Route exact path={"/newAppointment"}>
+            <div>
+              <NavigationBar user={user} />
+              <NewAppointment user={user} />
             </div>
           </Route>
 
@@ -140,19 +149,6 @@ function App() {
 }
 
 export default App;
-
-const prescList = [
-  {
-    date: "13/02/2021",
-    doctor: "Doctor Strange"
-  },{
-    date: "21/11/2020",
-    doctor: "Doctor Strange"
-  },{
-    date: "13/09/2020",
-    doctor: "Doctor Strange"
-  },
-]
 
 const userlist = [
   {

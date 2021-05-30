@@ -61,7 +61,6 @@ export default function PersonalProfile({user}) {
             .catch((err)=>{
                 console.log(err)
             });
-            //API_patient.getDoctorByPatient(user.googleId)
             API_doctor.getDoctor(currentuser.doctorId)
             .then((doctor) =>{
                 console.log(doctor)
