@@ -19,6 +19,7 @@ import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor"
 import PatientRoute from './components/routes/PatientRoute';
 import DoctorRoute from './components/routes/DoctorRoute';
+import API_doctor from './api/API_doctor';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -77,7 +78,7 @@ function App() {
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
               <NavigationBar user={user} />
-              <UserCardList userlist={userlist} />
+              <UserCardList user={user}/>
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
@@ -157,7 +158,7 @@ const prescList = [
   },
 ]
 
-const userlist = [
+/*const userlist = [
   {
     name: 'Benedetta',
     info: 'Some info'
@@ -174,4 +175,4 @@ const userlist = [
     name: 'Gabriele',
     info: 'Some info'
   },
-];
+]; */

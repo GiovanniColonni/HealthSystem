@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Doctor from '../classes/Doctor'
+import Patient from '../classes/Patient'
 
 async function getDoctor(doctorId){
     const doctor = await axios.get('/doctor/'+doctorId,{
@@ -16,5 +17,23 @@ async function getDoctor(doctorId){
     return doctor
 }
 
-const API_doctor = {getDoctor}
+async function getPatientList(doctorId){
+    return await axios.get('/doctor/'+doctorId+'/patients',{
+    })
+    .then((element) =>{
+        if(!element.data){
+            // Patients not found
+            return undefined
+        }
+        let patient = []
+        element.data.forEach(elem => {
+            patient.push(new Patient(elem.name, elem.surname, doctorId, elem.date, elem.fiscalCode,elem.googleId) )
+        });
+        console.log(patient)
+        return patient
+    })
+    .catch((err) => console.log(err))
+}
+
+const API_doctor = {getDoctor,getPatientList}
 export default API_doctor;

@@ -28,7 +28,7 @@ def index():
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
-@doctor.route('/patients')
+@doctor.route('/<doctorId>/patients')
 @login_required
 def get_patient_list_from_doctor(doctorId):
     s = SelectQuery()
@@ -37,6 +37,8 @@ def get_patient_list_from_doctor(doctorId):
     for row in patients:
         row_list.append(row2dict(row))
     return jsonify(row_list)
+
+
 
 
 def row2dict(row):
