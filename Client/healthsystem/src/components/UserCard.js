@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import {FaUserCircle} from 'react-icons/fa';
 import {useHistory} from "react-router";
+import API_patient from '../api/API_patient';
 
 var cardstyle = { 
     title: {
@@ -49,7 +50,7 @@ export function UserCard(props) {
         <div onClick={gotoDetails}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
-                <FaUserCircle style={cardstyle.icon}/>
+                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon}/>
           </Item>
           <Row wrap grow gap={0.5} minWidth={0}>
             <Item grow minWidth={0}>

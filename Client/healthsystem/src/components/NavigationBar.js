@@ -6,6 +6,7 @@ import Image from 'react-bootstrap/Image'
 import CrossIcon from '../icons/greenCross.png';
 import API from '../api/API';
 import moment from 'moment';
+import API_patient from '../api/API_patient';
 
 var logostyle = {
     logo: {
@@ -63,12 +64,26 @@ export default function NavigationBar({user}) {
                     const initialDifference = moment(evnt.start).diff(moment(),'minutes')
                     const endDifference = moment().diff(evnt.end,'minutes')
                     if(initialDifference < 15 && endDifference <= 0){
-                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                        if(user.userType == "Doctor"){
+                            // get Patient username
+                            API_patient.getPatient(evnt.patientId)
+                                .then((patient) =>{
+                                    evnt.patient = patient.name + " " + patient.surname
+                                    notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: evnt.patient, patientId: evnt.patientId})
+                                    setNotifList(notifications)
+                                    setEvents(events)
+                                })
+                                .catch((err) =>{
+                                    console.log(err)
+                                })
+                        }else{
+                            notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                            setNotifList(notifications)
+                            setEvents(events)
+                        }
                     }
                 }
             });
-            setNotifList(notifications)
-            setEvents(events)
         }
         })
         .catch((err)=>{
@@ -77,7 +92,6 @@ export default function NavigationBar({user}) {
     }
 
     useEffect(() => {
-        // REMEMBER to change the doctorId=6; retrieve it from cookies
         try {
             doEffect()
             setInterval(async () => {

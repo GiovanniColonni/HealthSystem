@@ -101,7 +101,6 @@ export function PrescriptionCardList(props) {
               setDoctor()
             })
         })
-      
     }
   }, [props.user.googleId]);
 
