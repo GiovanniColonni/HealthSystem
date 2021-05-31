@@ -77,7 +77,7 @@ export default function NotificationMenuModal(props) {
             </Modal.Header>
             <Modal.Body> 
                 {notifList.map(notif => (
-                    <NotificationCard type={notif.type} userType={user.userType} patient={notif.patient} date={moment(notif.date).toString()} info={notif.info} URL={notif.URL}/>
+                    <NotificationCard type={notif.type} userType={user.userType} patient={notif.patient} patientId={notif.patientId} date={moment(notif.date).format('MM-DD-YYYY HH:MM').toString()} info={notif.info} URL={notif.URL}/>
                 ))}
             </Modal.Body>
             <Modal.Footer>

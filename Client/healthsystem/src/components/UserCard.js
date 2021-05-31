@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import {FaUserCircle} from 'react-icons/fa';
 import {useHistory} from "react-router";
+import API_patient from '../api/API_patient';
+import API_doctor from '../api/API_doctor';
 
 var cardstyle = { 
     title: {
@@ -49,7 +51,7 @@ export function UserCard(props) {
         <div onClick={gotoDetails}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
-                <FaUserCircle style={cardstyle.icon}/>
+                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon}/>
           </Item>
           <Row wrap grow gap={0.5} minWidth={0}>
             <Item grow minWidth={0}>
@@ -62,14 +64,29 @@ export function UserCard(props) {
         </Row>
         </div>
       );
-    }
+}
+  
+export function UserCardList({user}) {
+  const [patientList,setPatientList] = useState([{}])
 
-export function UserCardList(props) {
+
+  async function getPatientList(doctorId){
+    API_doctor.getPatientList(doctorId)
+      .then((patients) =>{
+        console.log(patients)
+        setPatientList(patients)
+      })
+  }
+
+  useEffect( () => {
+    getPatientList(user.googleId)
+  },[user.googleId, patientList.length]) 
+
   return (
     <>
-      {props.userlist.map(user => (
-          <UserCard title={user.name} caption={user.info}/>
-        ))}
+      {patientList !== undefined && patientList.map(user => (
+          <UserCard title={user.name + " " + user.surname} caption={""} patientId={user.googleId}/>
+      )) }
     </>
   );
 }

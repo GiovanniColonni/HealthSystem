@@ -80,7 +80,7 @@ class SelectQuery:
 
     def get_doctor_image(self,doctorId):
         """
-        :param doctorId:
+        :param doctorId: it works also with patientId
         :return: return the doctor image
         """
         with DatabaseSession() as session:
@@ -91,6 +91,7 @@ class SelectQuery:
             if image is not None:
                 image = image.image
             return image
+
 
     def get_prescription_file(self, patientId, pathFileSystem):
         """
