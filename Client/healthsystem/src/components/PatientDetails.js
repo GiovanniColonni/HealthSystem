@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'react-bootstrap/Image';
 import PatientAvatar from '../icons/Woman_01.png';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
 import SensorSelector from './SensorSelector';
+import { useHistory } from 'react-router';
 
 var detailsstyle = {
     container: {
@@ -54,6 +55,8 @@ var detailsstyle = {
 }
 
 export default function PatientDetails(props) {
+    const history = useHistory()
+    console.log(history.location.state.patient)
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
@@ -61,12 +64,12 @@ export default function PatientDetails(props) {
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
-                    <Image src={PatientAvatar} roundedCircle style={detailsstyle.avatar} />
+                    <Image src={"/patient/doctorImage/"+history.location.state.patient.googleId} roundedCircle style={detailsstyle.avatar} />
                 </Column>
                 <Column>
                     <Item>
                         <div style={detailsstyle.name}>
-                            Name Surname
+                            {history.location.state.patient.name + " " + history.location.state.patient.surname }
                         </div>
                         <div style={detailsstyle.caption}>
                             Some info

@@ -45,10 +45,11 @@ export function UserCard(props) {
   let history = useHistory()
 
   const gotoDetails = () =>{ 
-    history.push('\patientDetails');
+    //history.push('\patientDetails');
+    
   }
       return (
-        <div onClick={gotoDetails}>
+        <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
                 <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon}/>
@@ -73,7 +74,6 @@ export function UserCardList({user}) {
   async function getPatientList(doctorId){
     API_doctor.getPatientList(doctorId)
       .then((patients) =>{
-        console.log(patients)
         setPatientList(patients)
       })
   }
@@ -85,7 +85,8 @@ export function UserCardList({user}) {
   return (
     <>
       {patientList !== undefined && patientList.map(user => (
-          <UserCard title={user.name + " " + user.surname} caption={""} patientId={user.googleId}/>
+          user.name !== undefined && 
+          <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
     </>
   );

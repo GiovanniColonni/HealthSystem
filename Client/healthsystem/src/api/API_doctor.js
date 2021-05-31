@@ -29,7 +29,13 @@ async function getPatientList(doctorId){
         element.data.forEach(elem => {
             patient.push(new Patient(elem.name, elem.surname, doctorId, elem.date, elem.fiscalCode,elem.googleId) )
         });
-        console.log(patient)
+        patient.sort((a,b) => {     //sort by surname
+            if(a.surname>b.surname){
+              return 1
+            }else{
+              return -1
+            }
+          })
         return patient
     })
     .catch((err) => console.log(err))
