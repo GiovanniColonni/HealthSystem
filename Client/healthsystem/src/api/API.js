@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Event from '../classes/Event'
 import moment from 'moment'
+import Doctor from '../classes/Doctor'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -10,7 +11,6 @@ async function postLogin(id_token,email,googleId){
         formData.set("id_token",id_token)
         formData.set("email",email)
         formData.set("googleId",googleId)
-        
         try{
             let resp = await axios.post("/login",formData)
             
@@ -43,15 +43,20 @@ async function submitFirstAccess(id,name,surname,birthday,cf,userType){
     formData.set("cf",cf)
     formData.set("userType",userType)
 
-    try{
-        let resp = await axios.post("/account/submitFirstAccess")
-        if(resp.status === 200){
-            return true
-        }
-        return false
-    }catch (e){
-        return false
-    }
+
+    //let resp = await axios.post("/account/submitFirstAccess")
+    return await axios({
+        method: "post",
+        url: "/account/submitFirstAccess",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response){
+        console.log(response);
+        return response
+    }).catch(function (response){
+        console.log(response);
+        return response
+    });
 }
 
 async function changeUserType(id,type){
@@ -74,14 +79,14 @@ async function isAuthenticated(){
     if (resp.status === 200){
         return resp.data
     }else{
-        throw "error" // fare gestione più precisa dell'erroe
+        throw resp.status// fare gestione più precisa dell'erroe
     }
         
 }
 
 // update this function
 async function getEvents(id,type){
-    if(type === 'doctor'){
+    if(type === 'Doctor'){
         const events = await axios.get('/doctor/event',{
             params:{
                 doctorId: id
@@ -90,18 +95,42 @@ async function getEvents(id,type){
         .then((response) =>{ 
             let events = []
             response.data.forEach(element => {
-                console.log(element.typeExamination)
-                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,"put conference in db"))
+            events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL, element.doctorId, element.patientId))
             });
-            console.log(events)
             return events
         })
         .catch((err) => console.log("error"))
         return events
         //tornare i dati 
+    }else if(type === 'Patient'){
+        const events = await axios.get('/patient/event/'+id,{
+        })
+        .then((response) =>{ 
+            let events = []
+            response.data.forEach(element => {
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
+            });
+            return events
+        })
+        .catch((err) => console.log(err))
+        return events
     }
 }
 
+async function getAllDoctors(){
+    const doctors = await axios.get('/patient/doctors',{
+    })
+    .then((response) =>{ 
+        let doctors = []
+        response.data.forEach(element => {
+            doctors.push(new Doctor(element.name,element.surname,element.date,element.googleId))
+        });
+        return doctors
+    })
+    .catch((err) => console.log("error"))
+    return doctors
+}
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess}
+
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors}
 export default API;

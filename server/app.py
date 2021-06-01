@@ -25,11 +25,13 @@ with app.app_context():
     from blueprint.doctor import doctor
     from blueprint.account import account
     from blueprint.totem import totem
+    from blueprint.patient import patient
 
 app.register_blueprint(account)
 app.register_blueprint(auth)
 app.register_blueprint(doctor)
-app. register_blueprint(totem)
+app.register_blueprint(totem)
+app.register_blueprint(patient)
 
 
 if __name__ == "__main__":

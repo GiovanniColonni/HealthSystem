@@ -49,6 +49,21 @@ async function logout(){
         return false
     }
 }
+// "measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""
+async function postMeasure(measureValue,dataMeasure){
+    let form = new FormData();
+    form.set("measureValue",measureValue)
+    form.set("dataMeasure",dataMeasure)
+    try{
+        let resp = await axios.post("/postMeasure",dataMeasure);
+        if(resp.status === 200){
+            return true;
+        }
+        return false;
+    }catch(e){
+        return false
+    }
+}
 //--------- API del Totem
 const prefix = "/totem"
 
@@ -94,5 +109,5 @@ async function getMeasure(){
 
 }
 
-let Api = {login,logout,isAuthenticated,startMeasure,getMeasure}
+let Api = {login,logout,isAuthenticated,startMeasure,getMeasure,postMeasure}
 export default Api;
