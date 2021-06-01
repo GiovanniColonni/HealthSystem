@@ -19,7 +19,9 @@ function Login({setLoginState,setUser,loginState}){
     let history = useHistory()
 
     let loginSuccess = function(resp){
-        
+      
+
+        console.log(resp.takenObj)
         const id_token = resp.tokenObj.id_token
         const email = resp.profileObj.email
         const googleId = resp.profileObj.googleId
