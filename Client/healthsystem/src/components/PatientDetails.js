@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'react-bootstrap/Image';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';

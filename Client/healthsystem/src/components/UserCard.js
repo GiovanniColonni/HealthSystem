@@ -41,7 +41,7 @@ var cardstyle = {
 export function UserCard(props) {
   
   let history = useHistory()
-
+  
       return (
         <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
