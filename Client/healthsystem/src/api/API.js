@@ -79,7 +79,7 @@ async function isAuthenticated(){
     if (resp.status === 200){
         return resp.data
     }else{
-        throw "error" // fare gestione più precisa dell'erroe
+        throw resp.status// fare gestione più precisa dell'erroe
     }
         
 }

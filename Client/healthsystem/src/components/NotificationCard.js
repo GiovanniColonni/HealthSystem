@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button"
 import {FaCheck, FaTimes} from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
 import { useHistory } from 'react-router';
-import moment from 'moment';
 
 var notifcard = {
     btnJoin: {

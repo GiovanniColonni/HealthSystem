@@ -1,9 +1,8 @@
-import {React, useContext, useState, useEffect, useRef} from 'react';
-import { Redirect, useHistory } from 'react-router';
-import API from '../api/API';
+import {React, useState, useEffect} from 'react';
+import { useHistory } from 'react-router';
 import API_patient from '../api/API_patient';
 import Patient from '../classes/Patient';
-import { Row, Item } from '@mui-treasury/components/flex';
+import { Row } from '@mui-treasury/components/flex';
 import Button from 'react-bootstrap/Button';
 import BigCalendar from './BigCalendar';
 
@@ -45,7 +44,7 @@ export default function Home({user}){
                     console.log(err)
                 })
         }
-    },[user.userType,patient.doctorId]) 
+    },[user.userType,patient.doctorId, history, user.googleId]) 
 
     return(
         <>

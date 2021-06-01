@@ -53,45 +53,45 @@ export default function NavigationBar({user}) {
     const [events, setEvents] = useState([])
     const [notifList, setNotifList] = useState([])
 
-    const doEffect = () =>{
-        API.getEvents(user.googleId,user.userType)
-        .then((events) =>{
-        if(events !== undefined){
-            let notifications = []
-            events.forEach(evnt => {
-                //title is typeExamination
-                if(evnt.title === "meeting"){
-                    const initialDifference = moment(evnt.start).diff(moment(),'minutes')
-                    const endDifference = moment().diff(evnt.end,'minutes')
-                    if(initialDifference < 15 && endDifference <= 0){
-                        if(user.userType == "Doctor"){
-                            // get Patient username
-                            API_patient.getPatient(evnt.patientId)
-                                .then((patient) =>{
-                                    evnt.patient = patient.name + " " + patient.surname
-                                    notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: evnt.patient, patientId: evnt.patientId})
-                                    setNotifList(notifications)
-                                    setEvents(events)
-                                })
-                                .catch((err) =>{
-                                    console.log(err)
-                                })
-                        }else{
-                            notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
-                            setNotifList(notifications)
-                            setEvents(events)
-                        }
-                    }
-                }
-            });
-        }
-        })
-        .catch((err)=>{
-            console.log(err)
-        });
-    }
 
     useEffect(() => {
+        const doEffect = () =>{
+            API.getEvents(user.googleId,user.userType)
+            .then((events) =>{
+            if(events !== undefined){
+                let notifications = []
+                events.forEach(evnt => {
+                    //title is typeExamination
+                    if(evnt.title === "meeting"){
+                        const initialDifference = moment(evnt.start).diff(moment(),'minutes')
+                        const endDifference = moment().diff(evnt.end,'minutes')
+                        if(initialDifference < 15 && endDifference <= 0){
+                            if(user.userType === "Doctor"){
+                                // get Patient username
+                                API_patient.getPatient(evnt.patientId)
+                                    .then((patient) =>{
+                                        evnt.patient = patient.name + " " + patient.surname
+                                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: evnt.patient, patientId: evnt.patientId})
+                                        setNotifList(notifications)
+                                        setEvents(events)
+                                    })
+                                    .catch((err) =>{
+                                        console.log(err)
+                                    })
+                            }else{
+                                notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
+                                setNotifList(notifications)
+                                setEvents(events)
+                            }
+                        }
+                    }
+                });
+            }
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+        }
         try {
             doEffect()
             setInterval(async () => {
@@ -100,7 +100,7 @@ export default function NavigationBar({user}) {
           } catch(e) {
             console.log(e);
           }
-      }, [user.googleId]);
+      }, [user.googleId, user.userType]);
 
     return (
         <>

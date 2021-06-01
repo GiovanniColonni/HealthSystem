@@ -52,8 +52,7 @@ export default function PersonalProfile({user}) {
     const [doctor, setDoctor] = useState()
 
     useEffect(() => {
-        console.log(user)
-        if (user.userType == "Patient") {
+        if (user.userType === "Patient") {
             API_patient.getPatient(user.googleId)
             .then((patient) =>{
             setCurrentUser(patient)
@@ -69,7 +68,7 @@ export default function PersonalProfile({user}) {
             .catch((err)=>{
                 console.log(err)
             });
-        } else if (user.userType == "Doctor") {
+        } else if (user.userType === "Doctor") {
             API_doctor.getDoctor(user.googleId)
             .then((doctor) =>{
             setCurrentUser(doctor)
@@ -78,12 +77,7 @@ export default function PersonalProfile({user}) {
     
             });
         }
-      }, [user.googleId,currentuser.doctorId]);
-
-      const value = {
-        user: currentuser,
-        doc: doctor
-      }
+    }, [user.googleId,currentuser.doctorId, user.userType]);
 
     return (
         <div style={profilestyle.container}>

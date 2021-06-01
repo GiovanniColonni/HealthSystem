@@ -14,7 +14,7 @@ export default function EventModal(props) {
         if(initialDifference < 15 && endDifference <= 0){
             setDisableButton(false)
         }
-    },[disableButton])
+    },[disableButton, props.event.start, props.event.end])
 
     return(
         <Modal show={props.show} onHide={props.onHide}>

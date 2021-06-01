@@ -1,8 +1,8 @@
 
 import './App.css';
 
-import React,{useState,useEffect, useCallback, useMemo} from "react"
-import { Switch, Route,Link,Redirect, useHistory } from 'react-router-dom';
+import React,{useState,useEffect} from "react"
+import { Switch, Route,Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
 import NavigationBar from './components/NavigationBar';
@@ -14,33 +14,15 @@ import IframeJitsi from "./components/IframeJitsi"
 import PersonalProfile from './components/PersonalProfile';
 import { PrescriptionCardList } from './components/PrescriptionCard';
 import Home from './components/Home';
-import {UserContext} from "./context/UserContext"
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor"
-import PatientRoute from './components/routes/PatientRoute';
-import DoctorRoute from './components/routes/DoctorRoute';
-import API_doctor from './api/API_doctor';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
-  const [URLmeeting,setURLmeeting] = useState("")
   
   let history = useHistory()
-
-  async function checkUser(){
-    API.isAuthenticated()
-      .then((userJson) =>{ 
-        setLoginState(true)
-        setUser(userJson)
-      })
-      .catch((err)=> {
-        setLoginState(false) 
-        history.push("/login")
-        console.log(err)
-      })
-  }
 
     /*handleErrors(err){
       if(err) {
@@ -52,12 +34,17 @@ function App() {
     }*/
 
   useEffect( () => {
-    checkUser()
-  },[loginState]) 
-
-  const callSetUser = (usr) =>{
-    setUser(usr)
-  }
+    API.isAuthenticated()
+      .then((userJson) =>{ 
+        setLoginState(true)
+        setUser(userJson)
+      })
+      .catch((err)=> {
+        setLoginState(false) 
+        history.push("/login")
+        console.log(err)
+      })
+  },[loginState,history]) 
 
   return (
 
@@ -104,7 +91,7 @@ function App() {
           </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
-              <IframeJitsi URL_meeting={URLmeeting}/>
+              <IframeJitsi/>
             </div>
           </Route>
 

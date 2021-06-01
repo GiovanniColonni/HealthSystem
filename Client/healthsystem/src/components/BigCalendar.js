@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import Event from '../classes/Event'
 import EventModal from '../components/EventModal'
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import API from '../api/API';
@@ -9,8 +8,6 @@ import API from '../api/API';
 const localizer = momentLocalizer(moment)
 
 export default function BigCalendar(props) {
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const toggle = () => setPopoverOpen(!popoverOpen);
   const [show, setShow] = useState(false);
   const [eventClk, setEventClk] = useState(null)
   const handleClose = () => setShow(false);
@@ -27,7 +24,7 @@ export default function BigCalendar(props) {
       .catch((err)=>{
 
       });
-  }, [user.googleId]);
+  }, [user.googleId, user.userType]);
   // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
   const [events, setEvents] = useState([ev])
   return (
