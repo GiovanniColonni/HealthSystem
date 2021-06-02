@@ -1,15 +1,8 @@
 import {useState,useEffect} from "react"
 import Button from "@material-ui/core/Button"
-
+import {Line} from "react-chartjs-2"
 import Api from "../api/Api"
 
-// TODO : fare due bottoni per misura continua o singola 
-// l'oggetto measure che viene ritornato ha 6 campi:
-// 1) mtype, se continua o no (se continua attivare timer altrimenti no)
-// 2) thReached se = 1 allora è stata superata una soglia e bisogna inviare una notifica
-// 3) inProgress se = 1 la misura non è finita, se 0 allora finita
-// 4) dateMeasure = data avvio misura
-// 5) measureValue = dipende dalla misura ma è una stringa che va parsata come Json e ci sono i dati della misura stessa
 
 function Measure ({setMeasure,measure}) {
     
@@ -17,12 +10,19 @@ function Measure ({setMeasure,measure}) {
     let [period,setPeriod] = useState(5000) // T = 5 secondi intervallo tra due misure
     let [measureError,setMeasureError] = useState(false)
     let [interval,setInt] = useState(0) // intervalId, viene 
-    
+    let [measureValue,setMeasureValue] = useState([])
+
     let intervalCallback = () => {
 
 
         Api.onStartMeasure()
 
+    }
+
+    let processMeasure = (m) => {
+
+        let measure_json = JSON.parse(m)
+        setMeasureValue(measure_json)
     }
     let onStartMeasure = () => {
        if(!mProgres){ 
@@ -34,11 +34,13 @@ function Measure ({setMeasure,measure}) {
                         ()=>{
                             // console.log("log")
                             Api.getMeasure().then((m)=>{
+                                
                                 if(m === false){
                                     setMProgres(false)
                                     setMeasure("no active measure")
                                 }else{
-                                setMeasure(m)
+                                    
+                                setMeasureValue(JSON.parse(m.measureValue))
                                 setMeasureError(false)
                                 }
                             })
@@ -61,7 +63,7 @@ function Measure ({setMeasure,measure}) {
         
         if(mProgres === false){
             clearInterval(interval)
-            console.log("end measure")
+            //console.log("end measure")
         }
         if(mProgres){
            if(measure.thReached === 1){
@@ -83,7 +85,7 @@ function Measure ({setMeasure,measure}) {
     return(
         <div>
             <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>            
-            {mProgres && <h1>Measure in progress : </h1> && <h2>{JSON.stringify(measure.measureValue)}</h2>}
+            {<h1>Measure in progress : </h1> && <h2>{measure.measureValue}</h2>}
             {measureError && <h1>Problema con misurazione</h1>}
         </div>
        
