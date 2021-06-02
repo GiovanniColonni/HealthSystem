@@ -2,6 +2,10 @@ import axios from 'axios'
 import Doctor from '../classes/Doctor'
 import Patient from '../classes/Patient'
 
+axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
+axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
+
+
 async function getDoctor(doctorId){
     const doctor = await axios.get('/doctor/'+doctorId,{
     })
