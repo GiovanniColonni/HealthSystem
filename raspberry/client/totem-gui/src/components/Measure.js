@@ -14,6 +14,8 @@ function Measure ({setMeasure,measure}) {
     let [yGraph,setYGraph] = useState()
     let [xGraph,setXGraph] = useState()
 
+    let /**tmp */ [message,setMessage] = useState("first")
+
     let intervalCallback = () => {
 
 
@@ -40,7 +42,9 @@ function Measure ({setMeasure,measure}) {
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgba(255, 99, 132, 0.2)',
       },
-    ],}
+    ],
+    }
+
     let onStartMeasure = () => {
        if(!mProgres){ 
         Api.startMeasure()
@@ -58,6 +62,7 @@ function Measure ({setMeasure,measure}) {
                                     setMeasure("no active measure")
                                 }else{
                                     console.log(m)
+                                    setMessage("process measure")
                                     let measure_json = JSON.parse(m.measureValue)
                                     console.log(measure_json)
                                     setMeasureValue(measure_json)
@@ -121,6 +126,7 @@ function Measure ({setMeasure,measure}) {
             <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>            
             {<h1>Measure in progress : </h1> && <h2>{measure.measureValue}</h2>}
             {measureError && <h1>Problema con misurazione</h1>}
+            {<h1>{message}</h1>}
             <Line width={100} height={50} data={data} options={options}/>
         </div>
        
