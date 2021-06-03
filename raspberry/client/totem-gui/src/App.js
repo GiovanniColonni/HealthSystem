@@ -51,6 +51,8 @@ function App() {
   
   return (
     <div className="App">
+      <h1>Header da mettere</h1>
+      {<Button onClick={()=>{Api.logout(); history.push("login")}}></Button>}
       <Switch>
           <Route exact path={"/login"}>
               <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>

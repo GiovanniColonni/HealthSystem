@@ -49,7 +49,7 @@ function Login({setLoginState,setUser,loginState}){
 
     if(loginState === true){
         console.log("qui 2")
-        return <Redirect to={"/home"} />
+        history.push("/home")
     }
     return(
        <div> 
