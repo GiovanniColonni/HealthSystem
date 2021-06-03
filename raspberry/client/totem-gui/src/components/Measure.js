@@ -11,6 +11,8 @@ function Measure ({setMeasure,measure}) {
     let [measureError,setMeasureError] = useState(false)
     let [interval,setInt] = useState(0) // intervalId, viene 
     let [measureValue,setMeasureValue] = useState([])
+    let [yGraph,setYGraph] = useState()
+    let [xGraph,setXGraph] = useState()
 
     let intervalCallback = () => {
 
@@ -19,11 +21,26 @@ function Measure ({setMeasure,measure}) {
 
     }
 
-    let processMeasure = (m) => {
+    const options = {scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },}
 
-        let measure_json = JSON.parse(m)
-        setMeasureValue(measure_json)
-    }
+    const data = {labels: xGraph, // la x
+    datasets: [
+      {
+        label: 'Mettere nome misura',
+        data: yGraph, // la y
+        fill: false,
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgba(255, 99, 132, 0.2)',
+      },
+    ],}
     let onStartMeasure = () => {
        if(!mProgres){ 
         Api.startMeasure()
@@ -32,19 +49,36 @@ function Measure ({setMeasure,measure}) {
                     setMProgres(true)
                     const timer = setInterval(
                         ()=>{
-                            // console.log("log")
+                            
                             Api.getMeasure().then((m)=>{
+                                
                                 
                                 if(m === false){
                                     setMProgres(false)
                                     setMeasure("no active measure")
                                 }else{
-                                    
-                                setMeasureValue(JSON.parse(m.measureValue))
-                                setMeasureError(false)
+                                    console.log(m)
+                                    let measure_json = JSON.parse(m.measureValue)
+                                    console.log(measure_json)
+                                    setMeasureValue(measure_json)
+                                    if(measure_json.hasOwnProperty("Operc")){
+                                        setYGraph([...yGraph,measure_json["Operc"]])
+                                    }
+                                    if(measure_json.hasOwnProperty("Hrate") && !measure_json.hasOwnProperty("Max") ){
+                                        setYGraph([...yGraph,measure_json["HRate"]])
+                                    }else{
+                                        // ci sarebbe anche la pressione massima e minima
+                                        console.log("QUI MEASURE")
+                                        setYGraph([...yGraph,measure_json["HRate"]])
+                                    }
+                                    // setto anche la y per avanzare
+                                    setXGraph([...xGraph,xGraph.lenght])
+                                    console.log(measure_json);
+                                    setMeasureError(false)
                                 }
                             })
                             .catch(()=>{
+                                console.log("err qui")
                                 setMeasureError(true)
                             })
                         },period
@@ -87,6 +121,7 @@ function Measure ({setMeasure,measure}) {
             <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>            
             {<h1>Measure in progress : </h1> && <h2>{measure.measureValue}</h2>}
             {measureError && <h1>Problema con misurazione</h1>}
+            <Line width={100} height={50} data={data} options={options}/>
         </div>
        
     )

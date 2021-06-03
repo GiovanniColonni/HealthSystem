@@ -8,8 +8,8 @@ function Home(){
     return(
         <div>
             <h1>Home</h1>
-            <Button onClick={()=>hisotry.push("/measure")}>Start a measure</Button>
-            <Button onClick={()=>hisotry.push("/videocall")}>Start the appointment</Button>
+            <Button variant="primary" onClick={()=>history.push("/measure")}>Start a measure</Button>
+            <Button variant="contained" onClick={()=>history.push("/videocall")}>Start the appointment</Button>
 	    </div>
     )
 }
