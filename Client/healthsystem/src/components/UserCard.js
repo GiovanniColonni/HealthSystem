@@ -61,12 +61,16 @@ export function UserCardNoLink(props) {
 export function UserCard(props) {
   
   let history = useHistory()
+
+  useEffect( () => {
+    console.log(props)
+  },[]) 
   
       return (
         <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
-                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={props.patient.name + " " + props.patient.surname}/>
+                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={""}/>
           </Item>
           <Row wrap grow gap={0.5} minWidth={0}>
             <Item grow minWidth={0}>
@@ -99,7 +103,7 @@ export function UserCardList({user}) {
   return (
     <>
       {patientList !== undefined && patientList.map(user => (
-          user.name !== undefined && 
+          user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
     </>

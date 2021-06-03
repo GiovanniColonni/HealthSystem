@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'react-bootstrap/Image';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
@@ -6,6 +6,7 @@ import SensorSelector from './SensorSelector';
 import oxygen from '../icons/OxyIcon.png';
 import heart from '../icons/HeartBeatingIcon.png';
 import { useHistory } from 'react-router';
+import API_doctor from '../api/API_doctor';
 
 const images = [
     {
@@ -69,6 +70,19 @@ var detailsstyle = {
 }
 
 export default function PatientDetails(props) {
+    const [comment, setComment] = useState("")
+
+    useEffect(() => {
+        API_doctor.getLastPatientComment(history.location.state.patient.googleId)
+            .then((comment) =>{
+                console.log(comment)
+                setComment(comment)
+            })
+            .catch((err) =>{
+                console.log(err)
+            })
+    },[]);
+
     const history = useHistory()
     console.log(history.location.state.patient)
     return (
@@ -86,18 +100,20 @@ export default function PatientDetails(props) {
                             {history.location.state.patient.name + " " + history.location.state.patient.surname }
                         </div>
                         <div style={detailsstyle.caption}>
-                            Some info
-                            Some other info...
+                            {/*Some info
+                            Some other info... */}
                         </div>
                     </Item>
                 </Column>
                 <Column style={detailsstyle.commentblock}>
                     <Item>
                         <div style={detailsstyle.commenttitle}>
-                            Last Comment - 04/02/2021
+                            {/* Last Comment - 04/02/2021 */}
+                            {"Last Comment - " + comment.dateStart }
                         </div>
                         <div style={detailsstyle.commenttext}>
-                            Some observations from last appointment...
+                            {/*Some observations from last appointment... */}
+                            {comment && comment.description}
                         </div>
                     </Item>
                 </Column>

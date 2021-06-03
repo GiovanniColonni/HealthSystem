@@ -4,6 +4,7 @@ from .. import DatabaseSession
 from ..entities import Account
 from ..entities import Patient
 from ..entities import Doctor
+from ..entities import Measure
 from sqlalchemy import insert
 from .. import engine
 connection = engine.connect()
@@ -82,3 +83,23 @@ class InsertQuery:
             print("EXCEPTION!!!")
             print("HANDLE THIS EXCEPTION")
             return False
+
+    def insert_measure(self, patientId, type, value, name, date):
+        user_entity = Measure
+        instance = user_entity(patientId=patientId,
+                               type=type,
+                               value=value,
+                               name=name,
+                               date=date
+                               )
+        try:
+            with DatabaseSession() as session:
+                session.add(instance)
+                session.flush()
+                session.commit()
+                return True
+        except SQLAlchemyError:
+            print("EXCEPTION!!!")
+            print("HANDLE THIS EXCEPTION")
+            return False
+

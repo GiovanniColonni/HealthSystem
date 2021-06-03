@@ -4,6 +4,7 @@ from sys import path
 from flask import Blueprint, request, jsonify, send_file, abort, make_response
 from db.queries.SelectQuery import SelectQuery
 from db.queries.UpdateQuery import UpdateQuery
+from db.queries.InsertQuery import InsertQuery
 from flask_login import login_required
 
 patient = Blueprint('patient', __name__, url_prefix="/patient")
@@ -103,6 +104,19 @@ def get_all_prescritions(patientId):
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+
+@patient.route('/measure', methods=['POST'])
+@login_required
+def insert_measure():
+    patientId = request.form.get('patientId')
+    type = request.form.get('type')
+    value = request.form.get('value')
+    name = request.form.get('name')
+    date = request.form.get('date')
+    i = InsertQuery()
+    if i.insert_measure(patientId, type, value, name, date):
+        return make_response("Ok", 200)
+    return make_response("No Ok", 400)
 
 def row2dict(row):
     """

@@ -30,6 +30,7 @@ export default function BigCalendar(props) {
   return (
     <>
     <Calendar
+      selectable
       localizer={localizer}
       events={events}
       defaultDate={new Date()}
@@ -37,6 +38,7 @@ export default function BigCalendar(props) {
       startAccessor="start"
       endAccessor="end"
       onSelectEvent={(event) => {setShow(true); setEventClk(event)}}
+      onSelectSlot={({start,end}) => console.log(start + " " +end)}
       style={{ height: 500 }} // remove style here. Use CSS file
     />
     {eventClk !== null && <EventModal show={show} animation={true} event={eventClk} onHide={handleClose}/>}
