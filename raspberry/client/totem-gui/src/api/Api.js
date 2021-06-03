@@ -51,12 +51,12 @@ async function logout(){
     }
 }
 
-async function postMeasure(measureValue,dataMeasure){
+async function postMeasure(type,value,date){
     let form = new FormData();
     form.set("measureValue",measureValue)
     form.set("dataMeasure",dataMeasure)
     try{
-        let resp = await axios.post(`${prefix}/postMeasure`,dataMeasure);
+        let resp = await axios.post(`${prefix}/patient/measure`,dataMeasure);
         if(resp.status === 200){
             return true;
         }
