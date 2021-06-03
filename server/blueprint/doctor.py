@@ -4,7 +4,7 @@ import jsonpickle
 
 from db.queries.SelectQuery import SelectQuery
 
-doctor = Blueprint('doctor', __name__, url_prefix="/doctor")
+doctor = Blueprint('doctor', __name__, url_prefix="/api/doctor")
 
 @doctor.route('/<doctorId>')
 @login_required

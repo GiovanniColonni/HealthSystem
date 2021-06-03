@@ -12,7 +12,7 @@ async function postLogin(id_token,email,googleId){
         formData.set("email",email)
         formData.set("googleId",googleId)
         try{
-            let resp = await axios.post("/login",formData)
+            let resp = await axios.post("/api/login",formData)
             
             if (resp.status === 200){
               return true
@@ -24,7 +24,7 @@ async function postLogin(id_token,email,googleId){
 }
 async function logout(){
     try{
-        let resp = await axios.delete("/login")
+        let resp = await axios.delete("/api/login")
         if(resp.status === 204){
             return true
         }
@@ -47,7 +47,7 @@ async function submitFirstAccess(id,name,surname,birthday,cf,userType){
     //let resp = await axios.post("/account/submitFirstAccess")
     return await axios({
         method: "post",
-        url: "/account/submitFirstAccess",
+        url: "/api/account/submitFirstAccess",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
     }).then(function (response){
@@ -64,7 +64,7 @@ async function changeUserType(id,type){
     formData.set("googleId",id)
     formData.set("userType",type)
     try{
-        let resp = await axios.post("/updateType",formData)
+        let resp = await axios.post("/api/updateType",formData)
         if(resp.status === 200){
             return true
         }
@@ -75,7 +75,7 @@ async function changeUserType(id,type){
 
 async function isAuthenticated(){
     // bisognerebbe fare controllo errore   
-    const resp = await axios.get("/login")
+    const resp = await axios.get("/api/login")
     if (resp.status === 200){
         return resp.data
     }else{
@@ -87,7 +87,7 @@ async function isAuthenticated(){
 // update this function
 async function getEvents(id,type){
     if(type === 'Doctor'){
-        const events = await axios.get('/doctor/event',{
+        const events = await axios.get('/api/doctor/event',{
             params:{
                 doctorId: id
             }
@@ -103,7 +103,7 @@ async function getEvents(id,type){
         return events
         //tornare i dati 
     }else if(type === 'Patient'){
-        const events = await axios.get('/patient/event/'+id,{
+        const events = await axios.get('/api/patient/event/'+id,{
         })
         .then((response) =>{ 
             let events = []
@@ -118,7 +118,7 @@ async function getEvents(id,type){
 }
 
 async function getAllDoctors(){
-    const doctors = await axios.get('/patient/doctors',{
+    const doctors = await axios.get('/api/patient/doctors',{
     })
     .then((response) =>{ 
         let doctors = []

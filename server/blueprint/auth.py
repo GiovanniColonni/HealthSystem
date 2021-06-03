@@ -15,7 +15,7 @@ from google_token import *
 from config import GOOGLE_CLIENT_ID
 from UserManager import UserManager
 
-auth = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__, url_prefix="/api")
 apiLogin = Api(auth)  # link api up to the BP
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)

@@ -50,7 +50,7 @@ export function UserCard(props) {
         <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
         <Row gap={2} p={2.5} style={cardstyle.border}>
           <Item>
-                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={""}/>
+                <img src={"/api/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={""}/>
           </Item>
           <Row wrap grow gap={0.5} minWidth={0}>
             <Item grow minWidth={0}>
