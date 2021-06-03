@@ -26,7 +26,7 @@ export default function EventModal(props) {
                     <p>Start Date: {moment(props.event.start).format('LLLL')}</p>
                     <p>End Date: {moment(props.event.end).format('LLLL')}</p>
                     <Modal.Footer>
-                        {props.event.conference && 
+                        {props.event.title === "meeting" &&
                             <Button variant="contained" color="primary" disabled={disableButton}
                             onClick={() => history.push({pathname: '/patient/meeting', state:{URL: props.event.conference}})}>Meeting
                             </Button> 
