@@ -21,6 +21,24 @@ async function getDoctor(doctorId){
     return doctor
 }
 
+async function getLastPatientComment(patientId){
+    const comment = await axios.get('/doctor/lastComment/'+patientId,{
+    })
+    .then((element) =>{
+        if(!element.data){
+            // Doctor not found
+            return undefined
+        }
+        const comment = element.data
+        return comment
+    })
+    .catch((err) =>{
+        console.log(err)
+        return ""
+    })
+    return comment
+}
+
 async function getPatientList(doctorId){
     return await axios.get('/doctor/'+doctorId+'/patients',{
     })
@@ -45,5 +63,5 @@ async function getPatientList(doctorId){
     .catch((err) => console.log(err))
 }
 
-const API_doctor = {getDoctor,getPatientList}
+const API_doctor = {getDoctor,getPatientList,getLastPatientComment}
 export default API_doctor;

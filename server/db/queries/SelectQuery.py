@@ -2,6 +2,7 @@ from db import DatabaseSession
 from db.entities import Account, Doctor, Patient, Schedule, Prescription
 from flask import Flask, send_file
 from sqlalchemy.orm import defer
+from sqlalchemy.sql import text
 
 
 class SelectQuery:
@@ -146,3 +147,16 @@ class SelectQuery:
             patients = session.query(Patient) \
                 .filter(doctorId == Patient.doctorId)
             return patients
+
+    def get_last_patient_comment(self, patientId):
+        """
+        :param patientId:
+        :return:
+        """
+        with DatabaseSession() as session:
+            comment = session.query(Schedule) \
+                .filter(patientId == Schedule.patientId) \
+                .order_by(text('dateStart desc')) \
+                .first()
+            return comment
+
