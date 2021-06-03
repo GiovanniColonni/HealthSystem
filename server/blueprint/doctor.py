@@ -38,6 +38,15 @@ def get_patient_list_from_doctor(doctorId):
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@doctor.route('lastComment/<patientId>')
+@login_required
+def get_last_patient_comment(patientId):
+    s = SelectQuery()
+    comment = s.get_last_patient_comment(patientId)
+    if comment.description is not None:
+        return jsonify(row2dict(comment))
+    return make_response(jsonify("comment not found"), 404)
+
 
 
 
