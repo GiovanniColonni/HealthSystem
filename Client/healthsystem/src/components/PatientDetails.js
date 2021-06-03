@@ -4,6 +4,21 @@ import PatientAvatar from '../icons/Woman_01.png';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
 import SensorSelector from './SensorSelector';
+import oxygen from '../icons/OxyIcon.png';
+import heart from '../icons/HeartBeatingIcon.png';
+
+const images = [
+    {
+      url: oxygen,
+      title: 'Oxygen percentage',
+      width: '50%',
+    },
+    {
+      url: heart,
+      title: 'Heart Beat',
+      width: '50%',
+    }
+  ];
 
 var detailsstyle = {
     container: {
@@ -90,7 +105,7 @@ export default function PatientDetails(props) {
                 <h1 style={detailsstyle.center}>Sensor Details</h1>
             </Row>
             <Row gap={5} p={2.5}>
-                <SensorSelector />
+                <SensorSelector images={images}/>
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>

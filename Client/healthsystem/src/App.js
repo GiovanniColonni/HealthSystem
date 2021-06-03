@@ -9,7 +9,6 @@ import API from "./api/API";
 import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
-import { UserCardList } from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
@@ -18,6 +17,7 @@ import Home from './components/Home';
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor";
 import NewAppointment from "./components/NewAppointment";
+import PatientList from './components/PatientList';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -75,7 +75,7 @@ function App() {
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
               <NavigationBar user={user} />
-              <UserCardList userlist={userlist} />
+              <PatientList userlist={userlist} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}

@@ -87,6 +87,7 @@ export default function Login({setLoginState,setUser,loginState}){
         show="true"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        animation="false"
       >
         <Modal.Body>
           <Typography align="center" style={loginstyle.title}>Sign in with google</Typography>
@@ -123,9 +124,6 @@ export default function Login({setLoginState,setUser,loginState}){
           </Row>
         </Modal.Body>
       </Modal>
-    
-        
-        
   )
   
 
