@@ -132,5 +132,5 @@ async function getAllDoctors(){
 }
 
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors}
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors, logout}
 export default API;
