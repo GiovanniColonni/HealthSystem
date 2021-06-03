@@ -6,10 +6,10 @@ var liststyle = {
     margin: "auto"
 };
 
-export default function PatientList({userlist}) {
+export default function PatientList({user}) {
     return (
         <div style={liststyle}>
-            <UserCardList userlist={userlist} />
+            <UserCardList user={user} />
         </div>
     )
 }

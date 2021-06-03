@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import { FaFileDownload } from 'react-icons/fa';
-import {useHistory} from "react-router";
 import IconButton from '@material-ui/core/IconButton';
 import API_patient from '../api/API_patient';
 import API_doctor from '../api/API_doctor';
@@ -101,7 +100,6 @@ export function PrescriptionCardList({user}) {
               setDoctor()
             })
         })
-      
     }
   }, [user.googleId]);
 

@@ -30,4 +30,4 @@ if __name__ == "__main__":
     db_cursor.close()
     db_conn.close()
     
-    app.run(host=FLASK_HOST,port=5001) # rimettere porta standard, 5001 solo test, aggioranre proxy http dopo
+    app.run(host=FLASK_HOST,port=5001,ssl_context="adhoc") # rimettere porta standard, 5001 solo test, aggioranre proxy http dopo

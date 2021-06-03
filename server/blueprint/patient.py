@@ -29,7 +29,7 @@ def get_all_doctors():
     return jsonify(row_list)
 
 
-@patient.route('/doctorImage/<doctorId>')
+@patient.route('/doctorImage/<doctorId>')       # it works also with patientId for the patient image
 @login_required
 def get_doctor_image(doctorId):
     s = SelectQuery()

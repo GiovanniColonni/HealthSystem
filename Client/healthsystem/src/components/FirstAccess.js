@@ -153,6 +153,7 @@ export default function FirstAccess({user, setUser}){
     let [birthday,setBirthday] = useState(new moment().format('MM/DD/YYYY'))
 
     const classes = useStyles();
+    const history = useHistory()
 
     useEffect(() => {
       if(user.userType === "Patient"){
@@ -162,16 +163,15 @@ export default function FirstAccess({user, setUser}){
         console.log("go to Doctor")
         history.push("/home")
       }
-    },[user.userType]) 
+    },[user.userType, history]) 
 
     let buttonClick = (e) => {
       setUserType(e)
     }
-    const history = useHistory()
     function submit() {
-      const resp = API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
+      API.submitFirstAccess(user["googleId"],name,surname,birthday,CF,userType)
         .then((resp) =>{
-          if(resp.status == 200){
+          if(resp.status === 200){
             let usr = user
             switch (userType) {
               case "Patient":
@@ -215,7 +215,7 @@ export default function FirstAccess({user, setUser}){
         setValidateSurname(true)
       }else{setValidateSurname(false)}
       if(userType === "Patient" || userType === "Doctor" || userType === "Nurse" ){
-        if(userType === "Patient" && CF == ""){
+        if(userType === "Patient" && CF === ""){
           status = false
           setValidateCF(true)
         }else if(userType === "Patient"){setValidateCF(false)}

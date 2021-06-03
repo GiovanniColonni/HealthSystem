@@ -23,22 +23,8 @@ export const AuthContext = React.createContext(); // added this
 function App() {
   const [loginState,setLoginState] = useState(false)
   const [user,setUser] = useState({})
-  const [URLmeeting,setURLmeeting] = useState("")
   
   let history = useHistory()
-
-  async function checkUser(){
-    API.isAuthenticated()
-      .then((userJson) =>{ 
-        setLoginState(true)
-        setUser(userJson)
-      })
-      .catch((err)=> {
-        setLoginState(false) 
-        history.push("/login")
-        console.log(err)
-      })
-  }
 
     /*handleErrors(err){
       if(err) {
@@ -50,12 +36,17 @@ function App() {
     }*/
 
   useEffect( () => {
-    checkUser()
-  },[loginState]) 
-
-  const callSetUser = (usr) =>{
-    setUser(usr)
-  }
+    API.isAuthenticated()
+      .then((userJson) =>{ 
+        setLoginState(true)
+        setUser(userJson)
+      })
+      .catch((err)=> {
+        setLoginState(false) 
+        history.push("/login")
+        console.log(err)
+      })
+  },[loginState,history]) 
 
   return (
     <div className="App">
@@ -75,7 +66,7 @@ function App() {
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
               <NavigationBar user={user} />
-              <PatientList userlist={userlist} />
+              <PatientList user={user} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
@@ -101,7 +92,7 @@ function App() {
           </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
-              <IframeJitsi URL_meeting={URLmeeting}/>
+              <IframeJitsi/>
             </div>
           </Route>
 
@@ -150,7 +141,7 @@ function App() {
 
 export default App;
 
-const userlist = [
+/*const userlist = [
   {
     name: 'Benedetta',
     info: 'Some info'
@@ -167,4 +158,4 @@ const userlist = [
     name: 'Gabriele',
     info: 'Some info'
   },
-];
+]; */

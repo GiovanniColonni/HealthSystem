@@ -30,7 +30,7 @@
     "web-vitals": "^1.1.1",
     "webpack": "^4.44.2"
   },
-  "proxy": "http://0.0.0.0:5000/",
+  "proxy": "https://0.0.0.0:5000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

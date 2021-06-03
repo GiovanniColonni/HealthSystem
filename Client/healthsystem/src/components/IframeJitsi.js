@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 
 
@@ -11,7 +11,7 @@ function Iframe(props) {
   );
 }
 
-export default function IframeJitsi(URL_meeting) {
+export default function IframeJitsi() {
   // Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
   const history = useHistory()
   /*const demos = {

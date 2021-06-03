@@ -3,6 +3,10 @@ import Patient from '../classes/Patient'
 import Doctor from '../classes/Doctor'
 import Prescription from '../classes/Prescription'
 
+axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
+axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
+
+
 async function getPatient(patientId){
     const patient = await axios.get('/patient/'+patientId,{
     })

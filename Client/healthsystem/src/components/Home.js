@@ -46,7 +46,7 @@ export default function Home({user}){
                     console.log(err)
                 })
         }
-    },[user.userType,patient.doctorId]) 
+    },[user.userType,patient.doctorId, history, user.googleId]) 
 
 
     return(

@@ -79,7 +79,7 @@ async function isAuthenticated(){
     if (resp.status === 200){
         return resp.data
     }else{
-        throw "error" // fare gestione più precisa dell'erroe
+        throw resp.status// fare gestione più precisa dell'erroe
     }
         
 }
@@ -95,10 +95,8 @@ async function getEvents(id,type){
         .then((response) =>{ 
             let events = []
             response.data.forEach(element => {
-                console.log(element.typeExamination)
-                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
+            events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL, element.doctorId, element.patientId))
             });
-            console.log(events)
             return events
         })
         .catch((err) => console.log("error"))

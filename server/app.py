@@ -3,7 +3,7 @@ from flask import Flask, g, request
 from flask_restx import Api, Resource
 from pony.flask import example
 from flask_login import login_required
-from config import SECRET_KEY, FLASK_HOST, CERT_PATH, KEY_PATH
+from config import SECRET_KEY, FLASK_HOST
 from db.queries.InsertQuery import InsertQuery
 from db.queries.SelectQuery import SelectQuery
 
@@ -11,8 +11,7 @@ from db.queries.UpdateQuery import UpdateQuery
 
 
 app = Flask(__name__)
-app.config.from_object(__name__)
-
+app.config.from_object(__name__) 
 api = Api(app=app, title="HealthSystem")
 
 app.secret_key = SECRET_KEY
@@ -35,5 +34,5 @@ app.register_blueprint(patient)
 
 
 if __name__ == "__main__":
-    app.run(host=FLASK_HOST,ssl_context=(CERT_PATH,KEY_PATH))
+    app.run(host=FLASK_HOST,ssl_context=("cert/cert.pem","cert/key.pem"))
     #app.run(host=FLASK_HOST)

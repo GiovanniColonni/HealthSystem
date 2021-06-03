@@ -1,8 +1,6 @@
 import { Button, TextField } from '@material-ui/core';
-import {React, useContext, useState, useEffect} from 'react';
-import { UserContext } from '../context/UserContext';
+import {React, useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom'
-import Logo from './Logo';
 import API from '../api/API'
 import Doctor from '../classes/Doctor';
 import API_patient from '../api/API_patient';
@@ -13,6 +11,9 @@ const SelectDoctor = (props) =>{
     let {user} = props
     const [doctors,setDoctors] = useState([])
     const [patient,setPatient] = useState(new Patient())
+
+    const history = useHistory()
+
     useEffect(() => {
       doctorList()
         API_patient.getPatient(user.googleId)
@@ -23,12 +24,11 @@ const SelectDoctor = (props) =>{
         .catch((err) =>{
             console.log(err)
         })
-        if(user.userType !== "Patient" || patient.doctorId !== "" && patient.doctorId !== undefined){
+        if(user.userType !== "Patient" || (patient.doctorId !== "" && patient.doctorId !== undefined)){
             console.log("go to home")
             history.push("/home")
         }
-    }, [patient.doctorId]);
-    const history = useHistory()
+    }, [patient.doctorId,history,user.googleId, user.userType]);
 
     const doctorList = () => {
         //const user = useContext(UserContext)
@@ -45,7 +45,7 @@ const SelectDoctor = (props) =>{
     const updateDoctorIdInPatient = (doctorId,patientId) =>{
         API_patient.putDoctorIdInPatient(doctorId,patientId)
             .then((resp) =>{
-                if(resp.status == 200){
+                if(resp.status === 200){
                     history.push("/home")
                 }
                 return true
@@ -60,7 +60,7 @@ const SelectDoctor = (props) =>{
             <>
                 <li>
                     <div>
-                        <img src={"/patient/doctorImage/"+d.googleId}></img>
+                        <img src={"/patient/doctorImage/"+d.googleId} alt={d.name + " " + d.surname}></img>
                         <h2>{d.name + " " + d.surname}</h2>
                         <Button onClick={() => updateDoctorIdInPatient(d.googleId,user.googleId)} variant="contained">Choose</Button>
                     </div>

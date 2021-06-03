@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
-import {FaUserCircle} from 'react-icons/fa';
 import {useHistory} from "react-router";
+import API_doctor from '../api/API_doctor';
+import {FaUserCircle} from 'react-icons/fa';
 
 var cardstyle = { 
     title: {
@@ -60,25 +61,47 @@ export function UserCardNoLink(props) {
 export function UserCard(props) {
   
   let history = useHistory()
-
-  const gotoDetails = () =>{
-    history.push('\patientDetails');
-  }
-  return (
-    <div onClick={gotoDetails}>
-      <UserCardNoLink title={props.title} caption={props.caption}/>
-    </div>
-  );
-}
-
   
+      return (
+        <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
+        <Row gap={2} p={2.5} style={cardstyle.border}>
+          <Item>
+                <img src={"/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={props.patient.name + " " + props.patient.surname}/>
+          </Item>
+          <Row wrap grow gap={0.5} minWidth={0}>
+            <Item grow minWidth={0}>
+              <div style={cardstyle.title}>{props.title}</div>
+              <div style={cardstyle.caption}>
+                {props.caption}
+              </div>
+            </Item>
+          </Row>
+        </Row>
+        </div>
+      );
+}
+  
+export function UserCardList({user}) {
+  const [patientList,setPatientList] = useState([{}])
 
-export function UserCardList(props) {
+
+  async function getPatientList(doctorId){
+    API_doctor.getPatientList(doctorId)
+      .then((patients) =>{
+        setPatientList(patients)
+      })
+  }
+
+  useEffect( () => {
+    getPatientList(user.googleId)
+  },[user.googleId, patientList.length]) 
+
   return (
     <>
-      {props.userlist.map(user => (
-          <UserCard title={user.name} caption={user.info}/>
-        ))}
+      {patientList !== undefined && patientList.map(user => (
+          user.name !== undefined && 
+          <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
+      )) }
     </>
   );
 }
