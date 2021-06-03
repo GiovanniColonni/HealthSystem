@@ -7,6 +7,7 @@ import {useHistory} from "react-router"
 import Button from "@material-ui/core/Button"
 
 import Measure from "./components/Measure"
+import Home from "./components/Home"
 
 import axios from "axios"
 
@@ -53,16 +54,14 @@ function App() {
   
   return (
     <div className="App">
+      <h1>Header da mettere</h1>
+      {<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>}
       <Switch>
           <Route exact path={"/login"}>
               <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
           <Route exact path={"/home"}>
-          <div>
-            <h1>Home</h1>
-            <Link to="/measure">Start a measure</Link>
-            <Link to="/videocall">Start the appointment</Link>
-	  </div>
+            <Home/>
           </Route>
           <Route exact path="/measure">
             <Measure setMeasure={setMeasure} measure={measure} />
@@ -76,3 +75,12 @@ function App() {
 }
 
 export default App;
+
+/**
+           <div>
+            <h1>Home</h1>
+            <Link to="/measure">Start a measure</Link>
+            <Link to="/videocall">Start the appointment</Link>
+	        </div>
+
+ */

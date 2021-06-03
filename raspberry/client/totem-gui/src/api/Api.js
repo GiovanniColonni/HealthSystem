@@ -96,7 +96,6 @@ async function getMeasure(){
         let resp = await axios.get(url)
         
         if(resp.status === 200){
-            console.log(resp.data)
             return resp.data
         }
         if(resp.status === 204){
