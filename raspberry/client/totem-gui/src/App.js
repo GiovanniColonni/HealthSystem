@@ -27,7 +27,7 @@ function App() {
           Api.isAuthenticated()
             .then((userJson) =>{ 
                      
-                     if(userJson.id === null){
+                    if(userJson.id === null){
                       setLoginState(false)
                       history.push("/login")
                     }else{
