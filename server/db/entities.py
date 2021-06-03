@@ -15,7 +15,7 @@ class Account(Base):
     userType = Column(String(50), nullable=False)
     id = Column(String(50), primary_key=True)
     username = Column(String(50))
-    pushToken = Column(String(45))
+    pushToken = Column(String(5000))
     image = Column(String(45))
 
 
@@ -44,8 +44,10 @@ class Measure(Base):
 
     id = Column(INTEGER(11), primary_key=True)
     type = Column(String(45), nullable=False)
-    pathFileSystem = Column(String(100))
+    value = Column(INTEGER(11))
     patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
+    name = Column(String(45))
+    date = Column(String(45))
 
     patient = relationship('Patient')
 
