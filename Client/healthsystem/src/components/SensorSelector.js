@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     minWidth: 300,
-    width: '80%',
+    width: '60%',
     margin: 'auto'
   },
   image: {
