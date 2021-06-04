@@ -49,6 +49,10 @@ export default function Login({navigation}) {
   } 
 
   useEffect(() => {
+    if(useState.user.googleId !== ""){
+      navigation.navigate("Home")
+    }
+    /*
     if(userState.user.googleId !== ""){
       Api.postLogin(token,userState.user.email,userState.user.googleId)
         .then((resp)=>{
@@ -59,6 +63,7 @@ export default function Login({navigation}) {
         })
         .catch((e) => {console.log(e)})
     }
+    */
   }, [googleId]);
 
   return (
