@@ -3,6 +3,7 @@ import { Row, Item } from '@mui-treasury/components/flex';
 import {useHistory} from "react-router";
 import API_doctor from '../api/API_doctor';
 import {FaUserCircle} from 'react-icons/fa';
+import { Typography } from '@material-ui/core';
 
 var cardstyle = { 
     title: {
@@ -102,10 +103,13 @@ export function UserCardList({user}) {
 
   return (
     <>
-      {patientList !== undefined && patientList.map(user => (
+      {patientList !== undefined && patientList.length > 0 &&
+        patientList.map(user => (
           user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
+      {patientList.length == 0 &&
+        <Typography align="center" variant="h6">No Patients</Typography>}
     </>
   );
 }
