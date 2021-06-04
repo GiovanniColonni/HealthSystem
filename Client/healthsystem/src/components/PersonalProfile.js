@@ -49,7 +49,7 @@ var profilestyle = {
 export default function PersonalProfile({user}) {
 
     const [currentuser, setCurrentUser] = useState({})
-    const [doctor, setDoctor] = useState()
+    const [doctor, setDoctor] = useState({})
 
     useEffect(() => {
         if (user.userType === "Patient") {

@@ -9,6 +9,15 @@ from flask_login import login_required
 
 patient = Blueprint('patient', __name__, url_prefix="/api/patient")
 
+@patient.route('/doctor/<patientId>')
+@login_required
+def get_doctor_by_patient(patientId):
+    patient_id = patientId
+    s = SelectQuery()
+    doctor = s.select_doctor_by_patient(patient_id)
+    if doctor is False:
+        return jsonify(False)
+    return jsonify(row2dict(doctor))
 
 @patient.route('/doctors')
 @login_required

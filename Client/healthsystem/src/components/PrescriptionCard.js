@@ -56,7 +56,7 @@ export function PrescriptionCard(props) {
   );
 }
 
-export function PrescriptionCardList(props) {
+export function PrescriptionCardList({user}) {
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [doctor, setDoctor] = useState(new Doctor());
 
@@ -77,8 +77,8 @@ export function PrescriptionCardList(props) {
 
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if(props.user.googleId !== undefined){
-      API_patient.getAllPrescriptions(props.user.googleId)
+    if(user.googleId !== undefined){
+      API_patient.getAllPrescriptions(user.googleId)
         .then((prescription) =>{
           prescription.sort(function (left, right) {
             return moment.utc(right.date).diff(moment.utc(left.date))
@@ -89,7 +89,7 @@ export function PrescriptionCardList(props) {
           setPrescriptionList([])
           console.log(err)
         })
-      API_patient.getPatient(props.user.googleId)
+      API_patient.getPatient(user.googleId)
         .then((patient) =>{
           API_doctor.getDoctor(patient.doctorId)
             .then((doct) =>{
@@ -101,7 +101,7 @@ export function PrescriptionCardList(props) {
             })
         })
     }
-  }, [props.user.googleId]);
+  }, [user.googleId]);
 
   return (
     <>
