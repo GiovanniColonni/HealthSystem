@@ -7,7 +7,7 @@ axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 
 async function getDoctor(doctorId){
-    const doctor = await axios.get('/doctor/'+doctorId,{
+    const doctor = await axios.get('/api/doctor/'+doctorId,{
     })
     .then((element) =>{
         if(!element.data){
@@ -22,7 +22,7 @@ async function getDoctor(doctorId){
 }
 
 async function getLastPatientComment(patientId){
-    const comment = await axios.get('/doctor/lastComment/'+patientId,{
+    const comment = await axios.get('/api/doctor/lastComment/'+patientId,{
     })
     .then((element) =>{
         if(!element.data){
@@ -40,7 +40,7 @@ async function getLastPatientComment(patientId){
 }
 
 async function getPatientList(doctorId){
-    return await axios.get('/doctor/'+doctorId+'/patients',{
+    return await axios.get('/api/doctor/'+doctorId+'/patients',{
     })
     .then((element) =>{
         if(!element.data){
