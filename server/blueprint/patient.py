@@ -11,7 +11,7 @@ patient = Blueprint('patient', __name__, url_prefix="/api/patient")
 
 
 @patient.route('/doctors')
-@login_required
+#@login_required
 def get_all_doctors():
     s = SelectQuery()
     events = s.get_all_doctor()
