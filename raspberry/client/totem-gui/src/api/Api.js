@@ -5,6 +5,7 @@ axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 // le api sono presso a poco le stesse, cambia la logica del server che rimanda le richieste
 // al server centrale 
+const prefix = "/api"
 
 let login = async function(id_token,email,googleId){
     
@@ -14,7 +15,7 @@ let login = async function(id_token,email,googleId){
     formData.set("googleId",googleId)
     
     try{
-        let resp = await axios.post("/login",formData)
+        let resp = await axios.post(`${prefix}/login`,formData)
         
         if (resp.status === 200){
           return true
@@ -29,7 +30,7 @@ let login = async function(id_token,email,googleId){
 
  let isAuthenticated = async function(){
     // bisognerebbe fare controllo errore   
-    const resp = await axios.get("/login")
+    const resp = await axios.get(`${prefix}/login`)
     if (resp.status === 200){
         return resp.data
     }else{
@@ -40,7 +41,7 @@ let login = async function(id_token,email,googleId){
 
 async function logout(){
     try{
-        let resp = await axios.delete("/login")
+        let resp = await axios.delete(`${prefix}/login`)
         if(resp.status === 204){
             return true
         }
@@ -49,13 +50,13 @@ async function logout(){
         return false
     }
 }
-// "measureValue":"","mtype":"","thReached":"","inProgress":"","dateMeasure":""
-async function postMeasure(measureValue,dataMeasure){
+
+async function postMeasure(type,value,date){
     let form = new FormData();
     form.set("measureValue",measureValue)
     form.set("dataMeasure",dataMeasure)
     try{
-        let resp = await axios.post("/postMeasure",dataMeasure);
+        let resp = await axios.post(`${prefix}/patient/measure`,dataMeasure);
         if(resp.status === 200){
             return true;
         }
@@ -65,12 +66,12 @@ async function postMeasure(measureValue,dataMeasure){
     }
 }
 //--------- API del Totem
-const prefix = "/totem"
+const prefix_totem = "/totem"
 
 async function startMeasure(){
     // mode = single,continue 
 
-    const url = prefix + "/measure"
+    const url = prefix_totem + "/measure"
 
     try{
         let resp = await axios.post(url)
@@ -90,7 +91,7 @@ async function startMeasure(){
 }
 
 async function getMeasure(){
-   const url = prefix + "/measure"
+   const url = prefix_totem + "/measure"
     
     try{
         let resp = await axios.get(url)

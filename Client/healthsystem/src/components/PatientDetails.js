@@ -92,7 +92,7 @@ export default function PatientDetails(props) {
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
-                    <Image src={"/patient/doctorImage/"+history.location.state.patient.googleId} roundedCircle style={detailsstyle.avatar} />
+                    <Image src={"/api/patient/doctorImage/"+history.location.state.patient.googleId} roundedCircle style={detailsstyle.avatar} />
                 </Column>
                 <Column>
                     <Item>

@@ -8,7 +8,7 @@ axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 
 async function getPatient(patientId){
-    const patient = await axios.get('/patient/'+patientId,{
+    const patient = await axios.get('/api/patient/'+patientId,{
     })
     .then((element) =>{
         if(!element.data){
@@ -23,7 +23,7 @@ async function getPatient(patientId){
 }
 
 async function getDoctorImage(doctorId){
-    const image = await axios.get('/patient/doctorImage/'+doctorId,{
+    const image = await axios.get('/api/patient/doctorImage/'+doctorId,{
         responseType: 'stream'
     })
     .then((response) =>{ 
@@ -34,7 +34,7 @@ async function getDoctorImage(doctorId){
 }
 
 async function getPrescription(pathFileSystem){
-    const file = await axios.get('/patient/prescription/'+pathFileSystem,{
+    const file = await axios.get('/api/patient/prescription/'+pathFileSystem,{
         responseType: 'blob', // Important
         headers: {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ async function getPrescription(pathFileSystem){
 }
 
 async function getAllPrescriptions(patientId){
-    const prescriptions = await axios.get('/patient/prescriptions/'+patientId)
+    const prescriptions = await axios.get('/api/patient/prescriptions/'+patientId)
     .then((response) =>{ 
         let prescriptions = []
             response.data.forEach(element => {
@@ -64,7 +64,7 @@ async function getAllPrescriptions(patientId){
 async function putDoctorIdInPatient(doctorId, patientId){
     const resp = await axios
     .put(
-        "/patient/"+patientId, {doctorId: doctorId}
+        "/api/patient/"+patientId, {doctorId: doctorId}
     )
     .then(r => {console.log(r.status); return r})
     .catch(e => console.log(e));

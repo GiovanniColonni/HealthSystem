@@ -3,7 +3,7 @@ from flask_restx import Api,Resource
 
 from http import HTTPStatus
 
-totem = Blueprint("totem",__name__)
+totem = Blueprint("totem",__name__, url_prefix="/totem")
 totemApi = Api(totem)
 
 

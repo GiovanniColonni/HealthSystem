@@ -7,7 +7,7 @@ from db.queries.UpdateQuery import UpdateQuery
 from db.queries.InsertQuery import InsertQuery
 from flask_login import login_required
 
-patient = Blueprint('patient', __name__, url_prefix="/patient")
+patient = Blueprint('patient', __name__, url_prefix="/api/patient")
 
 @patient.route('/doctor/<patientId>')
 @login_required
