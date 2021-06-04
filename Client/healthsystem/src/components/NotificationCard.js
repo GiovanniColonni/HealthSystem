@@ -16,6 +16,10 @@ var notifcard = {
         backgroundColor: "#77D353"
     }, btnNo: {
         backgroundColor: "#F95F62"
+    }, card: {
+        width: "60%",
+        marginLeft: "auto",
+        marginRight: "auto",
     }
 }
 

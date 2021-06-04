@@ -2,41 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NotificationMenuModal from './NotificationModal';
-import Image from 'react-bootstrap/Image'
-import CrossIcon from '../icons/greenCross.png';
 import API from '../api/API';
+import API_patient from '../api/API';
 import moment from 'moment';
-import API_patient from '../api/API_patient';
-
-var logostyle = {
-    logo: {
-        paddingTop: "2px",
-        paddingBottom: "2px",
-        paddingRight: "2px",
-        paddingLeft: "2px",
-    }, image: {
-        height: "50px",
-        width: "50px",
-    }, name: {
-        fontFamily: "Bree Serif",
-        color: "#8BC24A",
-        fontStyle: "italic",
-        fontWeight: "bold",
-        fontSize: "14px",
-        marginBottom: "0"
-    }
-}
-
-function Logo() {
-    return (
-        <>
-            <div style={logostyle.logo}>
-                <Image src={CrossIcon} style={logostyle.image}/>
-                <p style={logostyle.name}>My Health Way</p>
-            </div>
-        </>
-    );
-}
+import Logo from './Logo'
 
 var navstyle = {
     nav: {

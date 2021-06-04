@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Patient from '../classes/Patient'
+import Doctor from '../classes/Doctor'
 import Prescription from '../classes/Prescription'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
@@ -70,5 +71,20 @@ async function putDoctorIdInPatient(doctorId, patientId){
     return resp
 }
 
-const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getPrescription}
+async function getDoctorByPatient(patientId){
+    const doctor = await axios.get('/patient/doctor/'+patientId,{
+    })
+    .then((element) =>{
+        if(!element.data){
+            // Patient not found, insert it
+            return new Doctor()
+        }
+        const doc = new Doctor(element.data.name, element.data.surname, element.data.date, element.data.googleId)        
+        return doc
+    })
+    .catch((err) => console.log(err))
+    return doctor
+}
+
+const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getPrescription,getDoctorByPatient}
 export default API_patient;

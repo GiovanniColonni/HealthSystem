@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import UserContext from "../contexts/UserContext"
+import Api from "../api/Api"
 
 export default function Login({navigation}) {
 //  let [authState, setAuthState] = useState(null);
   let [headers,setHeaders] = useState("eih");
   let [googleId, setGoogleId] = useState("");
   let [name, setName] = useState("");
+  let [token,setToken] = useState()
 
   let userState = useContext(UserContext)
 
@@ -36,6 +38,7 @@ export default function Login({navigation}) {
         userState.user.name = result.user.name
         setGoogleId(result.user.id)
         setName(result.user.name)
+        setToken(token)
         return result.accessToken;
       } else {
         return { cancelled: true };
@@ -46,9 +49,21 @@ export default function Login({navigation}) {
   } 
 
   useEffect(() => {
-    if(userState.user.googleId !== ""){
+    if(useState.user.googleId !== ""){
       navigation.navigate("Home")
     }
+    /*
+    if(userState.user.googleId !== ""){
+      Api.postLogin(token,userState.user.email,userState.user.googleId)
+        .then((resp)=>{
+          console.log(resp)
+          if(resp){
+            navigation.navigate("Home")
+          }
+        })
+        .catch((e) => {console.log(e)})
+    }
+    */
   }, [googleId]);
 
   return (
