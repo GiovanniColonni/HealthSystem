@@ -7,7 +7,7 @@ from db.queries.InsertQuery import InsertQuery
 
 from http import HTTPStatus
 
-account = Blueprint("account", __name__, url_prefix="/account")
+account = Blueprint("account", __name__, url_prefix="/api/")
 accountApi = Api(account)
 
 

@@ -60,7 +60,7 @@ const SelectDoctor = (props) =>{
             <>
                 <li>
                     <div>
-                        <img src={"/patient/doctorImage/"+d.googleId} alt={d.name + " " + d.surname}></img>
+                        <img src={"/api/patient/doctorImage/"+d.googleId} alt={d.name + " " + d.surname}></img>
                         <h2>{d.name + " " + d.surname}</h2>
                         <Button onClick={() => updateDoctorIdInPatient(d.googleId,user.googleId)} variant="contained">Choose</Button>
                     </div>
