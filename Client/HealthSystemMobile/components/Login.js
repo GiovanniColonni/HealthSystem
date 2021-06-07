@@ -61,6 +61,17 @@ export default function Login({navigation}) {
       Api.postLogin(token,email,googleId)
         .then((resp)=>{
           console.log(resp)
+          // insert pushToken. Get expoPushToken from app.js
+          /*
+          Api.insertPushToken(user.googleId,token)
+            .then((resp) =>{
+              console.log(token)
+              console.log(resp)
+            })
+            .catch((err) =>{
+              console.log(err)
+            })
+          */
           if(resp){
             navigation.navigate("Home")
           }

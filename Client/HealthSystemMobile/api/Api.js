@@ -28,8 +28,22 @@ async function postLogin(id_token,email,googleId){
 }
 
 async function insertPushToken(googleId,pushToken){
-
+    var formData = new FormData()
+    formData.append("googleId", googleId)
+    formData.append("pushToken",pushToken)
+    try{
+        let resp = await axios.post(`${prefix}/account/insertToken`,formData)
+        console.log(`status : ${resp.status}`)
+        console.log(`data : ${resp.data}`)
+        if (resp.status === 200){
+          return resp.data
+        }
+        return false;
+    }catch(e){
+        console.log(e)
+        return false
+    }
 }
 
-const Api = {postLogin}
+const Api = {postLogin, insertPushToken}
 export default Api
