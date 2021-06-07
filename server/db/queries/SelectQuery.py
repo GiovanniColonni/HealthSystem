@@ -160,3 +160,16 @@ class SelectQuery:
                 .first()
             return comment
 
+    def get_push_token(self,googleId):
+        """
+        :param googleId:
+        :return: pushToken
+        """
+        with DatabaseSession() as session:
+            pushToken = session.query(Account) \
+                .filter(googleId == Account.id) \
+                .first()
+            if pushToken is None:
+                return None
+            return pushToken.pushToken
+
