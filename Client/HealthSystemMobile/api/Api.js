@@ -16,8 +16,6 @@ async function postLogin(id_token,email,googleId,name){
     formData.append("name",name)
     try{
         let resp = await axios.post(`${prefix}/login`,formData)
-        console.log(`status : ${resp.status}`)
-        console.log(`data : ${resp.data}`)
         if (resp.status === 200){
           return resp.data
         }

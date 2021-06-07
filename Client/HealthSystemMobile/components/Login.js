@@ -84,7 +84,6 @@ export default function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text>Expo AppAuth Example</Text>
       <Button
         title="Sign In with Google "
         onPress={() => { signInWithGoogleAsync(); 
