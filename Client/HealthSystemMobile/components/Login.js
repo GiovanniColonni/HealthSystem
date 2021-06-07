@@ -58,7 +58,7 @@ export default function Login({navigation}) {
     */
     
     if(userState.user.googleId !== ""){
-      Api.postLogin(token,email,googleId)
+      Api.postLogin(token,email,googleId,name)
         .then((resp)=>{
           console.log(resp)
           // insert pushToken. Get expoPushToken from app.js
