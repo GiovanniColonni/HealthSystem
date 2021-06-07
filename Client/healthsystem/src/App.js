@@ -122,7 +122,7 @@ function App() {
           </Route>
           
         <Route exact path={"/patient/selectDoctor"}> 
-          <div>
+          <div className="Background">
               <HeaderChooseDoctor username={user.username}/>
               <SelectDoctor user={user}/>
           </div>
@@ -140,22 +140,3 @@ function App() {
 }
 
 export default App;
-
-/*const userlist = [
-  {
-    name: 'Benedetta',
-    info: 'Some info'
-  },
-  {
-    name: 'Chiara',
-    info: 'Some info'
-  },
-  {
-    name: 'Giuseppe',
-    info: 'Some info'
-  },
-  {
-    name: 'Gabriele',
-    info: 'Some info'
-  },
-]; */

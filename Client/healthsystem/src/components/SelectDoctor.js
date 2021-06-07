@@ -5,7 +5,8 @@ import API from '../api/API'
 import Doctor from '../classes/Doctor';
 import API_patient from '../api/API_patient';
 import Patient from '../classes/Patient';
-
+import {ChooseDoctorCard} from './UserCard';
+import { Typography } from "@material-ui/core";
 
 const SelectDoctor = (props) =>{
     let {user} = props
@@ -56,26 +57,24 @@ const SelectDoctor = (props) =>{
     }
 
     const DoctorListComponent = () =>{
-        return (doctors.map(d => 
+        return (
             <>
-                <li>
-                    <div>
-                        <img src={"/api/patient/doctorImage/"+d.googleId} alt={d.name + " " + d.surname}></img>
-                        <h2>{d.name + " " + d.surname}</h2>
-                        <Button onClick={() => updateDoctorIdInPatient(d.googleId,user.googleId)} variant="contained">Choose</Button>
-                    </div>
-                </li>
-                <h2>My Health way, a new way to communicate and to heal</h2>
+              {doctors !== undefined && doctors.length > 0 &&
+                doctors.map(doc => (
+                  doc.name !== undefined &&
+                  <ChooseDoctorCard title={doc.surname + " " + doc.name} caption={"Address"} 
+                        onClick={() => updateDoctorIdInPatient(doc.googleId, user.googleId)}/>
+              )) }
+              {doctors.length == 0 &&
+                <Typography align="center" variant="h6">No Doctors</Typography>}
             </>
-        ))
+          );
     }
+    
 
     return (
         <div>
-            <TextField label="Doctor name" variant="outlined"/>
-            <ul>
-                {doctors.length > 0 && <DoctorListComponent />}
-            </ul>
+            <DoctorListComponent />
         </div>
     );
 }
