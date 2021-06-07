@@ -8,6 +8,7 @@ import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
 import Button from '@material-ui/core/Button';
 import ModalFeedback from './ModalFeedback';
+import { AppointmentCardList } from './AppointmentCard';
 
 var newappstyle = {
     container: {
@@ -101,8 +102,8 @@ export default function NewAppointment({user}){
                         />
                     </Row>
                 </Column>
-                <Column style={newappstyle.calendar}  gap={'inherit'}>
-                    <BigCalendar user={user}/>
+                <Column style={newappstyle.calendar}  gap={'inherit'} p={'inherit'}>
+                    <AppointmentCardList user={user} />
                 </Column>
             </Row>
             

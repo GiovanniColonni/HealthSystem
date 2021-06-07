@@ -3,6 +3,7 @@ import { Row, Item } from '@mui-treasury/components/flex';
 import IconButton from '@material-ui/core/IconButton';
 import API_patient from '../api/API_patient';
 import API_doctor from '../api/API_doctor';
+import API from '../api/API';
 import Doctor from '../classes/Doctor';
 import moment from 'moment';
 import { Typography } from '@material-ui/core';
@@ -33,9 +34,8 @@ var cardstyle = {
         borderColor: "#BEBEBE",
         borderRadius: "5px",
         padding: "5px",
-        width: "60%",
-        marginLeft: "auto",
-        marginRight: "auto"
+        margin: "auto",
+        width: "100%"
     }
 }
   
@@ -58,60 +58,79 @@ export function AppointmentCard(props) {
 }
 
 export function AppointmentCardList({user}) {
-  const [freeAppointmentList, setFreeAppointmentList] = useState([]);
-  const [docAppointmentList, setdocAppointmentList] = useState([]);
-  const [doctor, setDoctor] = useState(new Doctor());
-
-  useEffect(() => {
-    // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if (user.googleId !== undefined){
-        API_patient.getPatient(user.googleId)
-        .then((patient) =>{
-          API_doctor.getDoctor(patient.doctorId)
-            .then((doct) =>{
-              setDoctor(doct)
-            })
-            .catch((err) =>{
-              console.log(err)
-              setDoctor()
-            })
-        })
-    }
-    if(doctor !== undefined){
-        API.getEvents(doctor.googleId, "Doctor")
-        .then((appointment) =>{
-          appointment.sort(function (left, right) {
-                return moment.utc(right.date).diff(moment.utc(left.date))
-            });
-            setdocAppointmentList(appointment)
-            })
-            .catch((err) =>{
-                setdocAppointmentList([])
-                console.log(err)
-            })
-    }
-    if (docAppointmentList !== undefined){
-        for (const busyAppointment of docAppointmentList) {
-            removeAppointment(busyAppointment.date);
+    const initAppointmentList = () => {
+        const initList = [];
+        for (var days = 1; days < 8; days++) {
+            const currentDay = moment().startOf('day').add(days, 'days');
+            console.log("Current day: " + currentDay.format('dddd MMMM Do YYYY, h:mm a'))
+            if (currentDay.format('dddd') != "Saturday" && currentDay.format('dddd') != "Sunday") {
+                for (var hours = 8; hours < 18; hours++) {
+                    if (hours != 13){
+                        console.log("Current hour: " + hours)
+                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format('dddd MMMM Do YYYY, h:mm a'));
+                    }
+                }
+            }
         }
-        console.log(freeAppointmentList); 
+        return initList;
     }
-  }, [user.googleId, doctor, docAppointmentList]);
 
-  const removeAppointment = (date) => {
-    const updatedList = freeAppointmentList.filter((appointmentDate) => appointmentDate !== date);
-    setFreeAppointmentList(updatedList);
-  }
+    const [freeAppointmentList, setFreeAppointmentList] = useState(initAppointmentList());
+    const [docAppointmentList, setdocAppointmentList] = useState([]);
+    const [doctor, setDoctor] = useState(new Doctor());
 
-  return (
-    <>
-      {doctor !== undefined && freeAppointmentList.length > 0 &&
-        freeAppointmentList.map(appointment => (
-              <AppointmentCard title={appointment.date} caption={doctor.name +" "+doctor.surname}/>
-        ))
-      }
-      {freeAppointmentList.length == 0 &&
-        <Typography align="center" variant="h6">No Appointment Available</Typography>}
-    </>
-  );
+    useEffect(() => {
+        // REMEMBER to change the doctorId=6; retrieve it from cookies
+        if (user.googleId !== undefined){
+            API_patient.getPatient(user.googleId)
+            .then((patient) =>{
+            API_doctor.getDoctor(patient.doctorId)
+                .then((doct) =>{
+                setDoctor(doct)
+                })
+                .catch((err) =>{
+                console.log(err)
+                setDoctor()
+                })
+            })
+        }
+        if(doctor !== undefined){
+            API.getEvents(doctor.googleId, "Doctor")
+            .then((appointment) =>{
+            appointment.sort(function (left, right) {
+                    return moment.utc(right.date).diff(moment.utc(left.date))
+                });
+                setdocAppointmentList(appointment)
+                })
+                .catch((err) =>{
+                    setdocAppointmentList([])
+                    console.log(err)
+                })
+        }
+        /*if (docAppointmentList !== undefined){
+            console.log("Doc List" + docAppointmentList);
+            for (const busyAppointment of docAppointmentList) {
+                removeAppointment(busyAppointment.dateStart);
+            }
+            console.log("Free List " + freeAppointmentList); 
+        }*/
+    }, [user.googleId]);
+
+
+    const removeAppointment = (date) => {
+        const updatedList = freeAppointmentList.filter((appointmentDate) => appointmentDate !== date);
+        setFreeAppointmentList(updatedList);
+    }
+
+    return (
+        <>
+        {doctor !== undefined && freeAppointmentList.length > 0 &&
+            freeAppointmentList.map(appointment => (
+                <AppointmentCard title={appointment} caption={doctor.name +" "+doctor.surname}/>
+            ))
+        }
+        {freeAppointmentList.length == 0 &&
+            <Typography align="center" variant="h6">No Appointment Available</Typography>}
+        </>
+    );
 }
