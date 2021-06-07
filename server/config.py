@@ -7,7 +7,7 @@ FLASK_HOST = "0.0.0.0"
 GOOGLE_CLIENT_ID = "844949237967-h0pnqs3orkq4159ngua6s4jp0fdqatl4.apps.googleusercontent.com"
 
 # DB constans
-DB_HOST_ADDRESS = '79.50.224.210'
+DB_HOST_ADDRESS = '95.236.26.248'
 DB_USER = 'root'
 DB_PASSWORD = 'pwd'
 DB_NAME = 'remoteMonitoring'
