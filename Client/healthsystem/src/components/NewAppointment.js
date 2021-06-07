@@ -10,20 +10,7 @@ import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
 import AppointmentCard from './AppointmentCard';
 import {useHistory} from "react-router-dom"
-
-export function AppointmentCardList({user}) {
-    
-
-    useEffect(() => {
-        // REMEMBER to change the doctorId=6; retrieve it from cookies
-        
-    }, [user.googleId]);
-
-
-    
-
-    
-}
+import Doctor from '../classes/Doctor';
 
 var newappstyle = {
     container: {
@@ -70,7 +57,7 @@ export default function NewAppointment({user}){
     const [freeAppointmentList, setFreeAppointmentList] = useState(initAppointmentList());
     const [docAppointmentList, setdocAppointmentList] = useState([]);
     const [patient, setPatient] = useState({})
-    const [doctor, setDoctor] = useState({})
+    const [doctor, setDoctor] = useState(new Doctor())
     const [modalShow, setModalShow] = useState(false);
     const [dateStart, setDateStart] = useState("No appointment selected");
     const [dateEnd, setDateEnd] = useState();
@@ -99,6 +86,17 @@ export default function NewAppointment({user}){
             API_doctor.getDoctor(patient.doctorId)
                 .then((doct) =>{
                 setDoctor(doct)
+                API.getEvents(doct.googleId, "Doctor")
+                .then((appointment) =>{
+                appointment.sort(function (left, right) {
+                        return moment.utc(right.date).diff(moment.utc(left.date))
+                    });
+                    setdocAppointmentList(appointment)
+                    })
+                    .catch((err) =>{
+                        setdocAppointmentList([])
+                        console.log(err)
+                    })
                 })
                 .catch((err) =>{
                 console.log(err)
@@ -106,27 +104,13 @@ export default function NewAppointment({user}){
                 })
             })
         }
-        if(doctor !== undefined){
-            API.getEvents(doctor.googleId, "Doctor")
-            .then((appointment) =>{
-            appointment.sort(function (left, right) {
-                    return moment.utc(right.date).diff(moment.utc(left.date))
-                });
-                setdocAppointmentList(appointment)
-                console.log(appointment)
-                })
-                .catch((err) =>{
-                    setdocAppointmentList([])
-                    console.log(err)
-                })
-        }
-        /*if (docAppointmentList !== undefined){
-            console.log("Doc List" + docAppointmentList);
+        if (docAppointmentList !== undefined){
             for (const busyAppointment of docAppointmentList) {
-                removeAppointment(busyAppointment.dateStart);
+                console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm"))
+                removeAppointment(moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm"));
             }
             console.log("Free List " + freeAppointmentList); 
-        }*/
+        }
     }, [user.googleId, patient.doctorId]);
 
     const selectedAppointment = (date) => {
@@ -137,6 +121,7 @@ export default function NewAppointment({user}){
     }
 
     const removeAppointment = (date) => {
+
         const updatedList = freeAppointmentList.filter((appointmentDate) => appointmentDate !== date);
         setFreeAppointmentList(updatedList);
     }
