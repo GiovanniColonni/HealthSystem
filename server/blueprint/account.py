@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask_restx import Api, Resource
 from flask_login import login_required
+import json
 
 from db.queries.UpdateQuery import UpdateQuery
 from db.queries.InsertQuery import InsertQuery
+from db.queries.SelectQuery import SelectQuery
 
 from http import HTTPStatus
 
@@ -22,6 +24,7 @@ class Account(Resource):
     def post(self, action):
         u = UpdateQuery()
         i = InsertQuery()
+        s = SelectQuery()
         if action == "submitFirstAccess":
             userType = request.form.get("userType")
             id = request.form.get("googleId")
@@ -43,10 +46,16 @@ class Account(Resource):
             return "OK", HTTPStatus.OK
 
         if action == "insertToken":
-
             id = request.form.get("googleId")
             pushToken = request.form.get("pushToken")
-            if (not u.update_push_token(id, pushToken)):
+            # get all pushToken from the googleId
+            allPushToken = s.get_push_token(id)
+            if allPushToken is None or allPushToken == "":
+                allPushToken = pushToken+","
+            else:
+                if pushToken not in allPushToken:
+                    allPushToken = allPushToken + pushToken + ","
+            if (not u.update_push_token(id, allPushToken)):
                 return "Error", HTTPStatus.INTERNAL_SERVER_ERROR
             return "OK", HTTPStatus.OK
         else:

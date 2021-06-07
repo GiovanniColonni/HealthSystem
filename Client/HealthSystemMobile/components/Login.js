@@ -12,7 +12,7 @@ export default function Login({navigation}) {
   let [googleId, setGoogleId] = useState("");
   let [name, setName] = useState("");
   let [token,setToken] = useState()
-
+  let [email,setEmail] = useState()
   let userState = useContext(UserContext)
 
   const styles = StyleSheet.create({
@@ -34,13 +34,13 @@ export default function Login({navigation}) {
       }); 
 
       if (result.type === 'success') {
-
         userState.user.googleId = result.user.id
         userState.user.email = result.user.email
         userState.user.name = result.user.name
-        setGoogleId(result.user.id)
+        setToken(result.accessToken)
         setName(result.user.name)
-        setToken(token)
+        setEmail(result.user.email)
+        setGoogleId(result.user.id)
         return result.accessToken;
       } else {
         return { cancelled: true };
@@ -51,21 +51,34 @@ export default function Login({navigation}) {
   } 
 
   useEffect(() => {
+    /*
       if(userState.user.googleId !== ""){
       navigation.navigate("Home")
     }
-    /*
+    */
+    
     if(userState.user.googleId !== ""){
-      Api.postLogin(token,userState.user.email,userState.user.googleId)
+      Api.postLogin(token,email,googleId)
         .then((resp)=>{
           console.log(resp)
+          // insert pushToken. Get expoPushToken from app.js
+          /*
+          Api.insertPushToken(user.googleId,token)
+            .then((resp) =>{
+              console.log(token)
+              console.log(resp)
+            })
+            .catch((err) =>{
+              console.log(err)
+            })
+          */
           if(resp){
             navigation.navigate("Home")
           }
         })
         .catch((e) => {console.log(e)})
     }
-    */
+    
   }, [googleId]);
 
 
@@ -77,8 +90,19 @@ export default function Login({navigation}) {
         onPress={() => { signInWithGoogleAsync(); 
         }}
       />
+      <Button 
+      title="post login"
+      onPress={()=>{ Api.postLogin(token,userState.user.email,userState.user.googleId)
+        .then((resp)=>{
+          console.log(resp)
+          if(resp){
+            navigation.navigate("Home")
+          }
+        })
+        .catch((e) => {console.log(e)})}}/>
       <Text>{googleId}</Text>
       <Text>{name}</Text>
+      <Text>token : {token}</Text>
     </View>
   );
 }

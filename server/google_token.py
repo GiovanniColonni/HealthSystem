@@ -5,7 +5,7 @@ from google.oauth2 import id_token
 
 
 VALID_ISSUERS = ['accounts.google.com', 'https://accounts.google.com']
-CACHED_SESSION = CacheControl(Session()) # non so cosa fa
+CACHED_SESSION = CacheControl(Session()) 
 
 # use google validation code for validete the token id, error in case of failures 
 # otherwise return the decoded token

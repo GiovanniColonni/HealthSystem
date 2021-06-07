@@ -16,6 +16,7 @@ import MeasureHistory from './components/MeasureHistory';
 
 
 import { StackRouter } from 'react-navigation';
+import Api from './api/Api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -36,14 +37,16 @@ export default function App() {
   const Stack = createStackNavigator();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then(token =>{
+       setExpoPushToken(token)
+    });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+      //console.log(response);
     });
   },[expoPushToken])
  
@@ -75,7 +78,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    //console.log(token);  
   } else {
     alert('Must use physical device for Push Notifications');
   }
