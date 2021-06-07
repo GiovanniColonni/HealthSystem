@@ -18,7 +18,7 @@ export default function ModalFeedback(props) {
     let history = useHistory()
 
     const gotoHome = () =>{
-      history.push('\home');
+      history.push('/home');
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import IconButton from '@material-ui/core/IconButton';
 import {FaCheck} from 'react-icons/fa';

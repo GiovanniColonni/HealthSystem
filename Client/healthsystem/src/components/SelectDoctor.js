@@ -1,4 +1,3 @@
-import { Button, TextField } from '@material-ui/core';
 import {React, useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom'
 import API from '../api/API'
@@ -65,7 +64,7 @@ const SelectDoctor = (props) =>{
                   <ChooseDoctorCard title={doc.surname + " " + doc.name} caption={"Address"} 
                         onClick={() => updateDoctorIdInPatient(doc.googleId, user.googleId)}/>
               )) }
-              {doctors.length == 0 &&
+              {doctors.length === 0 &&
                 <Typography align="center" variant="h6">No Doctors</Typography>}
             </>
           );

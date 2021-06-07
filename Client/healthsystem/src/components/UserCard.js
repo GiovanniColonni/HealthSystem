@@ -133,7 +133,7 @@ export function UserCardList({user}) {
           user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
-      {patientList.length == 0 &&
+      {patientList.length === 0 &&
         <Typography align="center" variant="h6">No Patients</Typography>}
     </>
   );

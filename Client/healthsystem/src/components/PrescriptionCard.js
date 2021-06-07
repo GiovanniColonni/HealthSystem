@@ -111,7 +111,7 @@ export function PrescriptionCardList({user}) {
               <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
         ))
       }
-      {prescriptionList.length == 0 &&
+      {prescriptionList.length === 0 &&
         <Typography align="center" variant="h6">No Prescriptions</Typography>}
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Column, Item } from '@mui-treasury/components/flex';
+import { Row, Column } from '@mui-treasury/components/flex';
 import { Typography } from '@material-ui/core';
 import { UserCardNoLink } from './UserCard';
 import API_doctor from '../api/API_doctor';
@@ -43,9 +43,9 @@ export default function NewAppointment({user}){
         const initList = [];
         for (var days = 1; days < 8; days++) {
             const currentDay = moment().startOf('day').add(days, 'days');
-            if (currentDay.format('dddd') != "Saturday" && currentDay.format('dddd') != "Sunday") {
+            if (currentDay.format('dddd') !== "Saturday" && currentDay.format('dddd') !== "Sunday") {
                 for (var hours = 8; hours < 18; hours++) {
-                    if (hours != 13){
+                    if (hours !== 13){
                         initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY HH:mm"));
                     }
                 }
@@ -135,7 +135,7 @@ export default function NewAppointment({user}){
                         onClick={() => selectedAppointment(appointment)}/>
                 ))
             }
-            {freeAppointmentList.length == 0 &&
+            {freeAppointmentList.length === 0 &&
                 <Typography align="center" variant="h6">No Appointment Available</Typography>}
             </>
         );
