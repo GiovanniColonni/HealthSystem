@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Column, Item } from '@mui-treasury/components/flex';
-import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
 import { UserCardNoLink } from './UserCard';
 import API_doctor from '../api/API_doctor';
@@ -10,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
 import AppointmentCard from './AppointmentCard';
+import {useHistory} from "react-router-dom"
 
 export function AppointmentCardList({user}) {
     
@@ -59,7 +59,7 @@ export default function NewAppointment({user}){
             if (currentDay.format('dddd') != "Saturday" && currentDay.format('dddd') != "Sunday") {
                 for (var hours = 8; hours < 18; hours++) {
                     if (hours != 13){
-                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format('dddd MMMM Do YYYY, h:mm a'));
+                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY HH:mm"));
                     }
                 }
             }
@@ -72,8 +72,9 @@ export default function NewAppointment({user}){
     const [patient, setPatient] = useState({})
     const [doctor, setDoctor] = useState({})
     const [modalShow, setModalShow] = useState(false);
-    const [dateStart, setDateStart] = useState();
+    const [dateStart, setDateStart] = useState("No appointment selected");
     const [dateEnd, setDateEnd] = useState();
+    const history = useHistory()
 
     useEffect(() => {
         API_patient.getPatient(user.googleId)
@@ -129,10 +130,10 @@ export default function NewAppointment({user}){
     }, [user.googleId, patient.doctorId]);
 
     const selectedAppointment = (date) => {
-        const formatedStartDate = moment(date, "MM/DD/YYYY hh:mm");
-        setDateStart(formatedStartDate.format("MM/DD/YYYY hh:mm"));
+        const formatedStartDate = moment(date, "MM/DD/YYYY HH:mm");
+        setDateStart(formatedStartDate.format("MM/DD/YYYY HH:mm"));
         const formatedEndDate = formatedStartDate.add(1, 'hours');
-        setDateEnd(formatedEndDate.format("MM/DD/YYYY hh:mm"));
+        setDateEnd(formatedEndDate.format("MM/DD/YYYY HH:mm"));
     }
 
     const removeAppointment = (date) => {
@@ -169,6 +170,10 @@ export default function NewAppointment({user}){
             })
     }
 
+    const cancelClick = () => {
+        history.push("/home")
+    }
+
     return(
         <>
             <h1>New Appointment</h1>
@@ -182,16 +187,15 @@ export default function NewAppointment({user}){
                                 <UserCardNoLink title={doctor.name + ' ' + doctor.surname} />
                             </div>}
                     <Row gap={'inherit'} p={'inherit'}>
-                        <TextField label="Date" variant="outlined" style={newappstyle.field}/>
-                    </Row>
-                    <Row gap={'inherit'} p={'inherit'}>
-                        <TextField label="Hour" variant="outlined" style={newappstyle.field}/>
+                        <Typography>Selected appointment:</Typography>
+                        <Typography>{dateStart}</Typography>
                     </Row>
                     <Row>
                         <Button
                             variant="contained"
                             color="secondary"
                             style={newappstyle.kobutton}
+                            onClick={() => cancelClick()}
                         >
                             Cancel
                         </Button>
