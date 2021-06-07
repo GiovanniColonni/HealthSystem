@@ -9,15 +9,12 @@ from db.queries.SelectQuery import SelectQuery
 
 from db.queries.UpdateQuery import UpdateQuery
 
-
 app = Flask(__name__)
-app.config.from_object(__name__) 
+app.config.from_object(__name__)
 api = Api(app=app, title="HealthSystem")
 
 app.secret_key = SECRET_KEY
 app.config['REMEMBER_COOKIE_HTTPONLY'] = True
-
-
 
 with app.app_context():
     from blueprint.auth import auth
@@ -32,7 +29,6 @@ app.register_blueprint(doctor)
 app.register_blueprint(totem)
 app.register_blueprint(patient)
 
-
 if __name__ == "__main__":
-    app.run(host=FLASK_HOST,ssl_context=("cert/cert.pem","cert/key.pem"))
-    #app.run(host=FLASK_HOST)
+    app.run(host=FLASK_HOST, ssl_context=("cert/cert.pem", "cert/key.pem"))
+    # app.run(host=FLASK_HOST)
