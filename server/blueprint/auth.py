@@ -21,7 +21,7 @@ from UserManager import UserManager
 auth = Blueprint('auth', __name__, url_prefix="/api")
 apiLogin = Api(auth)  # link api up to the BP
 
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
+# client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 user_manager = UserManager()
 
