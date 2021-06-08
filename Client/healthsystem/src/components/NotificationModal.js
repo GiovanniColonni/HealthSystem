@@ -60,7 +60,16 @@ export default function NotificationMenuModal(props) {
             </Modal.Header>
             <Modal.Body> 
                 {notifList.length > 0 && notifList.map(notif => (
-                    <NotificationCard type={notif.type} userType={user.userType} patient={notif.patient} patientId={notif.patientId} date={moment(notif.date).format('MM-DD-YYYY HH:MM').toString()} info={notif.info} URL={notif.URL}/>
+                    <NotificationCard 
+                        type={notif.type} 
+                        userType={user.userType} 
+                        patient={notif.patient} 
+                        patientId={notif.patientId} 
+                        date={moment(notif.date).format('MM-DD-YYYY HH:MM').toString()} 
+                        info={notif.info} 
+                        URL={notif.URL}
+                        handleClose={handleClose}
+                    />
                 ))}
                 {notifList.length === 0 && 
                     <Typography align="center" variant="h6">No Notifications</Typography>}
