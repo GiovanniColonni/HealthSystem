@@ -18,6 +18,7 @@ import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor";
 import NewAppointment from "./components/NewAppointment";
 import PatientList from './components/PatientList';
+import PatientCall from './components/PatientCall';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -91,8 +92,9 @@ function App() {
             </div>
           </Route>
           <Route exact path={"/patient/meeting"}>
-            <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
-              <IframeJitsi/>
+            <div>
+              <NavigationBar user={user} />
+              <PatientCall />
             </div>
           </Route>
 
