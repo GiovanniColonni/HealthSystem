@@ -53,21 +53,23 @@ export default function BigCalendar(props) {
       onSelectSlot={({start,end}) => createEventFunction(start,end)}
       style={{ height: 500 }} // remove style here. Use CSS file
     />
-    {eventClk !== null && <EventModal show={show} animation={true} event={eventClk} onHide={handleClose}/>}
-    <Modal show={showCreateModal} onHide={handleCloseCreate}>
-      <Modal.Header closeButton>
-          <Modal.Title>Create Event</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-          <p>Start Date: {createEvent !== undefined && createEvent.start}</p>
-          <p>End Date: {createEvent !== undefined && createEvent.end}</p>
-          <Input placeholder="Event Name" name="Event Name"></Input>
-        <Modal.Footer>
-          <Button variant="contained" onClick={() => console.log("onClick")}color="primary" disabled={false}> Submit
-          </Button> 
-        </Modal.Footer>
-      </Modal.Body>
-      </Modal>
+    {eventClk !== null && <EventModal user={user} show={show} animation={true} event={eventClk} onHide={handleClose}/>}
+    {user && user.userType === "Doctor" && 
+      <Modal show={showCreateModal} onHide={handleCloseCreate}>
+        <Modal.Header closeButton>
+            <Modal.Title>Create Event</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>Start Date: {createEvent !== undefined && createEvent.start}</p>
+            <p>End Date: {createEvent !== undefined && createEvent.end}</p>
+            <Input placeholder="Event Name" name="Event Name"></Input>
+          <Modal.Footer>
+            <Button variant="contained" onClick={() => console.log("onClick")}color="primary" disabled={false}> Submit
+            </Button> 
+          </Modal.Footer>
+        </Modal.Body>
+        </Modal>
+    }
     </>
   );
 }

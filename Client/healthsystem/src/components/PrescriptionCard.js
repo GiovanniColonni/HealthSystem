@@ -105,6 +105,7 @@ export function PrescriptionCardList({user}) {
 
   return (
     <>
+      {prescriptionList.length == 0 && <h2>There are no prescriptions yet</h2>}
       {doctor !== undefined && 
         prescriptionList.map(prescription => (
               <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
