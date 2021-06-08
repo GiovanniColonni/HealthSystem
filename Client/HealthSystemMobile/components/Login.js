@@ -58,7 +58,7 @@ export default function Login({navigation}) {
     */
     
     if(userState.user.googleId !== ""){
-      Api.postLogin(token,email,googleId)
+      Api.postLogin(token,email,googleId,name)
         .then((resp)=>{
           console.log(resp)
           // insert pushToken. Get expoPushToken from app.js
@@ -84,7 +84,6 @@ export default function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text>Expo AppAuth Example</Text>
       <Button
         title="Sign In with Google "
         onPress={() => { signInWithGoogleAsync(); 

@@ -3,6 +3,8 @@ import { Row, Item } from '@mui-treasury/components/flex';
 import {useHistory} from "react-router";
 import API_doctor from '../api/API_doctor';
 import {FaUserCircle} from 'react-icons/fa';
+import { IconButton, Typography } from '@material-ui/core';
+import {FaCheck} from 'react-icons/fa';
 
 var cardstyle = { 
     title: {
@@ -57,6 +59,30 @@ export function UserCardNoLink(props) {
   );
 }
 
+export function ChooseDoctorCard(props) {
+  return (
+    <>
+    <Row gap={2} p={2.5} style={cardstyle.border}>
+      <Item>
+            <FaUserCircle style={cardstyle.icon}/>
+      </Item>
+      <Row wrap grow gap={0.5} minWidth={0}>
+        <Item grow minWidth={0}>
+          <div style={cardstyle.title}>{props.title}</div>
+          <div style={cardstyle.caption}>
+            {props.caption}
+          </div>
+        </Item>
+      </Row>
+      <Row>
+        <IconButton onClick={props.onClick}>
+          <FaCheck />
+        </IconButton>
+      </Row>
+    </Row>
+    </>
+  );
+}
 
 export function UserCard(props) {
   
@@ -102,10 +128,13 @@ export function UserCardList({user}) {
 
   return (
     <>
-      {patientList !== undefined && patientList.map(user => (
+      {patientList !== undefined && patientList.length > 0 &&
+        patientList.map(user => (
           user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
+      {patientList.length === 0 &&
+        <Typography align="center" variant="h6">No Patients</Typography>}
     </>
   );
 }

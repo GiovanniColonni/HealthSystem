@@ -86,5 +86,31 @@ async function getDoctorByPatient(patientId){
     return doctor
 }
 
-const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getPrescription,getDoctorByPatient}
+async function setAppointment(patientId,doctorId,dateStart,typeExamination,description,dateEnd,meetingURL){
+    let formData = new FormData()
+
+    formData.set("patientId",patientId)
+    formData.set("doctorId",doctorId)
+    formData.set("dateStart",dateStart)
+    formData.set("typeExamination",typeExamination)
+    formData.set("description",description)
+    formData.set("dateEnd",dateEnd)
+    formData.set("meetingURL", meetingURL)
+
+    //let resp = await axios.post("/account/submitFirstAccess")
+    return await axios({
+        method: "post",
+        url: "/api/patient/appointment",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response){
+        console.log(response);
+        return response
+    }).catch(function (response){
+        console.log(response);
+        return response
+    });
+}
+
+const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getPrescription,getDoctorByPatient, setAppointment}
 export default API_patient;

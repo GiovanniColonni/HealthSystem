@@ -30,6 +30,7 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   let [user,setUser] = useState({googleId:"",username:"",email:""});
+  let [isSigned,setIsSigned] = useState(false)
   let userState = {user,setUser}
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -48,15 +49,18 @@ export default function App() {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       //console.log(response);
     });
+
   },[expoPushToken])
  
   return (
     <UserContext.Provider value={userState}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={Login}/>  
-          <Stack.Screen name="Home" component={Home}/>
-          <Stack.Screen name="MeasureHisotry" component={MeasureHistory}/>
+          
+            <Stack.Screen name="Home" component={Home} options={{headerLeft:()=>(<></>)}}/>
+            <Stack.Screen name="MeasureHisotry" component={MeasureHistory}/>
+            <Stack.Screen name="Login" component={Login}/>  
+          
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

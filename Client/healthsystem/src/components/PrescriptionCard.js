@@ -6,6 +6,7 @@ import API_patient from '../api/API_patient';
 import API_doctor from '../api/API_doctor';
 import Doctor from '../classes/Doctor';
 import moment from 'moment';
+import { Typography } from '@material-ui/core';
 
 var cardstyle = { 
     title: {
@@ -106,11 +107,13 @@ export function PrescriptionCardList({user}) {
   return (
     <>
       {prescriptionList.length == 0 && <h2>There are no prescriptions yet</h2>}
-      {doctor !== undefined && 
+      {doctor !== undefined && prescriptionList.length > 0 &&
         prescriptionList.map(prescription => (
               <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
         ))
       }
+      {prescriptionList.length === 0 &&
+        <Typography align="center" variant="h6">No Prescriptions</Typography>}
     </>
   );
 }

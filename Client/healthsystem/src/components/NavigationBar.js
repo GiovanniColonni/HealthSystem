@@ -6,6 +6,7 @@ import API from '../api/API';
 import API_patient from '../api/API_patient';
 import moment from 'moment';
 import Logo from './Logo'
+import {useHistory} from "react-router-dom"
 
 var navstyle = {
     nav: {
@@ -21,6 +22,7 @@ var navstyle = {
 export default function NavigationBar({user}) {
     const [events, setEvents] = useState([])
     const [notifList, setNotifList] = useState([])
+    const history = useHistory()
 
 
     useEffect(() => {
@@ -71,6 +73,18 @@ export default function NavigationBar({user}) {
           }
       }, [user.googleId, user.userType]);
 
+    const handleLogout = () => {
+        console.log(document.cookie)
+        API.logout()
+        document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+                .replace(/^ +/, "")
+                .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/login");
+            });
+        history.push("/login");
+        console.log(document.cookie)
+    }
+
     return (
         <>
         <Navbar  bg="light" style={navstyle.nav}>
@@ -89,6 +103,7 @@ export default function NavigationBar({user}) {
                 <Nav>
                     <NotificationMenuModal user={user} notifList={notifList}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
+                    <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

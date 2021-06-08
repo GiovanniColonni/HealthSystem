@@ -118,6 +118,21 @@ def insert_measure():
         return make_response("Ok", 200)
     return make_response("No Ok", 400)
 
+@patient.route('/appointment', methods=['POST'])
+@login_required
+def insert_appointment():
+    patientId = request.form.get('patientId')
+    doctorId = request.form.get('doctorId')
+    dateStart = request.form.get('dateStart')
+    typeExamination = request.form.get('typeExamination')
+    description = request.form.get('description')
+    dateEnd = request.form.get('dateEnd')
+    meetingURL = request.form.get('meetingURL')
+    i = InsertQuery()
+    if i.insert_appointment(patientId, doctorId, dateStart, typeExamination, description, dateEnd, meetingURL):
+        return make_response("Ok", 200)
+    return make_response("No Ok", 400)
+
 def row2dict(row):
     """
     *** **** Make this function global in order to use it from all files
