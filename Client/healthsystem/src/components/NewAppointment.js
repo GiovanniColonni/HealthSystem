@@ -11,6 +11,7 @@ import moment from 'moment';
 import AppointmentCard from './AppointmentCard';
 import {useHistory} from "react-router-dom"
 import Doctor from '../classes/Doctor';
+import Functions from '../functions/Functions';
 
 var newappstyle = {
     container: {
@@ -143,7 +144,7 @@ export default function NewAppointment({user}){
 
     const validateAppointment = () => {
         API_patient.setAppointment(patient.googleId,patient.doctorId,dateStart,"meeting",
-                                    "my description",dateEnd,"Let's wait")
+                                    "my description",dateEnd,Functions.createMeeting(patient.googleId, patient.doctorId))
             .then((resp) =>{
                 if(resp.status === 200){
                     setModalShow(true)
