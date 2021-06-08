@@ -92,6 +92,7 @@ function App() {
           </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
+              <NavigationBar user={user}/>
               <IframeJitsi/>
             </div>
           </Route>
@@ -129,6 +130,7 @@ function App() {
         </Route>
         <Route exact path={"/doctor/meeting"}> 
           <div>
+            <NavigationBar user={user} />
             <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
           </div>
         </Route>
