@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NotificationMenuModal from './NotificationModal';
 import API from '../api/API';
-import API_patient from '../api/API';
+import API_patient from '../api/API_patient';
 import moment from 'moment';
 import Logo from './Logo'
 
