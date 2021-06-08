@@ -27,8 +27,11 @@ export default function IframeJitsi() {
   }
 
   useEffect( () => {
+    //new window.JitsiMeetExternalAPI("https://meet.jit.si/lucatest#config.prejoinPageEnabled=false")
   })
   return (
-    <Iframe iframe={componentIframe(history.location.state.URL)} allow="camera;autoplay" />
+    <>
+      <Iframe iframe={componentIframe(history.location.state.URL)} allow="camera;autoplay" />
+    </>
   );
 }
