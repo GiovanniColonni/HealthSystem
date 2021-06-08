@@ -21,7 +21,7 @@ from UserManager import UserManager
 auth = Blueprint('auth', __name__, url_prefix="/api")
 apiLogin = Api(auth)  # link api up to the BP
 
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
+# client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 user_manager = UserManager()
 
@@ -86,12 +86,13 @@ class CurrentUser(Resource):
         id_token = request.form.get('id_token')
         email = request.form.get('email')
         googleId = request.form.get('googleId')
-
+        username = ""
         ## based on the type of client the verification of the token use different keys
         client_id = ""
         if("type" in request.form):
             
             l_type = request.form.get("type")
+            username = request.form.get("name")
             if(l_type=="android"):
                 client_id = GOOGLE_ANDROID_ID
             if(l_type=="ios"):
@@ -103,17 +104,21 @@ class CurrentUser(Resource):
         if id_token is None:
             return "NO ID token provided", HTTPStatus.FORBIDDEN  # cambiare in httpstatus.Forbidden
         
-    
+        identity = {}
         try:
             # call ESP for validating
+            if(client_id == GOOGLE_CLIENT_ID):
                 identity = validate_id_token(id_token, client_id)
         except ValueError:
             return 'Invalid ID token', HTTPStatus.FORBIDDEN
 
         if ('sub' not in identity or 'name' not in identity or 'picture' not in identity):
-            return "Unexcpected authorization response", HTTPStatus.CONTINUE
-
-        username = identity["name"]
+            pass
+            #return "Unexcpected authorization response", HTTPStatus.CONTINUE
+        
+        if(username == ""):
+            username = identity["name"]
+        
         user = user_manager.insertUserOrNothing(googleId, username, email, "unknown", "")
 
         if (login_user(user, remember=True) == False):
