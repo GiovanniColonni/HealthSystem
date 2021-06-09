@@ -5,7 +5,7 @@ import UserContext from "../contexts/UserContext"
 import Constants from 'expo-constants';
 import Api from "../api/Api"
 
-export default function Login({navigation}) {
+export default function Login({navigation, expoPushToken}) {
   
 //  let [authState, setAuthState] = useState(null);
   let [headers,setHeaders] = useState("eih");
@@ -62,8 +62,8 @@ export default function Login({navigation}) {
         .then((resp)=>{
           console.log(resp)
           // insert pushToken. Get expoPushToken from app.js
-          /*
-          Api.insertPushToken(user.googleId,token)
+          
+          Api.insertPushToken(userState.user.googleId,expoPushToken)
             .then((resp) =>{
               console.log(token)
               console.log(resp)
@@ -71,7 +71,7 @@ export default function Login({navigation}) {
             .catch((err) =>{
               console.log(err)
             })
-          */
+          
           if(resp){
             navigation.navigate("Home")
           }
