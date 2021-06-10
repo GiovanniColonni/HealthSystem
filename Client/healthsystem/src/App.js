@@ -19,6 +19,7 @@ import SelectDoctor from "./components/SelectDoctor";
 import NewAppointment from "./components/NewAppointment";
 import PatientList from './components/PatientList';
 import PatientCall from './components/PatientCall';
+import DoctorCall from './components/DoctorCall';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -94,7 +95,8 @@ function App() {
           <Route exact path={"/patient/meeting"}>
             <div>
               <NavigationBar user={user} />
-              <PatientCall />
+              {/*<PatientCall /> ONLY FOR TEST*/}
+              <DoctorCall />
             </div>
           </Route>
 
