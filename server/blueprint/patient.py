@@ -106,7 +106,7 @@ def get_all_prescritions(patientId):
 
 
 @patient.route('/measure', methods=['POST'])
-@login_required
+#login_required
 def insert_measure():
     patientId = request.form.get('patientId')
     type = request.form.get('type')
