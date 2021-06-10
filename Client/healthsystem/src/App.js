@@ -50,6 +50,11 @@ function App() {
       })
   },[loginState,history]) 
 
+  const handleLogout = () =>{
+    setLoginState(false)
+    setUser({})
+  }
+
   return (
     <div className="App">
       <Switch>
@@ -61,26 +66,26 @@ function App() {
           </Route>
           <Route exact path={"/home"}>
               <div>
-                <NavigationBar user={user} />
+                <NavigationBar user={user} logout={handleLogout}/>
                 <Home user={user}/>
               </div>
           </Route>
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <PatientList user={user} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
           <Route exact path={"/patientDetails"}>
-            <NavigationBar user={user} />
+            <NavigationBar user={user} logout={handleLogout}/>
             <PatientDetails />
           </Route>
 
           {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
           <Route exact path={"/patient/sensor"}>
             <div>
-              <NavigationBar user={user}/>
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>Sensor Details of Patient XXX</h1>
             </div>
           </Route>
@@ -88,13 +93,13 @@ function App() {
           {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
           <Route exact path={"/patient/appointment"}>
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
             </div>
           </Route>
           <Route exact path={"/patient/meeting"}>
-            <div>
-              <NavigationBar user={user} />
+            <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
+              <NavigationBar user={user} logout={handleLogout}/>
               {/*<PatientCall /> ONLY FOR TEST*/}
               <DoctorCall />
             </div>
@@ -103,7 +108,7 @@ function App() {
           {/* Only accessible for patient users */}
           <Route exact path={"/prescriptionList"}>
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>My Prescriptions</h1>
               <PrescriptionCardList user={user}/>
             </div>
@@ -112,7 +117,7 @@ function App() {
           {/* Only accessible for patient users */}
           <Route exact path={"/newAppointment"}>
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <NewAppointment user={user} />
             </div>
           </Route>
@@ -120,7 +125,7 @@ function App() {
           {/* Changes depending on the user type: patient has his doctor */}
           <Route exact path={"/personalProfile"} >
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <PersonalProfile user={user} />
             </div>
           </Route>
@@ -133,6 +138,7 @@ function App() {
         </Route>
         <Route exact path={"/doctor/meeting"}> 
           <div>
+            <NavigationBar user={user} logout={handleLogout}/>
             <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
           </div>
         </Route>

@@ -11,7 +11,7 @@ function Iframe(props) {
   );
 }
 
-export default function IframeJitsi() {
+export default function IframeJitsiHome(props) {
   // Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
   const history = useHistory()
   /*const demos = {
@@ -27,11 +27,8 @@ export default function IframeJitsi() {
   }
 
   useEffect( () => {
-    //new window.JitsiMeetExternalAPI("https://meet.jit.si/lucatest#config.prejoinPageEnabled=false")
   })
   return (
-    <>
-      <Iframe iframe={componentIframe(history.location.state.URL)} allow="camera;autoplay" />
-    </>
+    <Iframe iframe={componentIframe(props.URL)} allow="camera;autoplay" />
   );
 }

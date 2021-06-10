@@ -19,7 +19,7 @@ var navstyle = {
 }
 
 
-export default function NavigationBar({user}) {
+export default function NavigationBar({user,logout}) {
     const [events, setEvents] = useState([])
     const [notifList, setNotifList] = useState([])
     const history = useHistory()
@@ -76,13 +76,18 @@ export default function NavigationBar({user}) {
     const handleLogout = () => {
         console.log(document.cookie)
         API.logout()
-        document.cookie.split(";").forEach((c) => {
-            document.cookie = c
-                .replace(/^ +/, "")
-                .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/login");
-            });
-        history.push("/login");
-        console.log(document.cookie)
+            .then((resp) =>{
+                if(resp){
+                    logout()
+                    document.cookie.split(";").forEach((c) => {
+                        document.cookie = c
+                            .replace(/^ +/, "")
+                            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/login");
+                        });
+                    history.push("/login");
+                    console.log(document.cookie)
+                }
+            })
     }
 
     return (

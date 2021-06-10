@@ -24,6 +24,8 @@ var homestyle = {
 export default function Home({user}){
     const [patient,setPatient] = useState(new Patient())
     const history = useHistory()
+    const [showMeeting,setShowMeeting] = useState(false)
+    const [meetingURL,setMeetingURL] = useState("")
     
     const gotoNewAppointment = () =>{
       history.push('/newAppointment');
@@ -66,7 +68,7 @@ export default function Home({user}){
             }
             <Row gap={2} p={2.5}>
                 <div style={homestyle.calendar}>
-                    <BigCalendar user={user} />
+                    <BigCalendar user={user}/>
                 </div>
             </Row>
         </>
