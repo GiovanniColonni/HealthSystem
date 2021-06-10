@@ -47,7 +47,7 @@ export default function NewAppointment({user}){
             if (currentDay.format('dddd') !== "Saturday" && currentDay.format('dddd') !== "Sunday") {
                 for (var hours = 8; hours < 18; hours++) {
                     if (hours !== 13){
-                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY HH:mm"));
+                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY hh:mm A"));
                     }
                 }
             }
@@ -107,18 +107,18 @@ export default function NewAppointment({user}){
         }
         if (docAppointmentList !== undefined){
             for (const busyAppointment of docAppointmentList) {
-                console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm"))
-                removeAppointment(moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm"));
+                console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
+                removeAppointment(moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"));
             }
             console.log("Free List " + freeAppointmentList); 
         }
     }, [user.googleId, patient.doctorId]);
 
     const selectedAppointment = (date) => {
-        const formatedStartDate = moment(date, "MM/DD/YYYY HH:mm");
-        setDateStart(formatedStartDate.format("MM/DD/YYYY HH:mm"));
+        const formatedStartDate = moment(date, "MM/DD/YYYY hh:mm A");
+        setDateStart(formatedStartDate.format("MM/DD/YYYY hh:mm A"));
         const formatedEndDate = formatedStartDate.add(1, 'hours');
-        setDateEnd(formatedEndDate.format("MM/DD/YYYY HH:mm"));
+        setDateEnd(formatedEndDate.format("MM/DD/YYYY hh:mm A"));
     }
 
     const removeAppointment = (date) => {

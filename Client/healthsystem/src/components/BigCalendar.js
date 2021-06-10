@@ -6,9 +6,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import API from '../api/API';
 import Button from "@material-ui/core/Button"
 import { Modal } from 'react-bootstrap';
-import { Input } from '@material-ui/core';
-
+import { FormControl, FormControlLabel, Input, Radio, RadioGroup } from '@material-ui/core';
+import API_patient from '../api/API_patient';
+import Functions from '../functions/Functions';
 const localizer = momentLocalizer(moment)
+
 
 export default function BigCalendar(props) {
   const [show, setShow] = useState(false);
@@ -35,8 +37,51 @@ export default function BigCalendar(props) {
   const [events, setEvents] = useState([ev])
 
   const createEventFunction = (start, end) =>{
-    setShowCreateModal(true)
-    setCreateEvent({"start": moment(start).format('ddd MM/DD/YYYY HH:mm A'), "end": moment(end).format('ddd MM/DD/YYYY HH:mm A')})
+    if(moment(start) > moment()){
+      setShowCreateModal(true)
+      setCreateEvent({"start": moment(start).format('MM/DD/YYYY hh:mm A'), "end": moment(end).format('ddd MM/DD/YYYY hh:mm A')})
+    }
+  }
+
+  const submit = () =>{
+    if(createEvent.typeExamination !== undefined && createEvent.typeExamination !== ""){
+      let URL = ""
+      if(createEvent.typeExamination === "meeting"){
+        URL = Functions.createMeeting("115071797088319870782",user.googleId) //put patientId here
+      }
+      if(createEvent.description === undefined){
+        createEvent.description = ""
+      }
+      API_patient.setAppointment("115071797088319870782","118258641823080006430",moment(createEvent.start).format("MM/DD/YYYY hh:mm A"),createEvent.typeExamination,createEvent.description,moment(createEvent.end).format("MM/DD/YYYY hh:mm A"),URL)
+        .then((resp) =>{
+          setShowCreateModal(false)
+          setCreateEvent({})
+          API.getEvents(user.googleId,user.userType)
+            .then((events) =>{
+              if(events !== undefined){
+                setEvents(events)
+              }
+            })
+            .catch((err)=>{
+
+          });
+        })
+        .catch((err) =>{
+          console.log(err)
+        })
+    }
+  }
+
+  const updateTypeExamination = (value) =>{
+    let obj = createEvent
+    obj.typeExamination = value
+    setCreateEvent(obj)
+  }
+
+  const updateDescription = (value) =>{
+    let obj = createEvent
+    obj.description = value
+    setCreateEvent(obj)
   }
 
   return (
@@ -60,14 +105,26 @@ export default function BigCalendar(props) {
             <Modal.Title>Create Event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <p>Start Date: {createEvent !== undefined && createEvent.start}</p>
-            <p>End Date: {createEvent !== undefined && createEvent.end}</p>
-            <Input placeholder="Event Name" name="Event Name"></Input>
+          <p>Start Date: {createEvent !== undefined && moment(createEvent.start).format('ddd MM/DD/YYYY hh:mm A')}</p>
+          <p>End Date: {createEvent !== undefined && moment(createEvent.end).format('ddd MM/DD/YYYY hh:mm A')}</p>
+          {/*<Input placeholder="Event Name" name="Event Name" onChange={(e) => updateTypeExamination(e.target.value) }></Input> */ }
+          <form>
+            <FormControl>
+              <div className="RadioGroup">
+                <RadioGroup aria-label="gender" name="gender1" value={createEvent && createEvent.typeExamination} onChange={(e) => updateTypeExamination(e.target.value)}>
+                  <FormControlLabel value="meeting" label="meeting" control={<Radio />} />
+                  <FormControlLabel value="busy" label="busy" control={<Radio />} />
+                </RadioGroup>
+              </div>
+            </FormControl>
+          </form>
+          <div>
+          {<Input placeholder="Description" name="Description" onChange={(e) => updateDescription(e.target.value) } />}</div>
+        </Modal.Body>
           <Modal.Footer>
-            <Button variant="contained" onClick={() => console.log("onClick")}color="primary" disabled={false}> Submit
+            <Button variant="contained" onClick={() => submit()}color="primary" disabled={false}> Submit
             </Button> 
           </Modal.Footer>
-        </Modal.Body>
         </Modal>
     }
     </>

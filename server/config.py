@@ -1,4 +1,4 @@
-import os 
+import os
 
 # Flask constants
 SECRET_KEY = os.urandom(24)
