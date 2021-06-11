@@ -6,6 +6,7 @@ from ..entities import Patient
 from ..entities import Doctor
 from ..entities import Measure
 from ..entities import Schedule
+from ..entities import Prescription
 from sqlalchemy import insert
 import requests
 import json
@@ -130,6 +131,24 @@ class InsertQuery:
                                description=description,
                                dateEnd=dateEnd,
                                meetingURL=meetingURL
+                               )
+        try:
+            with DatabaseSession() as session:
+                session.add(instance)
+                session.flush()
+                session.commit()
+                return True
+        except SQLAlchemyError:
+            print("EXCEPTION!!!")
+            print("HANDLE THIS EXCEPTION")
+            return False
+
+    def insert_prescription(self, patientId, pathFileSystem, notePrescription, date):
+        user_entity = Prescription
+        instance = user_entity(patientId=patientId,
+                               pathFileSystem=pathFileSystem,
+                               notePrescription=notePrescription,
+                               date=date
                                )
         try:
             with DatabaseSession() as session:
