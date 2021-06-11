@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -88,7 +88,8 @@ const callstyle = {
 export default function DoctorCall() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [content, setContent] = useState(0);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,6 +97,10 @@ export default function DoctorCall() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMenu = (value) => {
+    setContent(value);
   };
 
   return (
@@ -131,11 +136,11 @@ export default function DoctorCall() {
             {["Calendar", "Prescription", "Observations", "Measures", "Patient's details"].map((text, index) => (
                 <ListItem button key={text}>
                 <ListItemIcon>
-                    {index === 0 && <FcPlanner size={30}/>}
-                    {index === 1 && <FcDocument size={30}/>}
-                    {index === 2 && <FcFinePrint size={30}/>}
-                    {index === 3 && <FcComboChart size={30}/>}
-                    {index === 4 && <FcAbout size={30}/>}
+                    {index === 0 && <FcPlanner size={30} onClick={() => handleMenu(index)} />}
+                    {index === 1 && <FcDocument size={30} onClick={() => handleMenu(index)} />}
+                    {index === 2 && <FcFinePrint size={30} onClick={() => handleMenu(index)} />}
+                    {index === 3 && <FcComboChart size={30} onClick={() => handleMenu(index)} />}
+                    {index === 4 && <FcAbout size={30} onClick={() => handleMenu(index)} />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
                 </ListItem>
@@ -144,9 +149,7 @@ export default function DoctorCall() {
         </Drawer>
         <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Typography paragraph>
-            CONTENU
-            </Typography>
+            <Content value={content} />
         </main>
         </div>
         </Column>
@@ -157,4 +160,31 @@ export default function DoctorCall() {
         </Column>
     </Row>
   );
+}
+
+function Content({value}) {
+  return (
+    <>
+      {value === 0 &&
+        <Typography paragraph>
+          CALENDAR
+        </Typography>}
+        {value === 1 &&
+        <Typography paragraph>
+          PRESCRIPTION
+        </Typography>}
+        {value === 2 &&
+        <Typography paragraph>
+          OBSERVATIONS
+        </Typography>}
+        {value === 3 &&
+        <Typography paragraph>
+          MEASURES
+        </Typography>}
+        {value === 0 &&
+        <Typography paragraph>
+          PATIENT'S DETAILS
+        </Typography>}
+    </>
+  )
 }
