@@ -7,6 +7,9 @@ from ..entities import Doctor
 from ..entities import Measure
 from ..entities import Schedule
 from sqlalchemy import insert
+import requests
+import json
+from db.queries.SelectQuery import SelectQuery
 from .. import engine
 connection = engine.connect()
 
@@ -98,6 +101,20 @@ class InsertQuery:
                 session.add(instance)
                 session.flush()
                 session.commit()
+                # send notifications
+                s =  SelectQuery()
+                pushTokens = s.get_push_token(patientId)
+                pushTokens = pushTokens.split(',')
+                for token in pushTokens:
+                    if token != "":
+                        r = requests.post('https://exp.host/--/api/v2/push/send', headers={
+                            'host' : 'exp.host',
+                            'accept' : 'application/json',
+                            'accept-encoding' : 'gzip, deflate',
+                            'content-type' : 'application/json'
+                        },data=json.dumps({'to' : token, 'title' : 'out-of-threshold value', 'body' : 'describe the problem'}))
+                        print(r.status_code, r.reason)
+                        print(token)
                 return True
         except SQLAlchemyError:
             print("EXCEPTION!!!")
