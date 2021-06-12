@@ -91,7 +91,7 @@ export default function BigCalendar(props) {
       localizer={localizer}
       events={events}
       defaultDate={new Date()}
-      defaultView="week"
+      defaultView={props.defaultView}
       startAccessor="start"
       endAccessor="end"
       onSelectEvent={(event) => {setShow(true); setEventClk(event)}}

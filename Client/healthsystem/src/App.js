@@ -100,8 +100,7 @@ function App() {
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
               <NavigationBar user={user} logout={handleLogout}/>
-              {/*<PatientCall /> ONLY FOR TEST*/}
-              <DoctorCall />
+              <PatientCall />
             </div>
           </Route>
 
@@ -139,7 +138,7 @@ function App() {
         <Route exact path={"/doctor/meeting"}> 
           <div>
             <NavigationBar user={user} logout={handleLogout}/>
-            <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
+            <DoctorCall user={user}/>
           </div>
         </Route>
         <Redirect to="/home" />

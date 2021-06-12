@@ -14,9 +14,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { FcAbout, FcComboChart, FcDocument, FcFinePrint, FcMenu, FcPlanner } from 'react-icons/fc';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import IframeJitsi from './IframeJitsi';
+import PatientDetails from './PatientDetails';
+import BigCalendar from './BigCalendar';
 
 
-const drawerWidth = 240;
+const drawerWidth = '50%';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
         top: 'auto',
         position: 'unset'
       },
-    width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -73,19 +74,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const callstyle = {
-    container: {
-        width: "90%",
-        margin: "auto"
-    }, call: {
-        width: "60%"
-    }, menu: {
-        width: "35%",
-        marginRight: "auto"
-    }
+const menustyle = {
+  iconlist: {
+    width: '15%'
+  },
+  content: {
+    width: '80%',
+    marginLeft: 'auto'
+  },
+  flex: {
+    display: 'flex'
+  }
 }
 
-export default function DoctorCall() {
+export default function DoctorCall({user}) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -104,8 +106,6 @@ export default function DoctorCall() {
   };
 
   return (
-    <Row>
-        <Column style={callstyle.menu}>
         <div className={classes.root}>
         <CssBaseline />
         <Drawer
@@ -132,59 +132,54 @@ export default function DoctorCall() {
                 }
             </div>
             <Divider />
-            <List>
-            {["Calendar", "Prescription", "Observations", "Measures", "Patient's details"].map((text, index) => (
-                <ListItem button key={text}>
+            <div style={menustyle.flex}>
+            <List style={menustyle.iconlist}>
+            {["Calendar", "Prescription", "Measures", "Patient's details"].map((text, index) => (
+                <ListItem button key={text}  onClick={() => handleMenu(index)} >
                 <ListItemIcon>
-                    {index === 0 && <FcPlanner size={30} onClick={() => handleMenu(index)} />}
-                    {index === 1 && <FcDocument size={30} onClick={() => handleMenu(index)} />}
-                    {index === 2 && <FcFinePrint size={30} onClick={() => handleMenu(index)} />}
-                    {index === 3 && <FcComboChart size={30} onClick={() => handleMenu(index)} />}
-                    {index === 4 && <FcAbout size={30} onClick={() => handleMenu(index)} />}
+                    {index === 0 && <FcPlanner size={30}/>}
+                    {index === 1 && <FcDocument size={30}/>}
+                    {index === 2 && <FcComboChart size={30}/>}
+                    {index === 3 && <FcAbout size={30}/>}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                
                 </ListItem>
             ))}
             </List>
+              <List style={menustyle.content}>
+                
+              <Content value={content} doctor={user} visible={open}/>
+              </List>
+            </div>
         </Drawer>
+        
         <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Content value={content} />
+                <IframeJitsi/>
         </main>
         </div>
-        </Column>
-        <Column style={callstyle.call}>
-            <div style={callstyle.container} >
-                <IframeJitsi/>
-            </div>
-        </Column>
-    </Row>
   );
 }
 
-function Content({value}) {
+function Content({value, visible, doctor}) {
   return (
     <>
-      {value === 0 &&
-        <Typography paragraph>
-          CALENDAR
-        </Typography>}
-        {value === 1 &&
-        <Typography paragraph>
-          PRESCRIPTION
-        </Typography>}
-        {value === 2 &&
-        <Typography paragraph>
-          OBSERVATIONS
-        </Typography>}
-        {value === 3 &&
-        <Typography paragraph>
-          MEASURES
-        </Typography>}
-        {value === 0 &&
-        <Typography paragraph>
-          PATIENT'S DETAILS
-        </Typography>}
+      {value === 0 && visible === true &&
+        <div>
+          <Typography h1>Calendar</Typography>
+          <BigCalendar user={doctor} defaultView="day"/>
+        </div>}
+        {value === 1 && visible === true &&
+        <div>
+          <Typography h1>Prescription</Typography>
+        </div>}
+        {value === 2 && visible === true &&
+        <div>
+          <Typography h1>Measures</Typography>
+        </div>}
+        {value === 3 && visible === true &&
+        <div>
+          <Typography h1>Patient's details</Typography>
+        </div>}
     </>
   )
 }
