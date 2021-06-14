@@ -17,10 +17,11 @@ export default function BigCalendar(props) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createEvent, setCreateEvent] = useState(undefined)
   const [eventClk, setEventClk] = useState(null)
+  let ev = []
+  const [events, setEvents] = useState([ev])
   const handleClose = () => setShow(false);
   const handleCloseCreate = () => setShowCreateModal(false);
   const {user} = props
-  let ev = []
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
     API.getEvents(user.googleId,user.userType)
@@ -34,7 +35,6 @@ export default function BigCalendar(props) {
       });
   }, [user.googleId, user.userType]);
   // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
-  const [events, setEvents] = useState([ev])
 
   const createEventFunction = (start, end) =>{
     if(moment(start) > moment()){
@@ -98,7 +98,7 @@ export default function BigCalendar(props) {
       onSelectSlot={({start,end}) => createEventFunction(start,end)}
       style={{ height: 500 }} // remove style here. Use CSS file
     />
-    {eventClk !== null && <EventModal user={user} show={show} animation={true} event={eventClk} onHide={handleClose}/>}
+    {eventClk !== null && <EventModal user={user} show={show} animation={true} event={eventClk} onHide={handleClose} patientId={eventClk.patientId}/>}
     {user && user.userType === "Doctor" && 
       <Modal show={showCreateModal} onHide={handleCloseCreate}>
         <Modal.Header closeButton>

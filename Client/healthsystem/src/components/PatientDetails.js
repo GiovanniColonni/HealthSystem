@@ -3,8 +3,6 @@ import Image from 'react-bootstrap/Image';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
 import MeasureList from './MeasureList';
-import oxygen from '../icons/OxyIcon.png';
-import heart from '../icons/HeartBeatingIcon.png';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
 

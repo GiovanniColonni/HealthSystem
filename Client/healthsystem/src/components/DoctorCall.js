@@ -8,17 +8,19 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import Button from "@material-ui/core/Button"
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { FcAbout, FcComboChart, FcDocument, FcPlanner } from 'react-icons/fc';
-import { FaFileUpload } from 'react-icons/fa';
 import IframeJitsi from './IframeJitsi';
 import BigCalendar from './BigCalendar';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { Row, Column } from '@mui-treasury/components/flex';
 import MeasureList from './MeasureList';
-import { useHistory } from 'react-router';
+import FileUpload from './FileUpload.jsx';
+import API_doctor from '../api/API_doctor';
+import { useHistory } from 'react-router-dom';
+
 
 const drawerWidth = '50%';
 
@@ -98,6 +100,7 @@ export default function DoctorCall({user}) {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(0);
   const history= useHistory()
+  const [prescription, setPrescription] = useState({file: undefined, observation: undefined});
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -111,6 +114,32 @@ export default function DoctorCall({user}) {
     setContent(value);
     setOpen(true);
   };
+
+  const uploadPrescription = (patientId) =>{
+    //use history here
+    API_doctor.uploadPrescription(patientId,prescription)
+      .then((resp) =>
+        alert("remove this alert")
+      )
+      .catch((err) =>{
+        console.log(err)
+      })
+  }
+
+  const updateUploadedFiles = (files) =>{
+    let pr = prescription
+    //handle array
+    const f = files[0]
+    pr.file = f
+    setPrescription(pr)
+  }
+
+  const updateObservation = (observation) =>{
+    let pr = prescription
+    //handle array
+    pr.observation = observation
+    setPrescription(pr)
+  }
 
   return (
         <div className={classes.root}>
@@ -154,7 +183,11 @@ export default function DoctorCall({user}) {
             ))}
             </List>
               <List style={menustyle.content}>
-                <Content value={content} doctor={user} visible={open} patientId={history.location.state.patientId}/>
+                <Content 
+                    value={content} doctor={user} visible={open} 
+                    updateUploadedFiles={(files) => updateUploadedFiles(files)} prescription={prescription} 
+                    uploadPrescription={(patientId) => uploadPrescription(patientId)} 
+                    updateObservation={(observation) => updateObservation(observation)} />
               </List>
             </div>
         </Drawer>
@@ -173,15 +206,15 @@ const contentstyle = {
     width: '90%'
   }, item: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: '20px',
+    paddingTop: '20px'
   }, title: {
     paddingBottom: '20px'
-  }, measures: {
-    width: '100%'
   }
 }
-function Content({value, visible, doctor, patientId}) {
-  
+function Content({value, visible, doctor, updateUploadedFiles, prescription, uploadPrescription, updateObservation}) {
+  const history = useHistory()
   return (
     <>
       {value === 0 && visible === true &&
@@ -192,31 +225,36 @@ function Content({value, visible, doctor, patientId}) {
         {value === 1 && visible === true &&
         <div>
           <Typography h1 style={contentstyle.title}>Prescription</Typography>
-          <Column gap={1} p={1} style={contentstyle.container}>
+          <div style={contentstyle.container}>
+            <FileUpload
+              accept=".jpg,.pdf"
+              label="Prescriptions"
+              /*multiple*/
+              updateFilesCb={(files) => updateUploadedFiles(files)}
+            />
+          </div>
+              
+          <Column style={contentstyle.container}>
+            
             <Row style={contentstyle.item}>
-              <Typography h3>No Prescription Uploaded</Typography>
-              <Row>
-                <IconButton>
-                  <FaFileUpload />
-                </IconButton>
-              </Row>
-            </Row>
-            <Row p={2} style={contentstyle.item}>
               <TextField
                 id="outlined-textarea"
-                label="Notes"
+                label="Observations"
                 placeholder="Write here"
                 multiline
                 variant="outlined"
                 fullWidth
-              />
+                onChange={(e) => updateObservation(e.target.value)}
+              />    
             </Row>
-            <Row p={2} style={contentstyle.item}>
+            <Row style={contentstyle.item}>
               <Button
                   variant="contained"
                   color="secondary"
                   style={menustyle.okbutton}
                   fullWidth
+                  onClick={() => uploadPrescription(history.location.state.patient.googleId)}
+                  disabled={false}
               >
                   Save Prescription and Notes
               </Button>
@@ -229,7 +267,7 @@ function Content({value, visible, doctor, patientId}) {
           <Typography h1 style={contentstyle.title}>Measures</Typography>
           <Row style={contentstyle.item}>
             <div style={contentstyle.measures}>
-              <MeasureList patientId={patientId} />
+              <MeasureList />
             </div>
           </Row>
         </div>}
