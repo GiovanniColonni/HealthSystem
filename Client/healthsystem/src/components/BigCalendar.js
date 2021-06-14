@@ -17,6 +17,7 @@ export default function BigCalendar(props) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createEvent, setCreateEvent] = useState(undefined)
   const [eventClk, setEventClk] = useState(null)
+  const [typeExamination, setTypeExamination] = useState("meeting")
   let ev = []
   const [events, setEvents] = useState([ev])
   const handleClose = () => setShow(false);
@@ -76,6 +77,7 @@ export default function BigCalendar(props) {
     let obj = createEvent
     obj.typeExamination = value
     setCreateEvent(obj)
+    setTypeExamination(value)
   }
 
   const updateDescription = (value) =>{
@@ -111,7 +113,7 @@ export default function BigCalendar(props) {
           <form>
             <FormControl>
               <div className="RadioGroup">
-                <RadioGroup aria-label="gender" name="gender1" value={createEvent && createEvent.typeExamination} onChange={(e) => updateTypeExamination(e.target.value)}>
+                <RadioGroup aria-label="gender" name="gender1" value={typeExamination} onChange={(e) => updateTypeExamination(e.target.value)}>
                   <FormControlLabel value="meeting" label="meeting" control={<Radio />} />
                   <FormControlLabel value="busy" label="busy" control={<Radio />} />
                 </RadioGroup>

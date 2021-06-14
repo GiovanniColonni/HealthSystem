@@ -253,7 +253,7 @@ function Content({value, visible, doctor, updateUploadedFiles, prescription, upl
                   color="secondary"
                   style={menustyle.okbutton}
                   fullWidth
-                  onClick={() => uploadPrescription(history.location.state.patient.googleId)}
+                  onClick={() => uploadPrescription(history.location.state.patientId)}
                   disabled={false}
               >
                   Save Prescription and Notes
