@@ -211,6 +211,8 @@ const contentstyle = {
     paddingTop: '20px'
   }, title: {
     paddingBottom: '20px'
+  }, measures: {
+    width: '100%'
   }
 }
 function Content({value, visible, doctor, updateUploadedFiles, prescription, uploadPrescription, updateObservation}) {
