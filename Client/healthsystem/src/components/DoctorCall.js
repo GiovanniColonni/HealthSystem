@@ -10,13 +10,12 @@ import IconButton from '@material-ui/core/IconButton';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { FcAbout, FcComboChart, FcDocument, FcFinePrint, FcMenu, FcPlanner } from 'react-icons/fc';
-import { Row, Item, Column } from '@mui-treasury/components/flex';
+import { FcAbout, FcComboChart, FcDocument, FcPlanner } from 'react-icons/fc';
+import { FaFileUpload } from 'react-icons/fa';
 import IframeJitsi from './IframeJitsi';
-import PatientDetails from './PatientDetails';
 import BigCalendar from './BigCalendar';
-
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const drawerWidth = '50%';
 
@@ -84,6 +83,9 @@ const menustyle = {
   },
   flex: {
     display: 'flex'
+  }, 
+  okbutton: {
+    backgroundColor: "#8BC24A"
   }
 }
 
@@ -171,6 +173,26 @@ function Content({value, visible, doctor}) {
         {value === 1 && visible === true &&
         <div>
           <Typography h1>Prescription</Typography>
+          <Typography h2>Upload Prescription</Typography>
+          <IconButton>
+            <FaFileUpload />
+          </IconButton>
+          <TextField
+            id="outlined-textarea"
+            label="Observations"
+            placeholder="Write here"
+            multiline
+            variant="outlined"
+          />
+          <Button
+              variant="contained"
+              color="secondary"
+              style={menustyle.okbutton}
+              fullwidth
+          >
+              Validate
+          </Button>
+
         </div>}
         {value === 2 && visible === true &&
         <div>
