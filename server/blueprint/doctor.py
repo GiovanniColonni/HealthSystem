@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, make_response
 from flask_login import login_required
 import jsonpickle
-
+from pathlib import Path
 from db.queries.SelectQuery import SelectQuery
 from db.queries.InsertQuery import InsertQuery
 
@@ -62,6 +62,8 @@ def insert_prescription():
     date = request.form.get('date')
     file = request.files['file']
     i = InsertQuery()
+    if not Path('prescriptions/' + patientId).is_dir():
+        Path('prescriptions/' + patientId).mkdir()
     destination = 'prescriptions/' + patientId + '/' + file.filename
     # save prescription in the database
     if i.insert_prescription(patientId, file.filename, notePrescription, date):
