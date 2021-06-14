@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +16,9 @@ import IframeJitsi from './IframeJitsi';
 import BigCalendar from './BigCalendar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Row, Column } from '@mui-treasury/components/flex';
+import MeasureList from './MeasureList';
+import { useHistory } from 'react-router';
 
 const drawerWidth = '50%';
 
@@ -75,11 +78,12 @@ const useStyles = makeStyles((theme) => ({
 
 const menustyle = {
   iconlist: {
-    width: '15%'
+    zIndex: '3'
   },
   content: {
     width: '80%',
-    marginLeft: 'auto'
+    marginRight: 'auto',
+    zIndex: '1'
   },
   flex: {
     display: 'flex'
@@ -91,9 +95,9 @@ const menustyle = {
 
 export default function DoctorCall({user}) {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(0);
+  const history= useHistory()
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -105,6 +109,7 @@ export default function DoctorCall({user}) {
 
   const handleMenu = (value) => {
     setContent(value);
+    setOpen(true);
   };
 
   return (
@@ -149,8 +154,7 @@ export default function DoctorCall({user}) {
             ))}
             </List>
               <List style={menustyle.content}>
-                
-              <Content value={content} doctor={user} visible={open}/>
+                <Content value={content} doctor={user} visible={open} patientId={history.location.state.patientId}/>
               </List>
             </div>
         </Drawer>
@@ -162,45 +166,76 @@ export default function DoctorCall({user}) {
   );
 }
 
-function Content({value, visible, doctor}) {
+
+const contentstyle = {
+  container: {
+    margin: 'auto',
+    width: '90%'
+  }, item: {
+    justifyContent: "center",
+    alignItems: "center"
+  }, title: {
+    paddingBottom: '20px'
+  }, measures: {
+    width: '100%'
+  }
+}
+function Content({value, visible, doctor, patientId}) {
+  
   return (
     <>
       {value === 0 && visible === true &&
         <div>
-          <Typography h1>Calendar</Typography>
+          <Typography h1 style={contentstyle.title}>Calendar</Typography>
           <BigCalendar user={doctor} defaultView="day"/>
         </div>}
         {value === 1 && visible === true &&
         <div>
-          <Typography h1>Prescription</Typography>
-          <Typography h2>Upload Prescription</Typography>
-          <IconButton>
-            <FaFileUpload />
-          </IconButton>
-          <TextField
-            id="outlined-textarea"
-            label="Observations"
-            placeholder="Write here"
-            multiline
-            variant="outlined"
-          />
-          <Button
-              variant="contained"
-              color="secondary"
-              style={menustyle.okbutton}
-              fullwidth
-          >
-              Validate
-          </Button>
+          <Typography h1 style={contentstyle.title}>Prescription</Typography>
+          <Column gap={1} p={1} style={contentstyle.container}>
+            <Row style={contentstyle.item}>
+              <Typography h3>No Prescription Uploaded</Typography>
+              <Row>
+                <IconButton>
+                  <FaFileUpload />
+                </IconButton>
+              </Row>
+            </Row>
+            <Row p={2} style={contentstyle.item}>
+              <TextField
+                id="outlined-textarea"
+                label="Notes"
+                placeholder="Write here"
+                multiline
+                variant="outlined"
+                fullWidth
+              />
+            </Row>
+            <Row p={2} style={contentstyle.item}>
+              <Button
+                  variant="contained"
+                  color="secondary"
+                  style={menustyle.okbutton}
+                  fullWidth
+              >
+                  Save Prescription and Notes
+              </Button>
+            </Row>
+          </Column>
 
         </div>}
         {value === 2 && visible === true &&
         <div>
-          <Typography h1>Measures</Typography>
+          <Typography h1 style={contentstyle.title}>Measures</Typography>
+          <Row style={contentstyle.item}>
+            <div style={contentstyle.measures}>
+              <MeasureList patientId={patientId} />
+            </div>
+          </Row>
         </div>}
         {value === 3 && visible === true &&
         <div>
-          <Typography h1>Patient's details</Typography>
+          <Typography h1 style={contentstyle.title}>Patient's details</Typography>
         </div>}
     </>
   )

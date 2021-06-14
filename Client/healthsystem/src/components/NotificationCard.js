@@ -30,7 +30,7 @@ export default function NotificationCard(props) {
         if (props.userType === "Patient") {
             history.push({pathname: '/patient/meeting', state:{URL: props.URL}})
         } else if (props.userType === "Doctor") {
-            history.push({pathname: '/doctor/meeting', state:{URL: props.URL}})
+            history.push({pathname: '/doctor/meeting', state:{URL: props.URL, patient: { googleId: props.patientId}}})
         }
         props.handleClose()
     }

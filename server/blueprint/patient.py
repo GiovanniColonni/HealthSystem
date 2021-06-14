@@ -104,6 +104,17 @@ def get_all_prescritions(patientId):
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@patient.route('/measures/<patientId>')
+@login_required
+def get_all_measures(patientId):
+    s = SelectQuery()
+    measures = s.get_all_patient_measures(patientId)
+    row_list = []
+    for row in measures:
+        row_list.append(row2dict(row))
+    return jsonify(row_list)
+
+
 
 @patient.route('/measure', methods=['POST'])
 #login_required
