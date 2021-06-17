@@ -45,9 +45,10 @@ export default function NotificationCard(props) {
             </Card.Title>
             <Card.Text>
                 {props.userType === 'Doctor' &&
-                    <UserCard   title={props.patient}
+                    <UserCard   title={props.patient.name + " " + props.patient.surname}
+                                patient={props.patient}
                                 patientId={props.patientId}
-                                firstCaption={props.info}/>
+                                caption={props.info}/>
                 }
                 {/*props.userType === 'Patient' &&
                      "ACTIVE LINK" */

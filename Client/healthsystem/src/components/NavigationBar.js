@@ -42,7 +42,7 @@ export default function NavigationBar({user,logout}) {
                                 API_patient.getPatient(evnt.patientId)
                                     .then((patient) =>{
                                         evnt.patient = patient.name + " " + patient.surname
-                                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: evnt.patient, patientId: evnt.patientId})
+                                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: patient, patientId: evnt.patientId})
                                         setNotifList(notifications)
                                         setEvents(events)
                                     })
