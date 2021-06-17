@@ -6,7 +6,7 @@ import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
 import API from '../api/API';
-import { AppointmentCardClickable } from './AppointmentCard';
+import { AppointmentCardClickable, AppointmentList } from './AppointmentCard';
 import { Typography } from '@material-ui/core';
 import moment from 'moment';
 
@@ -179,7 +179,9 @@ export default function PatientDetails(props) {
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <Column style={detailsstyle.appointmentlist}>
-                    <AppointmentList />
+                    <AppointmentList events={passedEvents} 
+                        isBooking={false} isClickable={true}
+                        doctorName={doctor.name} doctorSurname={doctor.surname} />
                 </Column>
                 <Column style={detailsstyle.appointmentlist}>
                 </Column>

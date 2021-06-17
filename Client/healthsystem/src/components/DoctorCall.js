@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +19,10 @@ import { Row, Column } from '@mui-treasury/components/flex';
 import MeasureList from './MeasureList';
 import FileUpload from './FileUpload.jsx';
 import API_doctor from '../api/API_doctor';
+import API from '../api/API';
 import { useHistory } from 'react-router-dom';
+import { AppointmentList } from './AppointmentCard';
+import moment from 'moment';
 
 
 const drawerWidth = '50%';
@@ -101,6 +104,28 @@ export default function DoctorCall({user}) {
   const [content, setContent] = useState(0);
   const history= useHistory()
   const [prescription, setPrescription] = useState({file: undefined, observation: undefined});
+  const [passedEvents, setPassedEvents] = useState([])
+
+  useEffect(() => {
+    API.getEvents(history.location.state.patient.googleId, "Patient")
+    .then((events) => {
+        let passedEvents = []
+        console.log("Appointment List ", events);
+        if (events !== undefined){
+            passedEvents = events.filter(isPassedEvent)
+            console.log("Passed appointment List ", passedEvents);
+            setPassedEvents(passedEvents)
+        }
+        console.log("Events: ", passedEvents)
+    })
+    .catch((err) =>{
+        console.log(err)
+    })
+  }, [history.location.state.patient.googleId])
+
+  const isPassedEvent = (event) => {
+    return moment().isAfter(event.end)
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -185,7 +210,7 @@ export default function DoctorCall({user}) {
               <List style={menustyle.content}>
                 <Content 
                     value={content} doctor={user} visible={open} 
-                    updateUploadedFiles={(files) => updateUploadedFiles(files)} prescription={prescription} 
+                    updateUploadedFiles={(files) => updateUploadedFiles(files)} passedEvents={passedEvents} 
                     uploadPrescription={(patientId) => uploadPrescription(patientId)} 
                     updateObservation={(observation) => updateObservation(observation)} />
               </List>
@@ -215,7 +240,7 @@ const contentstyle = {
     width: '100%'
   }
 }
-function Content({value, visible, doctor, updateUploadedFiles, prescription, uploadPrescription, updateObservation}) {
+function Content({value, visible, doctor, updateUploadedFiles, passedEvents, uploadPrescription, updateObservation}) {
   const history = useHistory()
   return (
     <>
@@ -276,6 +301,14 @@ function Content({value, visible, doctor, updateUploadedFiles, prescription, upl
         {value === 3 && visible === true &&
         <div>
           <Typography h1 style={contentstyle.title}>Patient's details</Typography>
+          <Row>
+            here's the details
+          </Row>
+          <Row>
+            <AppointmentList events={passedEvents} 
+              isBooking={false} isClickable={true}
+              doctorName={doctor.name} doctorSurname={doctor.surname} />
+          </Row>
         </div>}
     </>
   )
