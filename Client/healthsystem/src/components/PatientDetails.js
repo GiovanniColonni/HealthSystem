@@ -5,10 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
-import API from '../api/API';
-import { AppointmentCardClickable, AppointmentList } from './AppointmentCard';
-import { Typography } from '@material-ui/core';
-import moment from 'moment';
+import { PassedAppointmentList } from './AppointmentCard';
 
 var detailsstyle = {
     container: {
@@ -72,8 +69,6 @@ export default function PatientDetails(props) {
     console.log("History patient: ", history.location.state.patient)
 
     const [comment, setComment] = useState("")
-    const [passedEvents, setPassedEvents] = useState([])
-    const [doctor, setDoctor] = useState({})
 
     useEffect(() => {
         API_doctor.getLastPatientComment(history.location.state.patient.googleId)
@@ -84,34 +79,9 @@ export default function PatientDetails(props) {
             .catch((err) =>{
                 console.log(err)
             })
-        API_doctor.getDoctor(history.location.state.patient.doctorId)
-        .then((doctor) =>{
-            console.log(doctor)
-            setDoctor(doctor)
-        })
-        .catch((err) =>{
-            console.log(err)
-        })
-        API.getEvents(history.location.state.patient.googleId, "Patient")
-            .then((events) => {
-                let passedEvents = []
-                console.log("Appointment List ", events);
-                if (events !== undefined){
-                    passedEvents = events.filter(isPassedEvent)
-                    console.log("Passed appointment List ", passedEvents);
-                    setPassedEvents(passedEvents)
-                }
-                console.log("Events: ", passedEvents)
-            })
-            .catch((err) =>{
-                console.log(err)
-            })
     },[history.location.state.patient.googleId]);
 
-    const isPassedEvent = (event) => {
-        return moment().isAfter(event.end)
-    }
-
+    
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
@@ -161,9 +131,8 @@ export default function PatientDetails(props) {
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <Column style={detailsstyle.appointmentlist}>
-                    <AppointmentList events={passedEvents} 
-                        isBooking={false} isClickable={true}
-                        doctorName={doctor.name} doctorSurname={doctor.surname} />
+                    <PassedAppointmentList patientId={history.location.state.patient.googleId} 
+                        isClickable={true}/>
                 </Column>
                 <Column style={detailsstyle.appointmentlist}>
                 </Column>
