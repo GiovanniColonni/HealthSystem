@@ -43,10 +43,20 @@ export default function AppointmentCard(props) {
         </div>
       </Item>
       <Row>
+        {props.isBooking === true &&
         <IconButton onClick={props.onClick}>
           <FaCheck />
-        </IconButton>
+        </IconButton>}
       </Row>
     </Row>
   );
+}
+
+export function AppointmentCardClickable(props) {
+  return (
+    <div onClick={props.onClick} style={{cursor: "pointer"}}>
+      <AppointmentCard title={props.title} caption={props.caption}
+        isBooking={props.isBooking} />
+    </div>
+  )
 }

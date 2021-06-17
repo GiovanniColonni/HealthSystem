@@ -5,6 +5,10 @@ import Divider from '@material-ui/core/Divider';
 import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
+import API from '../api/API';
+import { AppointmentCardClickable } from './AppointmentCard';
+import { Typography } from '@material-ui/core';
+import moment from 'moment';
 
 var detailsstyle = {
     container: {
@@ -57,14 +61,19 @@ var detailsstyle = {
     }, measures: {
         width: '60%',
         margin: 'auto'
+    }, appointmentlist: {
+        width: '50%',
+        margin: 'auto'
     }
 }
 
 export default function PatientDetails(props) {
     const history = useHistory()
-    console.log(history.location.state.patient)
+    console.log("History patient: ", history.location.state.patient)
 
     const [comment, setComment] = useState("")
+    const [passedEvents, setPassedEvents] = useState([])
+    const [doctor, setDoctor] = useState({})
 
     useEffect(() => {
         API_doctor.getLastPatientComment(history.location.state.patient.googleId)
@@ -75,7 +84,51 @@ export default function PatientDetails(props) {
             .catch((err) =>{
                 console.log(err)
             })
+        API_doctor.getDoctor(history.location.state.patient.doctorId)
+        .then((doctor) =>{
+            console.log(doctor)
+            setDoctor(doctor)
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+        API.getEvents(history.location.state.patient.googleId, "Patient")
+            .then((events) => {
+                let passedEvents = []
+                console.log("Appointment List ", events);
+                if (events !== undefined){
+                    passedEvents = events.filter(isPassedEvent)
+                    console.log("Passed appointment List ", passedEvents);
+                    setPassedEvents(passedEvents)
+                }
+                console.log("Events: ", passedEvents)
+            })
+            .catch((err) =>{
+                console.log(err)
+            })
     },[history.location.state.patient.googleId]);
+
+    const isPassedEvent = (event) => {
+        return moment().isAfter(event.end)
+    }
+
+    const AppointmentList = () =>{ 
+        return (
+            <>
+            {passedEvents.length > 0 &&
+                passedEvents.map(appointment => (
+                    <AppointmentCardClickable 
+                        title={moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
+                        caption={doctor.name +" "+doctor.surname} 
+                        isBooking={false}/>
+                ))
+            }
+            {passedEvents.length === 0 &&
+                <Typography align="center" variant="h6">No Appointment Available</Typography>}
+            </>
+        );
+    }
+
 
     return (
         <div style={detailsstyle.container}>
@@ -123,6 +176,13 @@ export default function PatientDetails(props) {
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
                 <h1 style={detailsstyle.center}>Appointment List</h1>
+            </Row>
+            <Row gap={5} p={2.5} style={detailsstyle.item}>
+                <Column style={detailsstyle.appointmentlist}>
+                    <AppointmentList />
+                </Column>
+                <Column style={detailsstyle.appointmentlist}>
+                </Column>
             </Row>
         </div>
     );
