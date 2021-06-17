@@ -112,24 +112,6 @@ export default function PatientDetails(props) {
         return moment().isAfter(event.end)
     }
 
-    const AppointmentList = () =>{ 
-        return (
-            <>
-            {passedEvents.length > 0 &&
-                passedEvents.map(appointment => (
-                    <AppointmentCardClickable 
-                        title={moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
-                        caption={doctor.name +" "+doctor.surname} 
-                        isBooking={false}/>
-                ))
-            }
-            {passedEvents.length === 0 &&
-                <Typography align="center" variant="h6">No Appointment Available</Typography>}
-            </>
-        );
-    }
-
-
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
