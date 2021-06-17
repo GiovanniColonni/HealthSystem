@@ -133,6 +133,7 @@ export default function NewAppointment({user}){
             {doctor !== undefined && freeAppointmentList.length > 0 &&
                 freeAppointmentList.map(appointment => (
                     <AppointmentCard title={appointment} caption={doctor.name +" "+doctor.surname} 
+                        isBooking={true}
                         onClick={() => selectedAppointment(appointment)}/>
                 ))
             }
@@ -201,7 +202,7 @@ export default function NewAppointment({user}){
                     </Row>
                 </Column>
                 <Column style={newappstyle.calendar}  gap={'inherit'} p={'inherit'}>
-                    <AppointmentList user={user} />
+                    <AppointmentList />
                 </Column>
             </Row>
             
