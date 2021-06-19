@@ -133,6 +133,8 @@ def insert_measure():
 @login_required
 def insert_appointment():
     patientId = request.form.get('patientId')
+    if patientId == "undefined":
+        patientId = None
     doctorId = request.form.get('doctorId')
     dateStart = request.form.get('dateStart')
     typeExamination = request.form.get('typeExamination')
