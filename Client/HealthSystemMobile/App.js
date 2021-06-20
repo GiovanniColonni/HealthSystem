@@ -60,7 +60,7 @@ export default function App() {
             <Stack.Screen name="Home" component={Home} options={{headerLeft:()=>(<></>)}}/>
             <Stack.Screen name="MeasureHisotry" component={MeasureHistory}/>
             <Stack.Screen name="Login">
-              {props => <Login {...props} expoPushToken={expoPushToken}/>}
+              {(props) => <Login {...props} expoPushToken={expoPushToken}/>}
             </Stack.Screen>
           
         </Stack.Navigator>

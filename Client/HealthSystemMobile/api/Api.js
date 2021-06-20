@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const prefix = "https://00d047d50c83.ngrok.io/api"
+const prefix = "https://5c4deb80d4a6.ngrok.io/api"
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"

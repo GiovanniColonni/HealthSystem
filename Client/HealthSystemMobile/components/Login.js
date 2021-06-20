@@ -4,6 +4,8 @@ import * as Google from 'expo-google-app-auth';
 import UserContext from "../contexts/UserContext"
 import Constants from 'expo-constants';
 import Api from "../api/Api"
+import { CommonActions } from '@react-navigation/native';
+
 
 export default function Login({navigation, expoPushToken}) {
   
@@ -14,6 +16,8 @@ export default function Login({navigation, expoPushToken}) {
   let [token,setToken] = useState()
   let [email,setEmail] = useState()
   let userState = useContext(UserContext)
+
+
 
   const styles = StyleSheet.create({
     container: {
@@ -51,13 +55,8 @@ export default function Login({navigation, expoPushToken}) {
   } 
 
   useEffect(() => {
-    /*
-      if(userState.user.googleId !== ""){
-      navigation.navigate("Home")
-    }
-    */
-    
-    if(userState.user.googleId !== ""){
+   
+    if(userState.user.googleId !== "" ){
       Api.postLogin(token,email,googleId,name)
         .then((resp)=>{
           console.log(resp)
@@ -73,7 +72,11 @@ export default function Login({navigation, expoPushToken}) {
             })
           
           if(resp){
-            navigation.navigate("Home")
+            navigation.dispatch(CommonActions.reset({
+                index:1,
+                routes:[{name:"Home"}]
+            }));
+            //navigation.reset({index:0,routes:[{name:"Home"}]})
           }
         })
         .catch((e) => {console.log(e)})

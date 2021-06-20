@@ -10,6 +10,7 @@ function Home({navigation}){
     if(userState.user.googleId === ""){
         navigation.navigate("Login")
     }
+    
     }
     )
     return(
