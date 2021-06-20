@@ -104,9 +104,20 @@ def get_all_prescritions(patientId):
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@patient.route('/measures/<patientId>')
+@login_required
+def get_all_measures(patientId):
+    s = SelectQuery()
+    measures = s.get_all_patient_measures(patientId)
+    row_list = []
+    for row in measures:
+        row_list.append(row2dict(row))
+    return jsonify(row_list)
+
+
 
 @patient.route('/measure', methods=['POST'])
-@login_required
+#login_required
 def insert_measure():
     patientId = request.form.get('patientId')
     type = request.form.get('type')
@@ -122,6 +133,8 @@ def insert_measure():
 @login_required
 def insert_appointment():
     patientId = request.form.get('patientId')
+    if patientId == "undefined":
+        patientId = None
     doctorId = request.form.get('doctorId')
     dateStart = request.form.get('dateStart')
     typeExamination = request.form.get('typeExamination')

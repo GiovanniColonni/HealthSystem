@@ -18,6 +18,8 @@ import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor";
 import NewAppointment from "./components/NewAppointment";
 import PatientList from './components/PatientList';
+import PatientCall from './components/PatientCall';
+import DoctorCall from './components/DoctorCall';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -98,7 +100,7 @@ function App() {
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
               <NavigationBar user={user} logout={handleLogout}/>
-              <IframeJitsi/>
+              <PatientCall />
             </div>
           </Route>
 
@@ -136,7 +138,7 @@ function App() {
         <Route exact path={"/doctor/meeting"}> 
           <div>
             <NavigationBar user={user} logout={handleLogout}/>
-            <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
+            <DoctorCall user={user}/>
           </div>
         </Route>
         <Redirect to="/home" />

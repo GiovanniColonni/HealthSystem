@@ -2,6 +2,7 @@ import axios from 'axios'
 import Patient from '../classes/Patient'
 import Doctor from '../classes/Doctor'
 import Prescription from '../classes/Prescription'
+import Measure from '../classes/Measure'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -61,6 +62,19 @@ async function getAllPrescriptions(patientId){
     return prescriptions
 }
 
+async function getAllMeasures(patientId){
+    const measures = await axios.get('/api/patient/measures/'+patientId)
+    .then((response) =>{ 
+        let measures = []
+            response.data.forEach(element => {
+                measures.push(new Measure(element.id, element.type, element.value, element.patientId, element.name, element.date))
+            });
+            return measures
+    })
+    .catch((err) => {console.log(err); return undefined});
+    return measures
+}
+
 async function putDoctorIdInPatient(doctorId, patientId){
     const resp = await axios
     .put(
@@ -112,5 +126,5 @@ async function setAppointment(patientId,doctorId,dateStart,typeExamination,descr
     });
 }
 
-const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getPrescription,getDoctorByPatient, setAppointment}
+const API_patient = {getPatient,getDoctorImage,putDoctorIdInPatient,getAllPrescriptions, getAllMeasures, getPrescription,getDoctorByPatient, setAppointment}
 export default API_patient;

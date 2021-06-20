@@ -2,24 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Image from 'react-bootstrap/Image';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Divider from '@material-ui/core/Divider';
-import SensorSelector from './SensorSelector';
-import oxygen from '../icons/OxyIcon.png';
-import heart from '../icons/HeartBeatingIcon.png';
+import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
-
-const images = [
-    {
-      url: oxygen,
-      title: 'Oxygen percentage',
-      width: '50%',
-    },
-    {
-      url: heart,
-      title: 'Heart Beat',
-      width: '50%',
-    }
-  ];
 
 var detailsstyle = {
     container: {
@@ -66,10 +51,19 @@ var detailsstyle = {
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         textAlign: 'right',
+    }, item: {
+        justifyContent: "center",
+        alignItems: "center"
+    }, measures: {
+        width: '60%',
+        margin: 'auto'
     }
 }
 
 export default function PatientDetails(props) {
+    const history = useHistory()
+    console.log(history.location.state.patient)
+
     const [comment, setComment] = useState("")
 
     useEffect(() => {
@@ -81,10 +75,8 @@ export default function PatientDetails(props) {
             .catch((err) =>{
                 console.log(err)
             })
-    },[]);
+    },[history.location.state.patient.googleId]);
 
-    const history = useHistory()
-    console.log(history.location.state.patient)
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
@@ -122,8 +114,11 @@ export default function PatientDetails(props) {
             <Row gap={5} p={2.5}>
                 <h1 style={detailsstyle.center}>Sensor Details</h1>
             </Row>
-            <Row gap={5} p={2.5}>
-                <SensorSelector images={images}/>
+            <Row gap={5} p={2.5} style={detailsstyle.item}>
+                <div style={detailsstyle.measures}>
+                    <MeasureList />
+                </div>
+                
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
