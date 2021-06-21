@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import UserContext from "../contexts/UserContext"
+
 import Constants from 'expo-constants';
 import Api from "../api/Api"
-import { CommonActions } from '@react-navigation/native';
 
+import { StackActions, NavigationActions } from 'react-navigation';
 
-export default function Login({navigation, expoPushToken}) {
+export default function Login({navigation}) {
   
-//  let [authState, setAuthState] = useState(null);
+
   let [headers,setHeaders] = useState("eih");
   let [googleId, setGoogleId] = useState("");
   let [name, setName] = useState("");
@@ -17,6 +18,10 @@ export default function Login({navigation, expoPushToken}) {
   let [email,setEmail] = useState()
   let userState = useContext(UserContext)
 
+  let resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'Home' })],
+  });
 
 
   const styles = StyleSheet.create({
@@ -38,9 +43,11 @@ export default function Login({navigation, expoPushToken}) {
       }); 
 
       if (result.type === 'success') {
+        
         userState.user.googleId = result.user.id
         userState.user.email = result.user.email
         userState.user.name = result.user.name
+        
         setToken(result.accessToken)
         setName(result.user.name)
         setEmail(result.user.email)
@@ -56,13 +63,14 @@ export default function Login({navigation, expoPushToken}) {
 
   useEffect(() => {
    
-    if(userState.user.googleId !== "" ){
+    if(googleId !== "" ){
+      
       Api.postLogin(token,email,googleId,name)
         .then((resp)=>{
           console.log(resp)
           // insert pushToken. Get expoPushToken from app.js
           
-          Api.insertPushToken(userState.user.googleId,expoPushToken)
+          Api.insertPushToken(userState.user.googleId,userState.expoPushToken)
             .then((resp) =>{
               console.log(token)
               console.log(resp)
@@ -72,16 +80,18 @@ export default function Login({navigation, expoPushToken}) {
             })
           
           if(resp){
-            navigation.dispatch(CommonActions.reset({
-                index:1,
-                routes:[{name:"Home"}]
-            }));
+            //navigation.navigate("Home",{googleId:googleId})
+            navigation.dispatch(() => resetAction);
             //navigation.reset({index:0,routes:[{name:"Home"}]})
+            
           }
         })
         .catch((e) => {console.log(e)})
+      
+      
     }
-    
+   
+
   }, [googleId]);
 
 
@@ -92,19 +102,6 @@ export default function Login({navigation, expoPushToken}) {
         onPress={() => { signInWithGoogleAsync(); 
         }}
       />
-      <Button 
-      title="post login"
-      onPress={()=>{ Api.postLogin(token,userState.user.email,userState.user.googleId)
-        .then((resp)=>{
-          console.log(resp)
-          if(resp){
-            navigation.navigate("Home")
-          }
-        })
-        .catch((e) => {console.log(e)})}}/>
-      <Text>{googleId}</Text>
-      <Text>{name}</Text>
-      <Text>token : {token}</Text>
     </View>
   );
 }

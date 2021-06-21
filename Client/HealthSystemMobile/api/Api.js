@@ -1,9 +1,10 @@
 import axios from "axios"
 
-const prefix = "https://5c4deb80d4a6.ngrok.io/api"
+const prefix = "https://021552bd2e7d.ngrok.io/api"
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
+
 async function postLogin(id_token,email,googleId,name){
     var formData = new FormData()
     console.log(id_token)
