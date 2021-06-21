@@ -40,21 +40,21 @@ export default function App() {
     Home:{
       screen: Home,
       navigationOptions: ({navigation}) =>({
-        title: `title of shit`,
+        title: `Homepage`,
         headerLeft: () => <Text>icon</Text>
       })
     },
     Login:{
       screen: Login,
       navigationOptions: ({navigation}) =>({
-        title: `title of shit`,
+        title: `Autenticazione`,
         headerLeft: () => <Text>icon</Text>
       })
     },
     MeasureHistory:{
       screen: MeasureHistory,
       navigationOptions: ({navigation}) =>({
-        title: `title of shit`,
+        title: `Storico Misure`,
         headerLeft: () => <Text>icon</Text>
       })
     }

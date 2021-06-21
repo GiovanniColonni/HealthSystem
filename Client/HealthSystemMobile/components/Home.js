@@ -10,7 +10,6 @@ function Home({navigation,resp}){
     
     useEffect(()=>{
 
-    const id = navigation.getParam("googleId");
     if(userState.user.googleId === undefined){
         navigation.navigate("Login")
     }
@@ -20,7 +19,7 @@ function Home({navigation,resp}){
     return(
         <View>
             <Text>Welcome : {userState.user.name}</Text>
-            <Button title="Go to MueasureHistory" onClick={navigation.navigate("MeasureHisotry")}/>
+            <Button title="Go to MueasureHistory" onClick={() => navigation.push("MeasureHistory")}/>
         </View>
         
     )

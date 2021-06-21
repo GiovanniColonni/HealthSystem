@@ -7,7 +7,7 @@ function MeasureHistory({navigation}){
     let userState = useContext(UserContext)    
     useEffect(()=>{
         
-        if(userState.user.googleId){
+        if(userState.user.googleId === undefined){
             navigation.push("Login")
         }
         }
@@ -16,7 +16,7 @@ function MeasureHistory({navigation}){
     return(
         <View>
             <Text>This is measure history</Text>
-            <Button title="back to home" onClick={()=>navigation.push("Home")}/>
+            <Button title="back to home" onClick={()=>navigation.navigate("Home")}/>
         </View>
     )
 }

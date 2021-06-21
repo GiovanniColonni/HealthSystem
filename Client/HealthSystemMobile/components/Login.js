@@ -67,26 +67,28 @@ export default function Login({navigation}) {
       
       Api.postLogin(token,email,googleId,name)
         .then((resp)=>{
-          console.log(resp)
+          
           // insert pushToken. Get expoPushToken from app.js
           
           Api.insertPushToken(userState.user.googleId,userState.expoPushToken)
             .then((resp) =>{
-              console.log(token)
-              console.log(resp)
+ //             console.log(token)
+ //             console.log(resp)
             })
             .catch((err) =>{
-              console.log(err)
+              //console.log(err)
             })
           
           if(resp){
-            //navigation.navigate("Home",{googleId:googleId})
-            navigation.dispatch(() => resetAction);
+            navigation.navigate("Home",{googleId:googleId})
+            //navigation.dispatch(() => resetAction);
             //navigation.reset({index:0,routes:[{name:"Home"}]})
             
           }
         })
-        .catch((e) => {console.log(e)})
+        .catch((e) => {
+          //console.log(e)
+        })
       
       
     }
