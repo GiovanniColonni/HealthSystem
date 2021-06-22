@@ -6,6 +6,7 @@ import React,{useState,useEffect, useCallback, useMemo} from "react"
 import {useHistory} from "react-router"
 import Button from "@material-ui/core/Button"
 
+import UserContext from './context/UserContext';
 import Measure from "./components/Measure"
 import Home from "./components/Home"
 
