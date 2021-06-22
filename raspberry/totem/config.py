@@ -13,7 +13,7 @@ SERIAL_PORT = "/dev/ttyUSB0"
 SERIAL_BOUND_SPEED = 9600
 # Sensor configuration
 
-SENSOR_HR_THRESHOLD = {"MinHRate":80,"MaxHRate":95}
+SENSOR_HR_THRESHOLD = {"MinHRate":75,"MaxHRate":100}
 SENSOR_OPERC_THRESHOLD = {"MinOperc":98}
 SENSOR_PRESSURE_THRESHOLD = {"MinMax":100,"MaxMax":150,"MinMin":50,"MaxMin":110}
 # DB configuration
