@@ -54,6 +54,7 @@ function App() {
   
   return (
     <div className="App">
+      <UserContext.Provider value={userState}>
       <h1>Header da mettere</h1>
       {<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>}
       <Switch>
@@ -64,23 +65,17 @@ function App() {
             <Home/>
           </Route>
           <Route exact path="/measure">
-            <Measure setMeasure={setMeasure} measure={measure} />
+            <Measure setMeasure={setMeasure} user={user} measure={measure} />
           </Route>
           <Route exact path="/videocall">
             <Button onClick={() => {window.location.href = link}}>Start Call</Button>
           </Route>
       </Switch>
+      </UserContext.Provider>
+      
     </div>
   );
 }
 
 export default App;
 
-/**
-           <div>
-            <h1>Home</h1>
-            <Link to="/measure">Start a measure</Link>
-            <Link to="/videocall">Start the appointment</Link>
-	        </div>
-
- */
