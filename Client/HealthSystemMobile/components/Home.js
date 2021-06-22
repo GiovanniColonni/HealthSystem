@@ -25,6 +25,10 @@ const styles = StyleSheet.create({
     },
     scrollView:{
         flex:1
+    },
+    image:{
+        height:31,
+        width:21,
     }
   });
 
@@ -43,10 +47,8 @@ function Home({navigation}){
     ])
     const  listItemStyle = StyleSheet.create({
         icon:{
-            
             width:31,
             height:31
-
         }
     ,})
 
@@ -85,8 +87,9 @@ function Home({navigation}){
         <ScrollView>
         {measuresData.map((item,index)=>(
             <ListItem key={index} bottomDivider>
-                       <Image source={HRIcon}/>
+                        <Image source={HRIcon}/>
                         <ListItem.Title>{item.type}</ListItem.Title>
+                        <ListItem.Title>{item.value1}</ListItem.Title>
             </ListItem>
         
         ))}           
