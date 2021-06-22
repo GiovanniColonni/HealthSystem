@@ -171,7 +171,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             console.log(measure.thReached )
            if(measure.thReached === 1){
                setIsCritic(true)
-               Api.postMeasure(useState.user.googleId,
+               Api.postMeasure(user.googleId,
                 "type",JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
                
