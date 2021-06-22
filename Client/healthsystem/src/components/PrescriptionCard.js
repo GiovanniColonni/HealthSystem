@@ -8,6 +8,18 @@ import Doctor from '../classes/Doctor';
 import moment from 'moment';
 import { Typography } from '@material-ui/core';
 
+import API from '../api/API';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import { CardHeader } from '@material-ui/core';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import { FiChevronDown } from 'react-icons/fi';
+
 var cardstyle = { 
     title: {
         fontFamily: "Lato",
@@ -60,6 +72,11 @@ export function PrescriptionCard(props) {
 export function PrescriptionCardList({user}) {
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [doctor, setDoctor] = useState(new Doctor());
+  const [selectedPrescription, setSelectedPrescription] = useState({});
+
+  const handlePrescription = (event, prescription) => {
+    setSelectedPrescription(prescription);
+  };
 
   const downloadPrescription = (pathFileSystem, date) =>{
     API_patient.getPrescription(pathFileSystem)
@@ -106,13 +123,72 @@ export function PrescriptionCardList({user}) {
 
   return (
     <>
+      <ToggleButtonGroup
+      orientation="vertical"
+      value={selectedPrescription}
+      exclusive
+      onChange={handlePrescription}
+      aria-label="text alignment"
+    >
       {doctor !== undefined && prescriptionList.length > 0 &&
-        prescriptionList.map(prescription => (
-              <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
+        prescriptionList.map((prescription) => (
+          
+          <ToggleButton value={prescription}>
+              <PrescriptionCard 
+                title={prescription.date} caption={doctor.name +" "+doctor.surname} 
+                pathFileSystem={prescription.pathFileSystem} 
+                downloadPrescription={downloadPrescription}
+              />
+          </ToggleButton>
         ))
       }
+    </ToggleButtonGroup>
       {prescriptionList.length === 0 &&
         <Typography align="center" variant="h6">No Prescriptions</Typography>}
     </>
   );
+}
+
+
+function ObservationCard({prescription}) {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+
+      </CardHeader>
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Observation
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Typography variant="body2" color="textSecondary" component="p">Observations</Typography>
+        <IconButton
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <FiChevronDown />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+            {prescription.notePrescription}
+        </CardContent>
+      </Collapse>
+    </Card>
+  )
+}
+
+export function PrescriptionDetails(props) {
+  return (
+    <>
+    </>
+  )
 }
