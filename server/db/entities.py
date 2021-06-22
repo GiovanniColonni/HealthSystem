@@ -59,7 +59,9 @@ class Prescription(Base):
     pathFileSystem = Column(String(100))
     notePrescription = Column(String(500))
     date = Column(String(45), nullable=False)
+    doctorId = Column(ForeignKey('doctor.googleId'), nullable=False, index=True)
 
+    doctor = relationship('Doctor')
     patient = relationship('Patient')
 
 
