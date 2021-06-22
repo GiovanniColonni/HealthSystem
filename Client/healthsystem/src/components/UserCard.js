@@ -32,7 +32,8 @@ var cardstyle = {
         borderRadius: "5px",
         padding: "5px",
         cursor: "pointer",
-        margin: "7px"
+        margin: "7px",
+        backgroundColor: "white"
     }, icon: {
         height: "50px",
         width: "50px"
