@@ -70,7 +70,7 @@ function App() {
             <Home/>
           </Route>
           <Route exact path="/measure">
-            <Measure setMeasure={setMeasure} user={user} measure={measure} />
+            <Measure setMeasure={setMeasure} user={user} measure={measure} logout={handleLogout} />
           </Route>
           <Route exact path="/videocall">
             <Button onClick={() => {window.location.href = link}}>Start Call</Button>
