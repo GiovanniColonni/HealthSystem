@@ -11,9 +11,9 @@ import NavigationBar from "./NavigationBar"
 
 const style = {
     information: {
-      justifyContent: "right",
-      alignItems: "right",
-      marginLeft: 'auto'
+      justifyContent: "center",
+      alignItems: "center",
+      margin: 'auto'
     }, graph: {
         width: '80%',
         margin: 'auto',
@@ -24,6 +24,8 @@ const style = {
         margin: 'auto'
     }, btn: {
         marginLeft: '20px'
+    }, container: {
+        
     }
 }
 
@@ -202,14 +204,17 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                     Start Measure
                 </Button>
                 {/*<Typography>Average: {average}</Typography>*/}
+                <Row style={style.message}>
+                    {<Typography variant="h4">{message}</Typography>}
+                    {measureError && <Typography>Problema con misurazione</Typography>}
+                </Row>
                 </>
             }
-            <Row style={style.message}>
-                {<Typography variant="h4">{message}</Typography>}
-                {measureError && <Typography>Problema con misurazione</Typography>}
-            </Row>
+            
 
             {mProgres == true &&
+            <>
+            <Typography variant="h6">Status: {message}</Typography>
             <Row style={style.information}>
                 {name == "BloodPressure" && <FaHeart size="4em" color={isCritic? 'red' : 'green'} />}
                 {name == "OxygenSaturation" && <WiHumidity size="4em" color={isCritic? 'red' : 'green'}/>}
@@ -217,9 +222,9 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                 <Row>
                     <Typography>{convertMeasureValue(measureValue)}</Typography>
                 </Row>
-            </Row>}
+            </Row></>}
         </Row>
-        <Row p={3} style={style.graph}>
+        <Row p={2} style={style.graph}>
             {mProgres == true &&
             <Line type={"line"} width={100} height={50} data={data} options={options}/>}
         </Row>
