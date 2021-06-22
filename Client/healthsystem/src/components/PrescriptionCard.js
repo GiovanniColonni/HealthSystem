@@ -6,6 +6,7 @@ import API_patient from '../api/API_patient';
 import API_doctor from '../api/API_doctor';
 import Doctor from '../classes/Doctor';
 import moment from 'moment';
+import { Typography } from '@material-ui/core';
 
 var cardstyle = { 
     title: {
@@ -56,7 +57,7 @@ export function PrescriptionCard(props) {
   );
 }
 
-export function PrescriptionCardList(props) {
+export function PrescriptionCardList({user}) {
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [doctor, setDoctor] = useState(new Doctor());
 
@@ -77,8 +78,8 @@ export function PrescriptionCardList(props) {
 
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if(props.user.googleId !== undefined){
-      API_patient.getAllPrescriptions(props.user.googleId)
+    if(user.googleId !== undefined){
+      API_patient.getAllPrescriptions(user.googleId)
         .then((prescription) =>{
           prescription.sort(function (left, right) {
             return moment.utc(right.date).diff(moment.utc(left.date))
@@ -89,7 +90,7 @@ export function PrescriptionCardList(props) {
           setPrescriptionList([])
           console.log(err)
         })
-      API_patient.getPatient(props.user.googleId)
+      API_patient.getPatient(user.googleId)
         .then((patient) =>{
           API_doctor.getDoctor(patient.doctorId)
             .then((doct) =>{
@@ -101,15 +102,17 @@ export function PrescriptionCardList(props) {
             })
         })
     }
-  }, [props.user.googleId]);
+  }, [user.googleId]);
 
   return (
     <>
-      {doctor !== undefined && 
+      {doctor !== undefined && prescriptionList.length > 0 &&
         prescriptionList.map(prescription => (
               <PrescriptionCard title={prescription.date} caption={doctor.name +" "+doctor.surname} pathFileSystem={prescription.pathFileSystem} downloadPrescription={downloadPrescription}/>
         ))
       }
+      {prescriptionList.length === 0 &&
+        <Typography align="center" variant="h6">No Prescriptions</Typography>}
     </>
   );
 }

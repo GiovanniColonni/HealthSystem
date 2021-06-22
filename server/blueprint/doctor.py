@@ -1,10 +1,12 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from flask_login import login_required
 import jsonpickle
-
+from pathlib import Path
 from db.queries.SelectQuery import SelectQuery
+from db.queries.InsertQuery import InsertQuery
 
 doctor = Blueprint('doctor', __name__, url_prefix="/api/doctor")
+
 
 @doctor.route('/<doctorId>')
 @login_required
@@ -17,6 +19,7 @@ def get_doctor(doctorId):
         return jsonify(False)
     return jsonify(row2dict(doctor))
 
+
 @doctor.route('/event')
 @login_required
 def index():
@@ -28,6 +31,7 @@ def index():
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+
 @doctor.route('/<doctorId>/patients')
 @login_required
 def get_patient_list_from_doctor(doctorId):
@@ -37,6 +41,7 @@ def get_patient_list_from_doctor(doctorId):
     for row in patients:
         row_list.append(row2dict(row))
     return jsonify(row_list)
+
 
 @doctor.route('lastComment/<patientId>')
 @login_required
@@ -48,7 +53,23 @@ def get_last_patient_comment(patientId):
     return make_response(jsonify("comment not found"), 404)
 
 
-
+@doctor.route('prescription', methods=['POST'])
+@login_required
+def insert_prescription():
+    patientId = request.form.get('patientId')
+    pathFileSystem = request.form.get('pathFileSystem')
+    notePrescription = request.form.get('notePrescription')
+    date = request.form.get('date')
+    file = request.files['file']
+    i = InsertQuery()
+    if not Path('prescriptions/' + patientId).is_dir():
+        Path('prescriptions/' + patientId).mkdir()
+    destination = 'prescriptions/' + patientId + '/' + file.filename
+    # save prescription in the database
+    if i.insert_prescription(patientId, file.filename, notePrescription, date):
+        file.save(destination)
+        return make_response(jsonify("upload successfully"), 200)
+    return make_response(jsonify("ERROR"), 400)
 
 def row2dict(row):
     """

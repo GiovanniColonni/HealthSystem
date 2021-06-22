@@ -49,7 +49,7 @@ var profilestyle = {
 export default function PersonalProfile({user}) {
 
     const [currentuser, setCurrentUser] = useState({})
-    const [doctor, setDoctor] = useState()
+    const [doctor, setDoctor] = useState({})
 
     useEffect(() => {
         if (user.userType === "Patient") {
@@ -84,7 +84,7 @@ export default function PersonalProfile({user}) {
             <Row gap={5} p={2.5}>
                 <Column>
                     {user.userType === 'Doctor' && 
-                        <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
+                        <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar}/>
                     }
                     {user.userType === 'Patient' &&
                         <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
@@ -110,6 +110,7 @@ export default function PersonalProfile({user}) {
                         >
                             Edit Profile
                         </Button>
+                        
                     </Item>
                 </Column>
             </Row>

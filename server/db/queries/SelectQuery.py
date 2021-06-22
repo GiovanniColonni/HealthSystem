@@ -1,5 +1,5 @@
 from db import DatabaseSession
-from db.entities import Account, Doctor, Patient, Schedule, Prescription
+from db.entities import Account, Doctor, Patient, Schedule, Prescription,Measure
 from flask import Flask, send_file
 from sqlalchemy.orm import defer
 from sqlalchemy.sql import text
@@ -54,6 +54,17 @@ class SelectQuery:
         with DatabaseSession() as session:
             events = session.query(Prescription) \
                 .filter(patientId == Prescription.patientId) \
+                .all()
+            return events
+
+    def get_all_patient_measures(self, patientId):
+        """
+        :param patientId:
+        :return: a list of measures
+        """
+        with DatabaseSession() as session:
+            events = session.query(Measure) \
+                .filter(patientId == Measure.patientId) \
                 .all()
             return events
 
@@ -159,4 +170,17 @@ class SelectQuery:
                 .order_by(text('dateStart desc')) \
                 .first()
             return comment
+
+    def get_push_token(self,googleId):
+        """
+        :param googleId:
+        :return: pushToken
+        """
+        with DatabaseSession() as session:
+            pushToken = session.query(Account) \
+                .filter(googleId == Account.id) \
+                .first()
+            if pushToken is None:
+                return None
+            return pushToken.pushToken
 

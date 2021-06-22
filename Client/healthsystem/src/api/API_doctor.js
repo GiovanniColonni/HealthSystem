@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import Doctor from '../classes/Doctor'
 import Patient from '../classes/Patient'
 
@@ -63,5 +64,25 @@ async function getPatientList(doctorId){
     .catch((err) => console.log(err))
 }
 
-const API_doctor = {getDoctor,getPatientList,getLastPatientComment}
+async function uploadPrescription(patientId, prescription){
+    let formData = new FormData()
+    formData.set("patientId",patientId)
+    formData.set("pathFileSystem",prescription.file.name)
+    formData.set("notePrescription",prescription.observation)
+    formData.set("date",moment().format('MM/DD/YYYY'))
+    formData.set("file",prescription.file)
+    return await axios({
+        method: "post",
+        url: "/api/doctor/prescription",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response){
+        return response
+    }).catch(function (response){
+        console.log(response);
+        return response
+    });
+}
+
+const API_doctor = {getDoctor,getPatientList,getLastPatientComment,uploadPrescription}
 export default API_doctor;

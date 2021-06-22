@@ -1,23 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import NotificationCard from './NotificationCard';
 import { FaBell } from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
 import moment from 'moment';
-
-/*const notifList = [
-    {
-      type: 'join',
-      date: '03/05/2019, 2pm',
-      patient: 'Patient Name',
-      info: 'Some info',
-    },
-    /*{
-      type: 'newpatient',
-      patient: 'Patient Name',
-      info: 'Some info',
-    },
-  ]; */
+import { Typography } from '@material-ui/core';
 
 var notifstyle = {
     count: {
@@ -47,7 +34,7 @@ function NotificationButton(props) {
         <div  >
             <IconButton onClick={props.onClick}>
                 <FaBell />
-                <div style={notifstyle.count}> {props.count} </div>
+                {props.count > 0 && <div style={notifstyle.count}> {props.count} </div>}
             </IconButton>
         </div>
 
@@ -62,10 +49,6 @@ export default function NotificationMenuModal(props) {
     const handleShow = () => setShow(true);
     const {user, notifList} = props
 
-    useEffect(() =>{
-
-    }, [])
-
     return (
         <>
 
@@ -76,9 +59,20 @@ export default function NotificationMenuModal(props) {
             <Modal.Title>Notifications</Modal.Title>
             </Modal.Header>
             <Modal.Body> 
-                {notifList.map(notif => (
-                    <NotificationCard type={notif.type} userType={user.userType} patient={notif.patient} patientId={notif.patientId} date={moment(notif.date).format('MM-DD-YYYY HH:MM').toString()} info={notif.info} URL={notif.URL}/>
+                {notifList.length > 0 && notifList.map(notif => (
+                    <NotificationCard 
+                        type={notif.type} 
+                        userType={user.userType} 
+                        patient={notif.patient} 
+                        patientId={notif.patientId} 
+                        date={moment(notif.date).format('MM-DD-YYYY HH:MM').toString()} 
+                        info={notif.info} 
+                        URL={notif.URL}
+                        handleClose={handleClose}
+                    />
                 ))}
+                {notifList.length === 0 && 
+                    <Typography align="center" variant="h6">No Notifications</Typography>}
             </Modal.Body>
             <Modal.Footer>
             </Modal.Footer>

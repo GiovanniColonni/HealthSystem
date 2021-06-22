@@ -2,45 +2,29 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import oxygen from '../icons/OxyIcon.png';
-import heart from '../icons/HeartBeatingIcon.png';
-
-const images = [
-  {
-    url: oxygen,
-    title: 'Oxygen percentage',
-    width: '50%',
-  },
-  {
-    url: heart,
-    title: 'Heart Beat',
-    width: '50%',
-  }
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     minWidth: 300,
-    width: '80%',
-    marginLeft: 'auto',
-    marginRight: 'auto'
+    width: '60%',
+    margin: 'auto'
   },
   image: {
     position: 'relative',
-    height: 200,
+    height: 150,
     [theme.breakpoints.down('xs')]: {
       width: '100% !important', // Overrides inline-style
-      height: 100,
+      height: 150,
     },
-    '&:hover, &$focusVisible': {
+    '&:hover, &$focusVisible, &:focus': {
       zIndex: 1,
       '& $imageBackdrop': {
         opacity: 0.1,
       },
       '& $imageMarked': {
-        opacity: 0,
+        opacity: 0.1,
       },
     },
   },
@@ -71,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
-    opacity: 0.3,
+    opacity: 0.5,
     transition: theme.transitions.create('opacity'),
   },
   imageTitle: {
@@ -89,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonBases() {
+export default function SensorSelector({images}) {
   const classes = useStyles();
 
   return (
@@ -102,6 +86,7 @@ export default function ButtonBases() {
           style={{
             width: image.width,
           }}
+          onClick
         >
           <span
             className={classes.imageSrc}

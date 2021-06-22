@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import {useHistory} from "react-router";
 import API_doctor from '../api/API_doctor';
+import {FaUserCircle} from 'react-icons/fa';
+import { IconButton, Typography } from '@material-ui/core';
+import {FaCheck} from 'react-icons/fa';
 
 var cardstyle = { 
     title: {
@@ -28,16 +31,59 @@ var cardstyle = {
         borderColor: "#BEBEBE",
         borderRadius: "5px",
         padding: "5px",
-        width: "60%",
-        marginLeft: "auto",
-        marginRight: "auto",
-        cursor: "pointer"
+        cursor: "pointer",
+        margin: "7px"
     }, icon: {
         height: "50px",
         width: "50px"
     }
 }
-  
+
+export function UserCardNoLink(props) {
+  return (
+    <>
+    <Row gap={2} p={2.5} style={cardstyle.border}>
+      <Item>
+            <FaUserCircle style={cardstyle.icon}/>
+      </Item>
+      <Row wrap grow gap={0.5} minWidth={0}>
+        <Item grow minWidth={0}>
+          <div style={cardstyle.title}>{props.title}</div>
+          <div style={cardstyle.caption}>
+            {props.caption}
+          </div>
+        </Item>
+      </Row>
+    </Row>
+    </>
+  );
+}
+
+export function ChooseDoctorCard(props) {
+  return (
+    <>
+    <Row gap={2} p={2.5} style={cardstyle.border}>
+      <Item>
+            <FaUserCircle style={cardstyle.icon}/>
+      </Item>
+      <Row wrap grow gap={0.5} minWidth={0}>
+        <Item grow minWidth={0}>
+          <div style={cardstyle.title}>{props.title}</div>
+          <div style={cardstyle.caption}>
+            {props.caption}
+          </div>
+        </Item>
+      </Row>
+      <Row>
+        <IconButton onClick={props.onClick}>
+          <FaCheck />
+        </IconButton>
+      </Row>
+    </Row>
+    </>
+  );
+}
+
 export function UserCard(props) {
   
   let history = useHistory()
@@ -64,8 +110,35 @@ export function UserCard(props) {
         </div>
       );
 }
+
+export function UserCardFiltered(props) {
   
-export function UserCardList({user}) {
+  let history = useHistory()
+
+  useEffect( () => {
+    console.log(props)
+  },[]) 
+  
+      return (
+        <div onClick={() => props.setPatient(props.patientId)}>
+        <Row gap={2} p={2.5} style={cardstyle.border}>
+          <Item>
+                <img src={"/api/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={""}/>
+          </Item>
+          <Row wrap grow gap={0.5} minWidth={0}>
+            <Item grow minWidth={0}>
+              <div style={cardstyle.title}>{props.title}</div>
+              <div style={cardstyle.caption}>
+                {props.caption}
+              </div>
+            </Item>
+          </Row>
+        </Row>
+        </div>
+      );
+}
+  
+export function UserCardList({user, filter, setPatient}) {
   const [patientList,setPatientList] = useState([{}])
 
 
@@ -78,14 +151,22 @@ export function UserCardList({user}) {
 
   useEffect( () => {
     getPatientList(user.googleId)
-  },[user.googleId, patientList.length]) 
+  },[user.googleId, patientList.length, filter]) 
 
   return (
     <>
-      {patientList !== undefined && patientList.map(user => (
+      {patientList !== undefined && patientList.length > 0 && filter !== undefined && 
+        patientList.map(user => (
+          user.name !== undefined && (user.surname + " " + user.name).toLowerCase().includes(filter.toLowerCase()) && 
+          <UserCardFiltered title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user} setPatient={(patientId) => setPatient(patientId)}/>
+      )) }
+      {patientList !== undefined && patientList.length > 0 && filter === undefined && 
+        patientList.map(user => (
           user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
       )) }
+      {patientList.length === 0 &&
+        <Typography align="center" variant="h6">No Patients</Typography>}
     </>
   );
 }

@@ -9,9 +9,18 @@ from flask_login import login_required
 
 patient = Blueprint('patient', __name__, url_prefix="/api/patient")
 
+@patient.route('/doctor/<patientId>')
+@login_required
+def get_doctor_by_patient(patientId):
+    patient_id = patientId
+    s = SelectQuery()
+    doctor = s.select_doctor_by_patient(patient_id)
+    if doctor is False:
+        return jsonify(False)
+    return jsonify(row2dict(doctor))
 
 @patient.route('/doctors')
-@login_required
+#@login_required
 def get_all_doctors():
     s = SelectQuery()
     events = s.get_all_doctor()
@@ -95,17 +104,45 @@ def get_all_prescritions(patientId):
         row_list.append(row2dict(row))
     return jsonify(row_list)
 
+@patient.route('/measures/<patientId>')
+@login_required
+def get_all_measures(patientId):
+    s = SelectQuery()
+    measures = s.get_all_patient_measures(patientId)
+    row_list = []
+    for row in measures:
+        row_list.append(row2dict(row))
+    return jsonify(row_list)
+
+
 
 @patient.route('/measure', methods=['POST'])
-@login_required
+#login_required
 def insert_measure():
     patientId = request.form.get('patientId')
     type = request.form.get('type')
     value = request.form.get('value')
-    name = request.form.get('name')
+    name = "" # togliere da DB e mettere flag critic
     date = request.form.get('date')
     i = InsertQuery()
     if i.insert_measure(patientId, type, value, name, date):
+        return make_response("Ok", 200)
+    return make_response("No Ok", 400)
+
+@patient.route('/appointment', methods=['POST'])
+@login_required
+def insert_appointment():
+    patientId = request.form.get('patientId')
+    if patientId == "undefined":
+        patientId = None
+    doctorId = request.form.get('doctorId')
+    dateStart = request.form.get('dateStart')
+    typeExamination = request.form.get('typeExamination')
+    description = request.form.get('description')
+    dateEnd = request.form.get('dateEnd')
+    meetingURL = request.form.get('meetingURL')
+    i = InsertQuery()
+    if i.insert_appointment(patientId, doctorId, dateStart, typeExamination, description, dateEnd, meetingURL):
         return make_response("Ok", 200)
     return make_response("No Ok", 400)
 

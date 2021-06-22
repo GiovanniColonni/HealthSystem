@@ -1,21 +1,25 @@
 
 import './App.css';
 
-import React,{useState,useEffect} from "react"
-import { Switch, Route,Redirect, useHistory } from 'react-router-dom';
+import React,{useState,useEffect} from "react";
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
 import API from "./api/API";
+
 import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
-import {UserCardList} from "./components/UserCard";
 import PatientDetails from "./components/PatientDetails";
-import IframeJitsi from "./components/IframeJitsi"
+import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
 import { PrescriptionCardList } from './components/PrescriptionCard';
 import Home from './components/Home';
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
-import SelectDoctor from "./components/SelectDoctor"
+import SelectDoctor from "./components/SelectDoctor";
+import NewAppointment from "./components/NewAppointment";
+import PatientList from './components/PatientList';
+import PatientCall from './components/PatientCall';
+import DoctorCall from './components/DoctorCall';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -46,8 +50,12 @@ function App() {
       })
   },[loginState,history]) 
 
-  return (
+  const handleLogout = () =>{
+    setLoginState(false)
+    setUser({})
+  }
 
+  return (
     <div className="App">
       <Switch>
         <Route exact path={"/login"}>
@@ -58,26 +66,26 @@ function App() {
           </Route>
           <Route exact path={"/home"}>
               <div>
-                <NavigationBar user={user} />
+                <NavigationBar user={user} logout={handleLogout}/>
                 <Home user={user}/>
               </div>
           </Route>
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
-              <NavigationBar user={user} />
-              <UserCardList user={user}/>
+              <NavigationBar user={user} logout={handleLogout}/>
+              <PatientList user={user} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}
           <Route exact path={"/patientDetails"}>
-            <NavigationBar user={user} />
+            <NavigationBar user={user} logout={handleLogout}/>
             <PatientDetails />
           </Route>
 
           {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
           <Route exact path={"/patient/sensor"}>
             <div>
-              <NavigationBar user={user}/>
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>Sensor Details of Patient XXX</h1>
             </div>
           </Route>
@@ -85,42 +93,52 @@ function App() {
           {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
           <Route exact path={"/patient/appointment"}>
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>Appointement Details of Patient XXX, Date XXX</h1>
             </div>
           </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
-              <IframeJitsi/>
+              <NavigationBar user={user} logout={handleLogout}/>
+              <PatientCall />
             </div>
           </Route>
 
           {/* Only accessible for patient users */}
           <Route exact path={"/prescriptionList"}>
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList prescriptionlist={prescList} user={user}/>
+              <PrescriptionCardList user={user}/>
+            </div>
+          </Route>
+
+          {/* Only accessible for patient users */}
+          <Route exact path={"/newAppointment"}>
+            <div>
+              <NavigationBar user={user} logout={handleLogout}/>
+              <NewAppointment user={user} />
             </div>
           </Route>
 
           {/* Changes depending on the user type: patient has his doctor */}
           <Route exact path={"/personalProfile"} >
             <div>
-              <NavigationBar user={user} />
+              <NavigationBar user={user} logout={handleLogout}/>
               <PersonalProfile user={user} />
             </div>
           </Route>
           
         <Route exact path={"/patient/selectDoctor"}> 
-          <div>
+          <div className="Background">
               <HeaderChooseDoctor username={user.username}/>
               <SelectDoctor user={user}/>
           </div>
         </Route>
         <Route exact path={"/doctor/meeting"}> 
           <div>
-            <IframeJitsi URL_meeting="https://meet.jit.si/lucatest#config.prejoinPageEnabled=false"/>
+            <NavigationBar user={user} logout={handleLogout}/>
+            <DoctorCall user={user}/>
           </div>
         </Route>
         <Redirect to="/home" />
@@ -131,35 +149,3 @@ function App() {
 }
 
 export default App;
-
-const prescList = [
-  {
-    date: "13/02/2021",
-    doctor: "Doctor Strange"
-  },{
-    date: "21/11/2020",
-    doctor: "Doctor Strange"
-  },{
-    date: "13/09/2020",
-    doctor: "Doctor Strange"
-  },
-]
-
-/*const userlist = [
-  {
-    name: 'Benedetta',
-    info: 'Some info'
-  },
-  {
-    name: 'Chiara',
-    info: 'Some info'
-  },
-  {
-    name: 'Giuseppe',
-    info: 'Some info'
-  },
-  {
-    name: 'Gabriele',
-    info: 'Some info'
-  },
-]; */
