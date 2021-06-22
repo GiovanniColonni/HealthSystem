@@ -12,6 +12,7 @@ import AppointmentCard from './AppointmentCard';
 import {useHistory} from "react-router-dom"
 import Doctor from '../classes/Doctor';
 import Functions from '../functions/Functions';
+import BigCalendar from './BigCalendar';
 
 var newappstyle = {
     container: {
@@ -19,9 +20,9 @@ var newappstyle = {
         marginLeft: "auto", 
         marginRight: "auto"
     }, calendar: {
-        width: "60%"
+        width: "50%"
     }, form: {
-        width: "35%",
+        width: "45%",
         marginRight: "auto"
     }, card: {
         width: "20%"
@@ -45,10 +46,8 @@ export default function NewAppointment({user}){
         for (var days = 1; days < 8; days++) {
             const currentDay = moment().startOf('day').add(days, 'days');
             if (currentDay.format('dddd') !== "Saturday" && currentDay.format('dddd') !== "Sunday") {
-                for (var hours = 8; hours < 18; hours++) {
-                    if (hours !== 13){
-                        initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY hh:mm A"));
-                    }
+                for (var hours = 8; hours < 13; hours++) {
+                    initList.push(moment().startOf('day').add(days, 'days').add(hours, 'hours').format("MM/DD/YYYY hh:mm A"));
                 }
             }
         }
@@ -60,9 +59,6 @@ export default function NewAppointment({user}){
     const [patient, setPatient] = useState({})
     const [doctor, setDoctor] = useState(new Doctor())
     const [modalShow, setModalShow] = useState(false);
-    const [dateStart, setDateStart] = useState("No appointment selected");
-    const [dateEnd, setDateEnd] = useState();
-    const history = useHistory()
 
     useEffect(() => {
         API_patient.getPatient(user.googleId)
@@ -72,60 +68,38 @@ export default function NewAppointment({user}){
         .catch((err)=>{
             console.log(err)
         });
-        API_doctor.getDoctor(patient.doctorId)
-        .then((doctor) =>{
-            console.log(doctor)
-        setDoctor(doctor)
-        })
-        .catch((err)=>{
-            console.log(err)
-        });
-        
-        if (user.googleId !== undefined){
-            API_patient.getPatient(user.googleId)
-            .then((patient) =>{
+        if (patient.doctorId !== undefined) {
             API_doctor.getDoctor(patient.doctorId)
-                .then((doct) =>{
-                setDoctor(doct)
-                API.getEvents(doct.googleId, "Doctor")
-                .then((appointment) =>{
-                appointment.sort(function (left, right) {
-                        return moment.utc(right.date).diff(moment.utc(left.date))
-                    });
-                    setdocAppointmentList(appointment)
-                    })
-                    .catch((err) =>{
-                        setdocAppointmentList([])
-                        console.log(err)
-                    })
-                })
-                .catch((err) =>{
+            .then((doctor) =>{
+                console.log(doctor)
+                setDoctor(doctor)
+            })
+            .catch((err)=>{
                 console.log(err)
-                setDoctor()
+            });
+        }
+        if (patient.doctorId !== undefined){
+            API.getEvents(patient.doctorId, "Doctor")
+            .then((appointments) =>{
+                appointments.sort(function (left, right) {
+                        return moment.utc(right.date).diff(moment.utc(left.date))
                 })
+                setdocAppointmentList(appointments)
+                let updatedList = freeAppointmentList
+                for (const busyAppointment of appointments) {
+                    console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
+                    const date = moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")
+                    updatedList = updatedList.filter((appointmentDate) => appointmentDate !== date);
+                }
+                console.log("Free List ", updatedList); 
+                setFreeAppointmentList(updatedList)
+            })
+            .catch((err) =>{
+                setdocAppointmentList([])
+                console.log(err)
             })
         }
-        if (docAppointmentList !== undefined){
-            for (const busyAppointment of docAppointmentList) {
-                console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
-                removeAppointment(moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"));
-            }
-            console.log("Free List " + freeAppointmentList); 
-        }
     }, [user.googleId, patient.doctorId]);
-
-    const selectedAppointment = (date) => {
-        const formatedStartDate = moment(date, "MM/DD/YYYY hh:mm A");
-        setDateStart(formatedStartDate.format("MM/DD/YYYY hh:mm A"));
-        const formatedEndDate = formatedStartDate.add(1, 'hours');
-        setDateEnd(formatedEndDate.format("MM/DD/YYYY hh:mm A"));
-    }
-
-    const removeAppointment = (date) => {
-
-        const updatedList = freeAppointmentList.filter((appointmentDate) => appointmentDate !== date);
-        setFreeAppointmentList(updatedList);
-    }
 
     const AppointmentList = () =>{ 
         return (
@@ -134,7 +108,7 @@ export default function NewAppointment({user}){
                 freeAppointmentList.map(appointment => (
                     <AppointmentCard title={appointment} caption={doctor.name +" "+doctor.surname} 
                         isBooking={true}
-                        onClick={() => selectedAppointment(appointment)}/>
+                        onClick={() => validateAppointment(appointment)}/>
                 ))
             }
             {freeAppointmentList.length === 0 &&
@@ -143,9 +117,12 @@ export default function NewAppointment({user}){
         );
     }
 
-    const validateAppointment = () => {
-        API_patient.setAppointment(patient.googleId,patient.doctorId,dateStart,"meeting",
-                                    "my description",dateEnd,Functions.createMeeting(patient.googleId, patient.doctorId))
+    const validateAppointment = (date) => {
+        const formatedStartDate = moment(date, "MM/DD/YYYY hh:mm A").format("MM/DD/YYYY hh:mm A");
+        const formatedEndDate = moment(date, "MM/DD/YYYY hh:mm A").add(1, 'hours').format("MM/DD/YYYY hh:mm A");
+
+        API_patient.setAppointment(patient.googleId,patient.doctorId,formatedStartDate,"meeting",
+                                    "my description",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
             .then((resp) =>{
                 if(resp.status === 200){
                     setModalShow(true)
@@ -157,55 +134,22 @@ export default function NewAppointment({user}){
             })
     }
 
-    const cancelClick = () => {
-        history.push("/home")
-    }
-
     return(
         <>
             <h1>New Appointment</h1>
             <Row gap={1} p={1} style={newappstyle.container}>
                 <Column style={newappstyle.form}  gap={'inherit'}  p={'inherit'}>
-                    <Row gap={'inherit'} p={'inherit'}>
-                        <Typography>With my doctor:</Typography>
-                    </Row>
-                            {doctor !== undefined && 
-                            <div newappstyle={newappstyle.card}>
-                                <UserCardNoLink title={doctor.name + ' ' + doctor.surname} />
-                            </div>}
-                    <Row gap={'inherit'} p={'inherit'}>
-                        <Typography>Selected appointment:</Typography>
-                        <Typography>{dateStart}</Typography>
-                    </Row>
-                    <Row>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            style={newappstyle.kobutton}
-                            onClick={() => cancelClick()}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            style={newappstyle.okbutton}
-                            onClick={() => validateAppointment()}
-                        >
-                            Validate
-                        </Button>
-
-                        <ModalFeedback
-                            show={modalShow}
-                            onHide={() => setModalShow(false)}
-                        />
-                    </Row>
+                    <BigCalendar user={user} defaultView="week"/>
                 </Column>
                 <Column style={newappstyle.calendar}  gap={'inherit'} p={'inherit'}>
                     <AppointmentList />
                 </Column>
             </Row>
             
+            <ModalFeedback
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+            />
         </>
     )
 }

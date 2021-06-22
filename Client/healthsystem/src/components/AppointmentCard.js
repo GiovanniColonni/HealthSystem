@@ -6,6 +6,16 @@ import { Typography } from '@material-ui/core';
 import moment from 'moment';
 import API_doctor from '../api/API_doctor';
 import API from '../api/API';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import { CardHeader } from '@material-ui/core';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import { FiChevronDown } from 'react-icons/fi';
 
 var cardstyle = { 
     title: {
@@ -38,24 +48,13 @@ var cardstyle = {
 }
   
 export default function AppointmentCard(props) {
-  const [doctorName, setDoctorName] = useState("")
-
-  useEffect(() => {
-    API_doctor.getDoctor(props.doctorId)
-      .then((doctor) => {
-        setDoctorName(doctor.name + " " + doctor.surname)
-      })
-      .catch((err) =>{
-        console.log(err)
-    })
-  }, [props.doctorId])
 
   return (
     <Row gap={2} p={2.5} style={cardstyle.border}>
       <Item grow minWidth={0}>
         <div style={cardstyle.title}>{props.title}</div>
         <div style={cardstyle.caption}>
-          {"Doct. " + doctorName}
+          {props.caption}
         </div>
       </Item>
       <Row>
@@ -102,9 +101,14 @@ export function AppointmentList({events, isClickable, isBooking}) {
   )
 }
 
-export function PassedAppointmentList({patientId, isClickable}) {
+export function PassedAppointmentList({patientId}) {
 
   const [passedEvents, setPassedEvents] = useState([])
+  const [selectedAppointment, setSelectedAppointment] = useState({});
+
+  const handleAppointment = (event, appointment) => {
+    setSelectedAppointment(appointment);
+  };
 
   useEffect(() => {
     API.getEvents(patientId, "Patient")
@@ -138,8 +142,58 @@ export function PassedAppointmentList({patientId, isClickable}) {
   }
 
   return (
-    <AppointmentList events={passedEvents} 
-        isBooking={false} isClickable={isClickable}
-    />
+    <ToggleButtonGroup
+      orientation="vertical"
+      value={selectedAppointment}
+      exclusive
+      onChange={handleAppointment}
+      aria-label="text alignment"
+    >
+      {passedEvents.map((event) => (
+          <ToggleButton value={event}>
+            <AppointmentCard 
+              title={moment(event.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
+              doctorId={event.doctorId}
+              isBooking={false}
+            />
+          </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
+  )
+}
+
+function AppointmentDetails({event}) {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+
+      </CardHeader>
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {event.title}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Typography variant="body2" color="textSecondary" component="p">Observations</Typography>
+        <IconButton
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <FiChevronDown />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+            OBSERVATION
+        </CardContent>
+      </Collapse>
+    </Card>
   )
 }
