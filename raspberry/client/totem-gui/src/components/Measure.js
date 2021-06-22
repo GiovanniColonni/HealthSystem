@@ -104,7 +104,7 @@ function Measure ({setMeasure,measure}) {
         }
         if(mProgres){
            if(measure.thReached === 1){
-               /*
+               
                Api.postMeasure(JSON.stringify(measure),measure.dateMeasure)
                .then((resp)=>{
                    if(resp != false){
@@ -114,7 +114,7 @@ function Measure ({setMeasure,measure}) {
                }).catch((resp) => {
                    console.log("Error posting the measure into main server")
                })
-               */
+               
            } 
         }
         
