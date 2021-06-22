@@ -35,7 +35,7 @@ function Measure ({setMeasure,measure}) {
 
     let [message,setMessage] = useState("first")
 
-    let a = [1,2,3,4,7,5,6,7,8,9,10,11]
+    let x = [1,2,3,4,7,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
     
     const options = {scales: {
         yAxes: [
@@ -47,7 +47,7 @@ function Measure ({setMeasure,measure}) {
         ],
       },}
 
-    const data = {labels: a, // la x
+    const data = {labels: x, // la x
     datasets: [
       {
         label: name,
@@ -160,7 +160,7 @@ function Measure ({setMeasure,measure}) {
         if(mProgres){
            if(measure.thReached === 1){
                
-               /*Api.postMeasure(useState.user.googleId,
+               Api.postMeasure(useState.user.googleId,
                 "type",JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
                
@@ -171,7 +171,7 @@ function Measure ({setMeasure,measure}) {
                    console.log("Error posting the measure into main server")
                }).catch((resp) => {
                    console.log("Error posting the measure into main server")
-               })*/
+               })
                
            } 
         }
