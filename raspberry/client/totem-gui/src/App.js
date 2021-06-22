@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button"
 
 import Measure from "./components/Measure"
 import Home from "./components/Home"
+import NavigationBar from './components/NavigationBar';
 
 import axios from "axios"
 
@@ -51,16 +52,20 @@ function App() {
     },[loginState,setUser,setUserName]
   ) 
  
+  const handleLogout = () =>{
+    setLoginState(false)
+    setUser({})
+  }
   
   return (
     <div className="App">
-      <h1>Header da mettere</h1>
-      {<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>}
+      {/*<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>*/}
       <Switch>
           <Route exact path={"/login"}>
               <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
           </Route>
           <Route exact path={"/home"}>
+            <NavigationBar user={user} logout={handleLogout}/>
             <Home/>
           </Route>
           <Route exact path="/measure">
