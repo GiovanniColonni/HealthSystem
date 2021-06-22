@@ -46,7 +46,6 @@ class Measure(Base):
     type = Column(String(45), nullable=False)
     value = Column(INTEGER(11))
     patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
-    name = Column(String(45))
     date = Column(String(45))
 
     patient = relationship('Patient')
@@ -68,8 +67,8 @@ class Schedule(Base):
     __tablename__ = 'schedule'
 
     id = Column(INTEGER(11), primary_key=True, comment='description is used to write notes about the examination ')
-    patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
-    doctorId = Column(ForeignKey('doctor.googleId'), nullable=False, index=True)
+    patientId = Column(ForeignKey('patient.googleId'), index=True)
+    doctorId = Column(ForeignKey('doctor.googleId'), index=True)
     dateStart = Column(String(50), nullable=False)
     typeExamination = Column(String(45))
     description = Column(String(500))
