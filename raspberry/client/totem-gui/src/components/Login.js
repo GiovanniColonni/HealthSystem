@@ -1,17 +1,18 @@
 import React,{useState} from "react"
 import GoogleLogin from 'react-google-login';
-import {Redirect, useHistory} from "react-router"
+import {Redirect, useHistory,useContext} from "react-router"
 
 import Api from "../api/Api"
+import UserContext from "../contexts/UserContext";
 
-
-function Login({setLoginState,setUser,loginState}){
+function Login({setLoginState,loginState}){
  
     const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
     let [accessError,setAccessError] = useState(false)
 
     let history = useHistory()
+    let userState = useContext(UserContext);
 
     let loginSuccess = function(resp){
         
@@ -20,12 +21,14 @@ function Login({setLoginState,setUser,loginState}){
         const googleId = resp.profileObj.googleId
 
         async function completeLogin(){
+          userState.user.googleId=googleId;
           Api.login(id_token,email,googleId)
           .then((logState) => {
             setAccessError(!logState)
               if(logState === false){
                 history.push("/login")
               }else{
+
               history.push('/home')
               setLoginState(logState)
               }
