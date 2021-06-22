@@ -160,7 +160,7 @@ function Measure ({setMeasure,measure}) {
         if(mProgres){
            if(measure.thReached === 1){
                
-               /*Api.postMeasure(useState.user.googleId,
+               Api.postMeasure(useState.user.googleId,
                 "type",JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
                
@@ -171,7 +171,7 @@ function Measure ({setMeasure,measure}) {
                    console.log("Error posting the measure into main server")
                }).catch((resp) => {
                    console.log("Error posting the measure into main server")
-               })*/
+               })
                
            } 
         }
