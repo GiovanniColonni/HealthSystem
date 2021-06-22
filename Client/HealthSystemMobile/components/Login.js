@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AsyncStorage, Button, StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, Button, StyleSheet, Text, View,Image } from 'react-native';
 import * as Google from 'expo-google-app-auth';
+
 import UserContext from "../contexts/UserContext"
+
 
 import Constants from 'expo-constants';
 import Api from "../api/Api"
@@ -31,6 +33,20 @@ export default function Login({navigation}) {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    text:{
+      fontSize:19
+    },
+    textCustom:{
+      fontSize:24,
+      color:"#8bc24a"
+    },
+    buttonStyle:{
+      fontSize:21,
+      color:"#8bc24a"
+    },
+    view:{
+      padding:15
+    }
   });
 
   async function signInWithGoogleAsync() {
@@ -72,15 +88,15 @@ export default function Login({navigation}) {
           
           Api.insertPushToken(userState.user.googleId,userState.expoPushToken)
             .then((resp) =>{
- //             console.log(token)
- //             console.log(resp)
-            })
+                // console.log(token)
+                // console.log(resp)
+              })
             .catch((err) =>{
               //console.log(err)
             })
           
           if(resp){
-            navigation.navigate("Home",{googleId:googleId})
+            navigation.navigate("Home")
             //navigation.dispatch(() => resetAction);
             //navigation.reset({index:0,routes:[{name:"Home"}]})
             
@@ -96,14 +112,30 @@ export default function Login({navigation}) {
 
   }, [googleId]);
 
-
+  const img = require('../assets/greenCross.png')
+  
   return (
     <View style={styles.container}>
-      <Button
-        title="Sign In with Google "
-        onPress={() => { signInWithGoogleAsync(); 
-        }}
-      />
+      <View style={styles.view}>
+        <Image source={img}/>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.textCustom}>My Health Way</Text>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.text}>Welcome please log in</Text>
+      </View>
+      <View style={styles.view}>
+        <Button style={styles.buttonStyle}
+          title="Sign In with Google"
+          color="#8bc24a"
+          onPress={() => { signInWithGoogleAsync(); 
+          }}
+        />  
+
+      </View>
+      
+      
     </View>
   );
 }

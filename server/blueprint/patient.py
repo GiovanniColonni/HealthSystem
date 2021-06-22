@@ -122,7 +122,7 @@ def insert_measure():
     patientId = request.form.get('patientId')
     type = request.form.get('type')
     value = request.form.get('value')
-    name = request.form.get('name')
+    name = "" # togliere da DB e mettere flag critic
     date = request.form.get('date')
     i = InsertQuery()
     if i.insert_measure(patientId, type, value, name, date):
