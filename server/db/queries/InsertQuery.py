@@ -89,12 +89,12 @@ class InsertQuery:
             print("HANDLE THIS EXCEPTION")
             return False
 
-    def insert_measure(self, patientId, type, value, name, date):
+    def insert_measure(self, patientId, type, value, date):
         user_entity = Measure
+        
         instance = user_entity(patientId=patientId,
                                type=type,
                                value=value,
-                               name=name,
                                date=date
                                )
         try:
