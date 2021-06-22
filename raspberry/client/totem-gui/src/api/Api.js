@@ -51,12 +51,14 @@ async function logout(){
     }
 }
 
-async function postMeasure(type,value,date){
+async function postMeasure(googleId,type,value,date){
     let form = new FormData();
-    form.set("measureValue",measureValue)
-    form.set("dataMeasure",dataMeasure)
+    form.set("patientId",googleId)
+    form.set("type",type)
+    form.set("value",value)
+    form.set("date",date)
     try{
-        let resp = await axios.post(`${prefix}/patient/measure`,dataMeasure);
+        let resp = await axios.post(`${prefix}/patient/measure`,form);
         if(resp.status === 200){
             return true;
         }
