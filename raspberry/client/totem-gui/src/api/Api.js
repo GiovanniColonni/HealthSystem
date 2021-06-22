@@ -55,11 +55,11 @@ async function postMeasure(googleId,type,value,date,critic){
     let form = new FormData();
 
     form.set("googleId",googleId)
-    form.set("measureValue",value)
-    form.set("dataMeasure",date)
+    form.set("value",value)
+    form.set("date",date)
     form.set("type",type)
     form.set("critic",critic)
-    
+
     try{
         let resp = await axios.post(`${prefix}/patient/measure`,form);
         if(resp.status === 200){
