@@ -59,7 +59,6 @@ async function postMeasure(googleId,type,value,date){
     form.set("date",date)
     form.set("type",type)
     
-    console.log
     try{
         let resp = await axios.post(`${prefix}/patient/measure`,form);
         if(resp.status === 200){
