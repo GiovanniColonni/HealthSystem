@@ -91,7 +91,7 @@ class InsertQuery:
 
     def insert_measure(self, patientId, type, value, date):
         user_entity = Measure
-        print(f"{patientId}{type}{value}{date}")
+        
         instance = user_entity(patientId=patientId,
                                type=type,
                                value=value,

@@ -125,22 +125,22 @@ def takeMeasure():
 
                     if("Operc" in data):
 
-                        if(SENSOR_OPERC_THRESHOLD["MinOperc"] < data["Operc"]):
+                        if(SENSOR_OPERC_THRESHOLD["MinOperc"] >= data["Operc"]):
                             tr= 1
                         
                     elif("Max" in data):
                             tr = 0
-                            if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] > data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] < data["Max"] ):
+                            if(SENSOR_PRESSURE_THRESHOLD["MaxMax"] <= data["Max"] or SENSOR_PRESSURE_THRESHOLD["MinMax"] >= data["Max"] ):
                                 tr = 1
                                 
-                            if(SENSOR_PRESSURE_THRESHOLD["MinMin"] < data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] > data["Min"] ):
+                            if(SENSOR_PRESSURE_THRESHOLD["MinMin"] >= data["Min"] or SENSOR_PRESSURE_THRESHOLD["MaxMin"] <= data["Min"] ):
                                 tr = 1                                
                                 
-                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_HR_THRESHOLD["MaxHRate"] <= data["HRate"] or SENSOR_HR_THRESHOLD["MinHRate"] >= data["HRate"] ):
                                 tr = 1
                                       
                     elif("HRate" in data): 
-                            if(SENSOR_HR_THRESHOLD["MaxHRate"] > data["HRate"] or SENSOR_HR_THRESHOLD["MinHRate"] < data["HRate"] ):
+                            if(SENSOR_HR_THRESHOLD["MaxHRate"] <= data["HRate"] or SENSOR_HR_THRESHOLD["MinHRate"] >= data["HRate"] ):
                                 tr = 1
                             
                     params = [tr,line] # no json su db            
