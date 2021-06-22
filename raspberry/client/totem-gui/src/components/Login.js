@@ -56,7 +56,7 @@ export default function Login({setLoginState,setUser,loginState}){
     const googleId = resp.profileObj.googleId
 
     async function completeLogin(){
-      Api.postLogin(id_token,email,googleId)
+      Api.login(id_token,email,googleId)
       .then((logState) => {
         setAccessError(!logState)
           if(logState === false){
