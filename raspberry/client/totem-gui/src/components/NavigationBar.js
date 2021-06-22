@@ -92,7 +92,6 @@ export default function NavigationBar({user,logout}) {
                 </Nav>
                 <Nav>
                     <NotificationMenuModal user={user} notifList={notifList}/>
-                    <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                     <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
