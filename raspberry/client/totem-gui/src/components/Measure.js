@@ -20,7 +20,7 @@ const style = {
     }
 }
 
-function Measure ({setMeasure,measure}) {
+function Measure ({setMeasure,measure,user}) {
     
     let [mProgres,setMProgres] = useState(false)
     let [period,setPeriod] = useState(6000) // T = 5 secondi intervallo tra due misure
@@ -160,7 +160,7 @@ function Measure ({setMeasure,measure}) {
         if(mProgres){
            if(measure.thReached === 1){
                
-               Api.postMeasure(useState.user.googleId,
+               Api.postMeasure(user.googleId,
                 "type",JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
                
