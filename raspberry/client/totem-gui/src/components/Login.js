@@ -3,7 +3,7 @@ import GoogleLogin from 'react-google-login';
 import {Redirect, useHistory} from "react-router"
 
 import Api from "../api/Api"
-import UserContext from "../contexts/UserContext";
+import UserContext from "../context/UserContext";
 
 function Login({setLoginState,loginState}){
  
