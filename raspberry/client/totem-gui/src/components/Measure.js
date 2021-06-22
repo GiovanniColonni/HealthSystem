@@ -1,4 +1,4 @@
-import {useState,useEffect} from "react"
+import {useState,useEffect,useContext} from "react"
 import Button from "@material-ui/core/Button"
 import {Line} from "react-chartjs-2"
 import Api from "../api/Api"
@@ -104,9 +104,12 @@ function Measure ({setMeasure,measure}) {
         }
         if(mProgres){
            if(measure.thReached === 1){
-               /*
-               Api.postMeasure(JSON.stringify(measure),measure.dateMeasure)
-               .then((resp)=>{
+               
+               Api.postMeasure(useState.user.googleId,
+                "type",JSON.stringify(measureValue),
+                measure.dateMeasure,measure.thReached)
+               
+                .then((resp)=>{
                    if(resp != false){
                     console.log("Measure seded to main server")
                    }
@@ -114,7 +117,7 @@ function Measure ({setMeasure,measure}) {
                }).catch((resp) => {
                    console.log("Error posting the measure into main server")
                })
-               */
+               
            } 
         }
         

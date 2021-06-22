@@ -6,6 +6,7 @@ import React,{useState,useEffect, useCallback, useMemo} from "react"
 import {useHistory} from "react-router"
 import Button from "@material-ui/core/Button"
 
+import UserContext from './context/UserContext';
 import Measure from "./components/Measure"
 import Home from "./components/Home"
 import NavigationBar from './components/NavigationBar';
@@ -59,7 +60,7 @@ function App() {
   
   return (
     <div className="App">
-      {/*<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>*/}
+      <UserContext.Provider value={user}>
       <Switch>
           <Route exact path={"/login"}>
               <Login setLoginState={setLoginState} setUser={setUser} loginState={loginState}/>
@@ -69,23 +70,17 @@ function App() {
             <Home/>
           </Route>
           <Route exact path="/measure">
-            <Measure setMeasure={setMeasure} measure={measure} />
+            <Measure setMeasure={setMeasure} user={user} measure={measure} />
           </Route>
           <Route exact path="/videocall">
             <Button onClick={() => {window.location.href = link}}>Start Call</Button>
           </Route>
       </Switch>
+      </UserContext.Provider>
+      
     </div>
   );
 }
 
 export default App;
 
-/**
-           <div>
-            <h1>Home</h1>
-            <Link to="/measure">Start a measure</Link>
-            <Link to="/videocall">Start the appointment</Link>
-	        </div>
-
- */

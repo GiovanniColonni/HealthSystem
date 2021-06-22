@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState,useContext} from "react"
 import GoogleLogin from 'react-google-login';
 import {Redirect, useHistory} from "react-router"
 import { Row, Column } from '@mui-treasury/components/flex';
@@ -10,6 +10,7 @@ import axios from 'axios'
 
 import Api from "../api/Api"
 import { Typography } from "@material-ui/core";
+import UserContext from "../context/UserContext";
 
 // per csfr protection
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
@@ -44,11 +45,33 @@ var loginstyle = {
 export default function Login({setLoginState,setUser,loginState}){
 
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
+    let history = useHistory()
+    let userState = useContext(UserContext);
 
   let [accessError,setAccessError] = useState(false)
-  let history = useHistory()
 
   let loginSuccess = function(resp){
+        async function completeLogin(){
+          userState.user.googleId=googleId;
+          Api.login(id_token,email,googleId)
+          .then((logState) => {
+            setAccessError(!logState)
+              if(logState === false){
+                history.push("/login")
+              }else{
+
+              history.push('/home')
+              setLoginState(logState)
+              }
+            })
+          .catch((err) => {
+                history.push('/login')
+                setLoginState(false)
+            })
+          
+          
+      
+        }
       
     console.log(resp.takenObj)
     const id_token = resp.tokenObj.id_token
@@ -126,6 +149,4 @@ export default function Login({setLoginState,setUser,loginState}){
         </Modal.Body>
       </Modal>
   )
-  
-
 }
