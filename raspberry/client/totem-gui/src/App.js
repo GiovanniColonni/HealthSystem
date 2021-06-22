@@ -55,7 +55,7 @@ function App() {
   
   return (
     <div className="App">
-      <UserContext.Provider value={userState}>
+      <UserContext.Provider value={user}>
       <h1>Header da mettere</h1>
       {<Button onClick={()=>{Api.logout(); history.push("login")}}>LogOut</Button>}
       <Switch>
