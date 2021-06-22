@@ -3,8 +3,8 @@ import React, { useState,useEffect, useRef  } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer} from 'react-navigation'
 
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -29,18 +29,44 @@ Notifications.setNotificationHandler({
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
-  let [user,setUser] = useState({googleId:"",username:"",email:""});
+  let [user,setUser] = useState({googleId:undefined,username:undefined,email:undefined});
   let [isSigned,setIsSigned] = useState(false)
-  let userState = {user,setUser}
+  let userState = {user,setUser,expoPushToken}
   const notificationListener = useRef();
   const responseListener = useRef();
   
-  const Stack = createStackNavigator();
+  const AppStackNavigator = createStackNavigator({
+    
+    Home:{
+      screen: Home,
+      navigationOptions: ({navigation}) =>({
+        title: `Homepage`,
+        headerLeft: () => <Text>icon</Text>
+      })
+    },
+    Login:{
+      screen: Login,
+      navigationOptions: ({navigation}) =>({
+        title: `Autenticazione`,
+        headerLeft: () => <Text>icon</Text>
+      })
+    },
+    MeasureHistory:{
+      screen: MeasureHistory,
+      navigationOptions: ({navigation}) =>({
+        title: `Storico Misure`,
+        headerLeft: () => <Text>icon</Text>
+      })
+    }
+  });
+  
+  const AppContainer = createAppContainer(AppStackNavigator); 
 
   useEffect(() => {
+    
     registerForPushNotificationsAsync().then(token =>{
       console.log(token)
-       setExpoPushToken(token)
+       //setExpoPushToken(token)
     });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -50,26 +76,31 @@ export default function App() {
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       //console.log(response);
     });
-
+    
   },[expoPushToken])
  
   return (
     <UserContext.Provider value={userState}>
+      <AppContainer/>
+    </UserContext.Provider>
+    
+  );
+}
+
+
+/*
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           
             <Stack.Screen name="Home" component={Home} options={{headerLeft:()=>(<></>)}}/>
             <Stack.Screen name="MeasureHisotry" component={MeasureHistory}/>
-            <Stack.Screen name="Login">
-              {props => <Login {...props} expoPushToken={expoPushToken}/>}
+            <Stack.Screen name="Login" component={Login} options={{headerLeft:()=>(<><Text>icon</Text></>)}}>
             </Stack.Screen>
           
         </Stack.Navigator>
       </NavigationContainer>
-    </UserContext.Provider>
-    
-  );
-}
+      */
+
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -84,8 +115,7 @@ async function registerForPushNotificationsAsync() {
       alert('Failed to get push token for push notification!');
       return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    //console.log(token);  
+    token = (await Notifications.getExpoPushTokenAsync()).data;  
   } else {
     alert('Must use physical device for Push Notifications');
   }

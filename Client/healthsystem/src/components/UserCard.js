@@ -111,8 +111,35 @@ export function UserCard(props) {
         </div>
       );
 }
+
+export function UserCardFiltered(props) {
   
-export function UserCardList({user}) {
+  let history = useHistory()
+
+  useEffect( () => {
+    console.log(props)
+  },[]) 
+  
+      return (
+        <div onClick={() => props.setPatient(props.patientId)}>
+        <Row gap={2} p={2.5} style={cardstyle.border}>
+          <Item>
+                <img src={"/api/patient/doctorImage/"+props.patientId} style={cardstyle.icon} alt={""}/>
+          </Item>
+          <Row wrap grow gap={0.5} minWidth={0}>
+            <Item grow minWidth={0}>
+              <div style={cardstyle.title}>{props.title}</div>
+              <div style={cardstyle.caption}>
+                {props.caption}
+              </div>
+            </Item>
+          </Row>
+        </Row>
+        </div>
+      );
+}
+  
+export function UserCardList({user, filter, setPatient}) {
   const [patientList,setPatientList] = useState([{}])
 
 
@@ -125,11 +152,16 @@ export function UserCardList({user}) {
 
   useEffect( () => {
     getPatientList(user.googleId)
-  },[user.googleId, patientList.length]) 
+  },[user.googleId, patientList.length, filter]) 
 
   return (
     <>
-      {patientList !== undefined && patientList.length > 0 &&
+      {patientList !== undefined && patientList.length > 0 && filter !== undefined && 
+        patientList.map(user => (
+          user.name !== undefined && (user.surname + " " + user.name).toLowerCase().includes(filter.toLowerCase()) && 
+          <UserCardFiltered title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user} setPatient={(patientId) => setPatient(patientId)}/>
+      )) }
+      {patientList !== undefined && patientList.length > 0 && filter === undefined && 
         patientList.map(user => (
           user.name !== undefined &&
           <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
