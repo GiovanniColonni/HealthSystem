@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Item } from '@mui-treasury/components/flex';
+import { Row, Item, Column } from '@mui-treasury/components/flex';
 import { FaFileDownload } from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
 import API_patient from '../api/API_patient';
@@ -18,7 +18,8 @@ import CardContent from '@material-ui/core/CardContent';
 import { CardHeader } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import { FiChevronDown } from 'react-icons/fi';
+import { FcFinePrint } from 'react-icons/fc';
+import Divider from '@material-ui/core/Divider';
 
 var cardstyle = { 
     title: {
@@ -45,37 +46,112 @@ var cardstyle = {
         borderColor: "#BEBEBE",
         borderRadius: "5px",
         padding: "5px",
-        width: "60%",
-        marginLeft: "auto",
-        marginRight: "auto"
     }
 }
   
 export function PrescriptionCard(props) {
+
+  const [doctor, setDoctor] = useState({})
+
+  useEffect(() => {
+    API_doctor.getDoctor(props.doctorId)
+    .then((doctor) =>{
+      if (doctor !== undefined) {
+        setDoctor(doctor)
+      }
+    })
+    .catch((err) =>{
+      console.log(err)
+    })
+  }, [props.doctorId])
+
   return (
     <Row gap={2} p={2.5} style={cardstyle.border}>
       <Item grow minWidth={0}>
         <div style={cardstyle.title}>{props.title}</div>
         <div style={cardstyle.caption}>
-          {"Doct. "+props.caption}
+          {"Doct. " + doctor.name + " " + doctor.surname}
         </div>
       </Item>
-      <Row>
-        <IconButton >
-          <FaFileDownload onClick={() =>props.downloadPrescription(props.pathFileSystem, props.title)} />
-        </IconButton>
-      </Row>
     </Row>
   );
 }
 
+var liststyle = { 
+  container: {
+    width: '90%',
+    margin: 'auto'
+  }, column: {
+    width: '40%',
+    margin: 'auto'
+}, 
+}
+
 export function PrescriptionCardList({user}) {
   const [prescriptionList, setPrescriptionList] = useState([]);
-  const [doctor, setDoctor] = useState(new Doctor());
-  const [selectedPrescription, setSelectedPrescription] = useState({});
+  const [selectedPrescription, setSelectedPrescription] = useState();
 
   const handlePrescription = (event, prescription) => {
+    console.log("Changing selected prescription: ", prescription)
     setSelectedPrescription(prescription);
+  };
+
+  useEffect(() => {
+    // REMEMBER to change the doctorId=6; retrieve it from cookies
+    if(user.googleId !== undefined){
+      API_patient.getAllPrescriptions(user.googleId)
+        .then((prescription) =>{
+          prescription.sort(function (left, right) {
+            return moment.utc(right.date).diff(moment.utc(left.date))
+          });
+          setPrescriptionList(prescription)
+        })
+        .catch((err) =>{
+          setPrescriptionList([])
+          console.log(err)
+        })
+    }
+  }, [user.googleId]);
+
+  return (
+    <>
+    <Row p={3} style={liststyle.container}>
+    <Column style={liststyle.column}>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={selectedPrescription}
+            exclusive
+            onChange={handlePrescription}
+            aria-label="text alignment"
+          >
+            {prescriptionList.length > 0 &&
+              prescriptionList.map((prescription) => (
+                    <ToggleButton value={prescription}>
+                        <PrescriptionCard 
+                          title={prescription.date} doctorId={prescription.doctorId}
+                        />
+                    </ToggleButton>
+              ))
+            }
+          </ToggleButtonGroup>
+      {prescriptionList.length === 0 &&
+        <Typography align="center" variant="h6">No Prescriptions</Typography>}
+    </Column>
+    <Column style={liststyle.column}>
+        {selectedPrescription !== undefined &&
+          <ObservationCard prescription={selectedPrescription} />}
+    </Column>
+    </Row>
+    </>
+  );
+}
+
+
+function ObservationCard({prescription}) {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
 
   const downloadPrescription = (pathFileSystem, date) =>{
@@ -93,102 +169,23 @@ export function PrescriptionCardList({user}) {
       })
   }
 
-  useEffect(() => {
-    // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if(user.googleId !== undefined){
-      API_patient.getAllPrescriptions(user.googleId)
-        .then((prescription) =>{
-          prescription.sort(function (left, right) {
-            return moment.utc(right.date).diff(moment.utc(left.date))
-          });
-          setPrescriptionList(prescription)
-        })
-        .catch((err) =>{
-          setPrescriptionList([])
-          console.log(err)
-        })
-      API_patient.getPatient(user.googleId)
-        .then((patient) =>{
-          API_doctor.getDoctor(patient.doctorId)
-            .then((doct) =>{
-              setDoctor(doct)
-            })
-            .catch((err) =>{
-              console.log(err)
-              setDoctor()
-            })
-        })
-    }
-  }, [user.googleId]);
-
   return (
-    <>
-      <ToggleButtonGroup
-      orientation="vertical"
-      value={selectedPrescription}
-      exclusive
-      onChange={handlePrescription}
-      aria-label="text alignment"
-    >
-      {doctor !== undefined && prescriptionList.length > 0 &&
-        prescriptionList.map((prescription) => (
-          
-          <ToggleButton value={prescription}>
-              <PrescriptionCard 
-                title={prescription.date} caption={doctor.name +" "+doctor.surname} 
-                pathFileSystem={prescription.pathFileSystem} 
-                downloadPrescription={downloadPrescription}
-              />
-          </ToggleButton>
-        ))
-      }
-    </ToggleButtonGroup>
-      {prescriptionList.length === 0 &&
-        <Typography align="center" variant="h6">No Prescriptions</Typography>}
-    </>
-  );
-}
-
-
-function ObservationCard({prescription}) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  return (
-    <Card>
-      <CardHeader>
-
-      </CardHeader>
+    <Card variant="outlined">
+      <CardHeader
+        avatar={
+          <FcFinePrint size={30}/>
+        }
+        title={"Prescription of " + prescription.date}
+        subheader="Related Observations"
+        action={
+          <IconButton >
+            <FaFileDownload onClick={() => downloadPrescription(prescription.pathFileSystem, prescription.title)} />
+          </IconButton>
+        }
+      />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Observation
-        </Typography>
+        {prescription.notePrescription}
       </CardContent>
-      <CardActions disableSpacing>
-        <Typography variant="body2" color="textSecondary" component="p">Observations</Typography>
-        <IconButton
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <FiChevronDown />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-            {prescription.notePrescription}
-        </CardContent>
-      </Collapse>
     </Card>
-  )
-}
-
-export function PrescriptionDetails(props) {
-  return (
-    <>
-    </>
   )
 }
