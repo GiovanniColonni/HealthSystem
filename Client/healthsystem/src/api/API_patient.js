@@ -54,7 +54,7 @@ async function getAllPrescriptions(patientId){
     .then((response) =>{ 
         let prescriptions = []
             response.data.forEach(element => {
-                prescriptions.push(new Prescription(element.id,element.patientId,element.pathFileSystem,element.notePrescription,element.date))
+                prescriptions.push(new Prescription(element.id,element.patientId,element.pathFileSystem,element.notePrescription,element.date,element.doctorId))
             });
             return prescriptions
     })
