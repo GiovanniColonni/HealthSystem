@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState,useEffect, useRef  } from 'react';
-import { StyleSheet, Text,Linking, View, Image } from 'react-native';
+import { StyleSheet,Image } from 'react-native';
 
 import 'react-native-gesture-handler';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -14,7 +13,6 @@ import Login from "./components/Login"
 import Home from "./components/Home"
 import MeasureHistory from './components/MeasureHistory';
 
-import Api from './api/Api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -58,6 +56,7 @@ export default function App() {
       navigationOptions: ({navigation}) =>({
         title: `Storico Misure`,
         headerLeft: () => <Image style={styleImg} source={img}/>
+        
       })
     }
     

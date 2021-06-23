@@ -1,15 +1,14 @@
 import React,{useContext, useEffect, useState,useCallback} from "react"
 import { StyleSheet, Text, View,Image,SafeAreaView,ScrollView} from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
-import {ListItem,Icon} from "react-native-elements"
-import {FiPhoneCall} from "react-icons/fi"
+import {ListItem} from "react-native-elements"
+
 import Api from "../api/Api"
 import UserContext from "../contexts/UserContext"
 import { Linking } from "react-native";
 import { Alert } from "react-native";
 import { TouchableOpacity } from "react-native";
 import {Button} from "react-native-elements"
-import { color } from "react-native-elements/dist/helpers";
+
 function Home({navigation}){
     // qui mettere registrazione notifica
     //console.log(navigation)
@@ -76,11 +75,8 @@ function Home({navigation}){
     .then((resp)=>{
         if(resp !== false){
             setEvents(resp)
-        
-            console.log(resp)
             setAvaible(true)
         }
-        
     })
     .catch(()=>{
         console.log("get events fail")
@@ -123,7 +119,7 @@ function Home({navigation}){
             <View style={styles.container}>
                 <View style={styles.buttonView}>
                     <Button icon={{name:"history", size:35}} type="outline" titleStyle={styles.changePage} title="Go to measure history"
-                             onPress={()=>{navigation.push("MeasureHistory")}}/>
+                            onPress={()=>{navigation.push("MeasureHistory")}}/>
                 </View>
                 <View style={styles.scrollView}>
                     <SafeAreaView>
