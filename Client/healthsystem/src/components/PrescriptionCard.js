@@ -67,7 +67,7 @@ export function PrescriptionCardList({user}) {
         let url = window.URL.createObjectURL(file)
         let a = document.createElement('a')
         a.href = url;
-        a.download = date+".pdf";
+        a.download = pathFileSystem;
         a.click();
         a.remove() 
       })
