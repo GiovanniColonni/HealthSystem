@@ -7,11 +7,13 @@ axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 async function postLogin(id_token,email,googleId,name){
     var formData = new FormData()
+    
     formData.append("id_token",id_token)
     formData.append("email",email)
     formData.append("googleId",googleId)
     formData.append("type","android") //trovare modo per vedere se gira in android o ios
     formData.append("name",name)
+
     try{
         let resp = await axios.post(`${prefix}/login`,formData)
         if (resp.status === 200){
@@ -41,11 +43,10 @@ async function insertPushToken(googleId,pushToken){
 }
 
 async function getEventList(googleId){
-    const userType = "patient"
+    
     try{
         let resp = await axios.get(`${prefix}/patient/event/${googleId}`);
-        if(resp.status === 200){
-           
+        if(resp.status === 200){         
             return resp.data
         }
     }catch(e){
