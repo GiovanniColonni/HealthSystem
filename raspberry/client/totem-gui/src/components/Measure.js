@@ -194,7 +194,6 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
     
     return(
         <>
-        {mProgres == false && <NavigationBar user={user} logout={handleLogout}/>}
         <Row p={2}>
             {mProgres == false &&
                 <>

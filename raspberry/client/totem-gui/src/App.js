@@ -70,7 +70,8 @@ function App() {
             <Home/>
           </Route>
           <Route exact path="/measure">
-            <Measure setMeasure={setMeasure} user={user} measure={measure} logout={handleLogout} />
+            <NavigationBar user={user} logout={handleLogout}/>
+            <Measure setMeasure={setMeasure} user={user} measure={measure} />
           </Route>
           <Route exact path={"/prescriptionList"}>
             <div>
