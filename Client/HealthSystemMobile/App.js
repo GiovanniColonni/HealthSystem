@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState,useEffect, useRef  } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 
 import 'react-native-gesture-handler';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -15,7 +15,6 @@ import Home from "./components/Home"
 import MeasureHistory from './components/MeasureHistory';
 
 
-import { StackRouter } from 'react-navigation';
 import Api from './api/Api';
 
 Notifications.setNotificationHandler({
@@ -29,33 +28,37 @@ Notifications.setNotificationHandler({
 export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
-  let [user,setUser] = useState({googleId:undefined,username:undefined,email:undefined});
+  let [user,setUser] = useState({googleId:undefined,name:undefined,email:undefined});
   let [isSigned,setIsSigned] = useState(false)
   let userState = {user,setUser,expoPushToken}
   const notificationListener = useRef();
   const responseListener = useRef();
   
+  const img = require('./assets/greenCross.png')
+  const styleImg = {width:51,height:51,resizeMode: 'contain'}
   const AppStackNavigator = createStackNavigator({
     
     Home:{
       screen: Home,
       navigationOptions: ({navigation}) =>({
-        title: `Homepage`,
-        headerLeft: () => <Text>icon</Text>
+       
+       title: `Benvenuto ${user.name}`,
+       headerLeft: () => <Image style={styleImg} source={img}/>
       })
     },
     Login:{
       screen: Login,
       navigationOptions: ({navigation}) =>({
         title: `Autenticazione`,
-        headerLeft: () => <Text>icon</Text>
+        headerShown:false 
+       // headerLeft: () => <></> 
       })
     },
     MeasureHistory:{
       screen: MeasureHistory,
       navigationOptions: ({navigation}) =>({
         title: `Storico Misure`,
-        headerLeft: () => <Text>icon</Text>
+        headerLeft: () => <Image style={styleImg} source={img}/>
       })
     }
   });
@@ -65,7 +68,7 @@ export default function App() {
   useEffect(() => {
     
     registerForPushNotificationsAsync().then(token =>{
-      console.log(token)
+      //console.log(token)
        //setExpoPushToken(token)
     });
 
@@ -87,19 +90,6 @@ export default function App() {
   );
 }
 
-
-/*
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          
-            <Stack.Screen name="Home" component={Home} options={{headerLeft:()=>(<></>)}}/>
-            <Stack.Screen name="MeasureHisotry" component={MeasureHistory}/>
-            <Stack.Screen name="Login" component={Login} options={{headerLeft:()=>(<><Text>icon</Text></>)}}>
-            </Stack.Screen>
-          
-        </Stack.Navigator>
-      </NavigationContainer>
-      */
 
 
 async function registerForPushNotificationsAsync() {

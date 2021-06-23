@@ -119,13 +119,13 @@ def get_all_measures(patientId):
 @patient.route('/measure', methods=['POST'])
 #login_required
 def insert_measure():
-    patientId = request.form.get('patientId')
+    patientId = request.form.get('googleId')
     type = request.form.get('type')
     value = request.form.get('value')
-    name = request.form.get('name')
     date = request.form.get('date')
+    
     i = InsertQuery()
-    if i.insert_measure(patientId, type, value, name, date):
+    if i.insert_measure(patientId, type, value, date):
         return make_response("Ok", 200)
     return make_response("No Ok", 400)
 

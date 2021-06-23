@@ -1,15 +1,12 @@
 import axios from "axios"
 
-const prefix = "https://021552bd2e7d.ngrok.io/api"
+const prefix = "https://33bf68004683.ngrok.io/api"
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
 
 async function postLogin(id_token,email,googleId,name){
     var formData = new FormData()
-    console.log(id_token)
-    console.log(email)
-    console.log(googleId)
     formData.append("id_token",id_token)
     formData.append("email",email)
     formData.append("googleId",googleId)
@@ -22,7 +19,6 @@ async function postLogin(id_token,email,googleId,name){
         }
         return false;
     }catch(e){
-        console.log(e)
         return false
     }
 }
@@ -33,17 +29,40 @@ async function insertPushToken(googleId,pushToken){
     formData.append("pushToken",pushToken)
     try{
         let resp = await axios.post(`${prefix}/account/insertToken`,formData)
-        console.log(`status : ${resp.status}`)
-        console.log(`data : ${resp.data}`)
+        
         if (resp.status === 200){
           return resp.data
         }
         return false;
     }catch(e){
-        console.log(e)
+        //console.log(e)
         return false
     }
 }
 
-const Api = {postLogin, insertPushToken}
+async function getEventList(googleId){
+    const userType = "patient"
+    try{
+        let resp = await axios.get(`${prefix}/patient/event/${googleId}`);
+        if(resp.status === 200){
+           
+            return resp.data
+        }
+    }catch(e){
+        return false;
+    }
+}
+async function getMeasure(googleId){
+    try{
+        let resp = await axios.get(`${prefix}/patient/measures/${googleId}`)
+        if(resp.status === 200){
+            return resp.data
+        }
+        return false
+    }catch(e){
+        return false
+    }
+}
+
+const Api = {postLogin, insertPushToken,getEventList,getMeasure}
 export default Api
