@@ -53,7 +53,7 @@ def get_prescription_file(pathFileSystem):
         my_file = Path("prescriptions/"+patientId+"/" + image)
         if my_file.is_file():
             # file exists
-            return send_file("prescriptions/"+patientId+"/" + image, mimetype='application/pdf')
+            return send_file("prescriptions/"+patientId+"/" + image)
     return make_response(jsonify("prescription not found"), 404)
 
 
