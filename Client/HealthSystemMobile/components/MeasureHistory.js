@@ -45,7 +45,7 @@ function MeasureHistory({navigation}){
         Api.getMeasure(userState.user.googleId)
         .then((resp)=>{
           if(resp !== false && resp !== undefined){
-            console.log(resp)
+            //console.log(resp)
             setMeasureData(resp)
             setAvaible(true)
           }
@@ -63,16 +63,18 @@ function MeasureHistory({navigation}){
       <SafeAreaView>
         <ScrollView>
            {measureData.map((item,i)=>{
+             if(item.type !== "type"){
+
               return(
                 <ListItem key={i} bottomDivider>
                   {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
-                  {item.type ==  "OxygenSaturation" && <Image style={styles.icons} source={oxygenIcon} />}
+                  {item.type ==  "OxygenSaturatino" && <Image style={styles.icons} source={oxygenIcon} />}
                   {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
                   <ListItem.Title>{item.type}</ListItem.Title>
                   <ListItem.Subtitle>{item.value + "  " + item.date}</ListItem.Subtitle>
                 </ListItem>            
               )
-             
+              }
            })}
         </ScrollView>
       </SafeAreaView>

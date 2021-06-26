@@ -8,6 +8,7 @@ import { Linking } from "react-native";
 import { Alert } from "react-native";
 import { TouchableOpacity } from "react-native";
 import {Button} from "react-native-elements"
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 
 function Home({navigation}){
     // qui mettere registrazione notifica
@@ -86,9 +87,18 @@ function Home({navigation}){
 
     const ImageCall = ({url,date}) =>{
         const handlePress = useCallback(async () => {
-            const s = new Date(date + 2*60*60*1000) /*Timezone sbagliata aggiunto 2 ore */
-            let left15 = Math.abs(new Date(date)-new Date());
+            const s = new Date(date + 2*60*60*1000) /*Timezone sbagliata aggiungo 2 ore */
+            
+            console.log(new Date()-date)
+            let left15 = new Date(date) - new Date();
             left15 = left15 / (1000*60) // in minuti 
+            
+            console.log(` left 15 : ${left15}`)
+            if(left15 < -60){ // min
+                // 1 ora dopo l'appuntamento
+                Alert.alert("Appuntamento terminato","questo appuntamento è terminato")
+                return;
+            }
             if(left15 > 15){
                 const hs = left15/60 // ore
                 let titleAlert = ""
@@ -138,6 +148,7 @@ function Home({navigation}){
                         </ScrollView>
                     </SafeAreaView>        
                 </View>
+                
             </View>
 
     )
