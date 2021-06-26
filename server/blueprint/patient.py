@@ -136,6 +136,8 @@ def insert_appointment():
     if patientId == "undefined":
         patientId = None
     doctorId = request.form.get('doctorId')
+    if doctorId == "undefined":
+        doctorId = None
     dateStart = request.form.get('dateStart')
     typeExamination = request.form.get('typeExamination')
     description = request.form.get('description')
