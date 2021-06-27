@@ -12,6 +12,7 @@ import { red } from '@material-ui/core/colors';
 import { FiChevronDown } from 'react-icons/fi';
 import OxygenIcon from '../icons/OxyIcon.png';
 import HeartIcon from '../icons/HeartBeatingIcon.png';
+import BldIcon from '../icons/BloodPressureIcon.png';
 import { Row, Column } from '@mui-treasury/components/flex';
 import API_patient from '../api/API_patient';
 import { useHistory } from 'react-router';
@@ -90,6 +91,7 @@ export default function MeasureList() {
 
     const [heartMeasures, setHeartMeasures] = useState({})
     const [oxyMeasures, setOxyMeasures] = useState({})
+    const [bldMeasures, setBldMeasures] = useState({})
 
     useEffect(() => {
         console.log("Google id of patient:" , history.location.state.patient.googleId)
@@ -99,13 +101,17 @@ export default function MeasureList() {
                 console.log("Some measures: ", measures)
                 const listHeart = []
                 const listOxy = []
+                const listBld = []
                 for (const measure of measures) {
-                    if (measure.type === "Operc"){
+                    if (measure.type === "OxygenSaturatino"){
                         console.log("Adding oxygen measure: ", measure)
                         listOxy.push(measure)
-                    } else if (measure.type === "HRate"){
+                    } else if (measure.type === "HeartRate"){
                         console.log("Adding heart measure: ", measure)
                         listHeart.push(measure)
+                    } else if (measure.type === "BloodPressure"){
+                        console.log("Adding blood measure: ", measure)
+                        listBld.push(measure)
                     } else {
                         console.log("Unrecognised measure: ", measure)
                     }
@@ -114,6 +120,8 @@ export default function MeasureList() {
                 console.log("Heart list updated: ", heartMeasures)
                 setOxyMeasures(listOxy)
                 console.log("Oxy list updated: ", oxyMeasures)
+                setBldMeasures(listBld)
+                console.log("Bld list updated: ", bldMeasures)
             })
             .catch((err) =>{
                 console.log(err)
@@ -124,11 +132,14 @@ export default function MeasureList() {
     return (
         <>
         <Row>
-            <Column style={{width: '50%'}}>
+            <Column style={{width: '33%'}}>
                 <MeasureCard image={OxygenIcon} data={oxyMeasures} name="Oxygen percentage"/>
             </Column>
-            <Column style={{width: '50%'}}>
+            <Column style={{width: '34%'}}>
                 <MeasureCard image={HeartIcon} data={heartMeasures} name="Heart rate"/>
+            </Column>
+            <Column style={{width: '33%'}}>
+                <MeasureCard image={BldIcon} data={bldMeasures} name="Blood pressure"/>
             </Column>
         </Row>
         </>
