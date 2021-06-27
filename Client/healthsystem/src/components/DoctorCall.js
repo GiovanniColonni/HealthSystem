@@ -242,7 +242,7 @@ const contentstyle = {
     paddingBottom: '20px',
     paddingTop: '20px'
   }, title: {
-    paddingBottom: '20px'
+    padding: '20px'
   }, measures: {
     width: '100%'
   }, center: {
@@ -276,13 +276,13 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
   return (
     <>
       {value === 0 && visible === true &&
-        <div>
-          <Typography h1 style={contentstyle.title}>Calendar</Typography>
+        <>
+          <Typography variant="h5" style={contentstyle.title}>Calendar</Typography>
           <BigCalendar user={doctor} defaultView="day"/>
-        </div>}
+        </>}
         {value === 1 && visible === true &&
-        <div>
-          <Typography h1 style={contentstyle.title}>Prescription</Typography>
+        <>
+          <Typography variant="h5" style={contentstyle.title}>Prescription</Typography>
           <div style={contentstyle.container}>
             <FileUpload
               accept=".jpg,.pdf"
@@ -319,19 +319,19 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
             </Row>
           </Column>
 
-        </div>}
+        </>}
         {value === 2 && visible === true &&
-        <div>
-          <Typography h1 style={contentstyle.title}>Measures</Typography>
+        <>
+          <Typography variant="h5" style={contentstyle.title}>Measures</Typography>
           <Row style={contentstyle.item}>
             <div style={contentstyle.measures}>
               <MeasureList />
             </div>
           </Row>
-        </div>}
+        </>}
         {value === 3 && visible === true &&
-        <div>
-          <Typography h1 style={contentstyle.title}>Patient's details</Typography>
+        <>
+          <Typography variant="h5" style={contentstyle.title}>Patient's details</Typography>
           <Row gap={5} p={2.5} style={contentstyle.item}>
             <Column>
                 <Image src={"/api/patient/doctorImage/"+patient.googleId} roundedCircle style={contentstyle.avatar} />
@@ -347,7 +347,7 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
           <Row>
             <PrescriptionList googleId={patient.googleId} />
           </Row>
-        </div>}
+        </>}
     </>
   )
 }
