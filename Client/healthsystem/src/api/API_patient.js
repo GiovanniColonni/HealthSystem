@@ -38,8 +38,7 @@ async function getPrescription(pathFileSystem){
     const file = await axios.get('/api/patient/prescription/'+pathFileSystem,{
         responseType: 'blob', // Important
         headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/pdf'
+            'Content-Type': 'application/json'
         }
     })
     .then((response) =>{ 

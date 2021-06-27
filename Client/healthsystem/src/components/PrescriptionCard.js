@@ -89,6 +89,20 @@ export function PrescriptionCardList({googleId}) {
     console.log("Changing selected prescription: ", prescription)
     setSelectedPrescription(prescription);
   };
+  const downloadPrescription = (pathFileSystem, date) =>{
+    API_patient.getPrescription(pathFileSystem)
+      .then((file) =>{
+        let url = window.URL.createObjectURL(file)
+        let a = document.createElement('a')
+        a.href = url;
+        a.download = pathFileSystem;
+        a.click();
+        a.remove() 
+      })
+      .catch((err) =>{
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
@@ -133,7 +147,9 @@ export function PrescriptionCardList({googleId}) {
     </Column>
     <Column style={liststyle.column}>
         {selectedPrescription !== undefined &&
-          <ObservationCard prescription={selectedPrescription} />}
+          <ObservationCard 
+            downloadPrescription={downloadPrescription}
+            prescription={selectedPrescription} />}
     </Column>
     </Row>
     </>
@@ -148,6 +164,26 @@ export function LittlePrescriptionList({googleId}) {
     console.log("Changing selected prescription: ", prescription)
     setSelectedPrescription(prescription);
   };
+
+  const downloadPrescription = (pathFileSystem, date) =>{
+    console.log("Download prescription: ", pathFileSystem)
+    API_patient.getPrescription(pathFileSystem)
+      .then((file) =>{
+        if (file !== undefined){
+          console.log("File: ", file)
+          let url = window.URL.createObjectURL(file)
+          console.log("URL: ", url)
+          let a = document.createElement('a')
+          a.href = url;
+          a.download = pathFileSystem;
+          a.click();
+          a.remove()
+        }
+      })
+      .catch((err) =>{
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
@@ -171,7 +207,9 @@ export function LittlePrescriptionList({googleId}) {
     <Column p={3} style={liststyle.container}>
       <Row>
         {selectedPrescription !== undefined &&
-            <ObservationCard prescription={selectedPrescription} />}
+            <ObservationCard 
+              downloadPrescription={downloadPrescription}
+              prescription={selectedPrescription} />}
         {!selectedPrescription &&
             <Typography>Select a prescription to see details</Typography>}
       </Row>
@@ -201,27 +239,8 @@ export function LittlePrescriptionList({googleId}) {
   );
 }
 
-function ObservationCard({prescription}) {
+function ObservationCard({prescription, downloadPrescription}) {
   const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  const downloadPrescription = (pathFileSystem, date) =>{
-    API_patient.getPrescription(pathFileSystem)
-      .then((file) =>{
-        let url = window.URL.createObjectURL(file)
-        let a = document.createElement('a')
-        a.href = url;
-        a.download = date+".pdf";
-        a.click();
-        a.remove() 
-      })
-      .catch((err) =>{
-        console.log(err)
-      })
-  }
 
   return (
     <>

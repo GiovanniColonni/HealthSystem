@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AsyncStorage, Button, StyleSheet, Text, View,Image } from 'react-native';
 import * as Google from 'expo-google-app-auth';
-
 import UserContext from "../contexts/UserContext"
-
-
-import Constants from 'expo-constants';
 import Api from "../api/Api"
 
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -20,12 +16,7 @@ export default function Login({navigation}) {
   let [email,setEmail] = useState()
   let userState = useContext(UserContext)
 
-  let resetAction = StackActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: 'Home' })],
-  });
-
-
+  const img = require('../assets/greenCross.png')
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -96,10 +87,7 @@ export default function Login({navigation}) {
             })
           
           if(resp){
-            navigation.navigate("Home")
-            //navigation.dispatch(() => resetAction);
-            //navigation.reset({index:0,routes:[{name:"Home"}]})
-            
+            navigation.push("Home")
           }
         })
         .catch((e) => {
@@ -112,7 +100,7 @@ export default function Login({navigation}) {
 
   }, [googleId]);
 
-  const img = require('../assets/greenCross.png')
+  
   
   return (
     <View style={styles.container}>
