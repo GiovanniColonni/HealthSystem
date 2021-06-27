@@ -6,15 +6,18 @@ import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
 import PrescriptionList from './PrescriptionCard';
+import Typography from '@material-ui/core/Typography';
 
 var detailsstyle = {
     container: {
         width: '80%',
         marginLeft: 'auto',
         marginRight: 'auto'
-    }, center: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
+    }, titles: {
+        margin: 'auto',
+        fontSize: '30px',
+        fontStyle: 'italic',
+        color: '#616161'
     }, avatar: {
         maxHeight: "150px",
         maxWidth: "150px"
@@ -85,7 +88,7 @@ export default function PatientDetails(props) {
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Patient Details</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Patient Details</Typography>
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
@@ -117,7 +120,7 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Sensor Details</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Sensor Details</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
@@ -127,7 +130,7 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Appointment List</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Appointment List</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                     <PrescriptionList googleId={history.location.state.patient.googleId} />

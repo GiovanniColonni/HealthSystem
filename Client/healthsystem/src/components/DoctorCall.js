@@ -242,7 +242,10 @@ const contentstyle = {
     paddingBottom: '20px',
     paddingTop: '20px'
   }, title: {
-    padding: '20px'
+    padding: '20px',
+    margin: 'auto',
+    fontStyle: 'italic',
+    color: '#616161'
   }, measures: {
     width: '100%'
   }, center: {

@@ -5,6 +5,7 @@ import Patient from '../classes/Patient';
 import BigCalendar from './BigCalendar';
 import Button from '@material-ui/core/Button';
 import { Row } from '@mui-treasury/components/flex';
+import Typography from '@material-ui/core/Typography';
 
 var homestyle = {
     btnCreate: {
@@ -17,6 +18,12 @@ var homestyle = {
         marginRight: "auto",
         width: "80%",
 
+    }, 
+    titles: {
+        margin: 'auto',
+        fontSize: '30px',
+        fontStyle: 'italic',
+        color: '#616161'
     }
 }
 
@@ -53,7 +60,7 @@ export default function Home({user}){
 
     return(
         <>
-            <h1>My Appointments</h1>
+            <Typography variant="h5" style={homestyle.titles}>My Appointments</Typography>
             {user.userType === 'Patient' &&
                 <Row gap={2} p={2.5}>
                     <Button

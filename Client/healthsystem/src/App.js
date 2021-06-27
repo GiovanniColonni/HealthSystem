@@ -82,21 +82,6 @@ function App() {
             <PatientDetails />
           </Route>
 
-          {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
-          <Route exact path={"/patient/sensor"}>
-            <div>
-              <NavigationBar user={user} logout={handleLogout}/>
-              <h1>Sensor Details of Patient XXX</h1>
-            </div>
-          </Route>
-
-          {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
-          <Route exact path={"/patient/appointment"}>
-            <div>
-              <NavigationBar user={user} logout={handleLogout}/>
-              <h1>Appointement Details of Patient XXX, Date XXX</h1>
-            </div>
-          </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
               <NavigationBar user={user} logout={handleLogout}/>
@@ -108,8 +93,7 @@ function App() {
           <Route exact path={"/prescriptionList"}>
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
-              <h1>My Prescriptions</h1>
-              <PrescriptionList googleId={user.googleId}/>
+              <PrescriptionList googleId={user.googleId} title={true}/>
             </div>
           </Route>
 

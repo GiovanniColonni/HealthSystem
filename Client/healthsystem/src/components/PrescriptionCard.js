@@ -34,18 +34,16 @@ var cardstyle = {
         marginTop: 'auto', 
         marginBottom: 'auto',
         marginLeft: 'auto'
-    }, border: {
-        /*borderStyle: "solid",
-        borderWidth: "1px",
-        borderColor: "#BEBEBE",
-        borderRadius: "5px",*/
-        padding: "5px",
+    }, titles: {
+        margin: 'auto',
+        fontSize: '30px',
+        fontStyle: 'italic',
+        color: '#616161'
     }
 }
   
 function PrescriptionCard({prescription, downloadPrescription}) {
 
-  const classes = useStyles();
   const [doctor, setDoctor] = useState({})
 
   useEffect(() => {
@@ -85,7 +83,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PrescriptionList({googleId}) {
+export default function PrescriptionList({googleId, title}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState();
   const [prescriptionList, setPrescriptionList] = useState([]);
@@ -130,6 +128,9 @@ export default function PrescriptionList({googleId}) {
   }, [googleId]);
 
   return (
+    <>
+    {title === true &&
+      <Typography variant="h5" style={cardstyle.titles}></Typography>}
     <div className={classes.root}>
           {prescriptionList.length > 0 &&
               prescriptionList.map((prescription, index) => (
@@ -162,5 +163,6 @@ export default function PrescriptionList({googleId}) {
               ))
             }
     </div>
+    </>
   );
 }
