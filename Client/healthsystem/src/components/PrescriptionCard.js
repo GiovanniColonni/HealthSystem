@@ -7,13 +7,12 @@ import API_doctor from '../api/API_doctor';
 import moment from 'moment';
 import { Typography } from '@material-ui/core';
 
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { CardHeader } from '@material-ui/core';
 import { FcFinePrint } from 'react-icons/fc';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 var cardstyle = { 
     title: {
@@ -24,31 +23,33 @@ var cardstyle = {
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
-        textAlign: 'left',
+        margin: 'auto'
     }, caption: {
         fontFamily: "Lato",
         fontSize: '0.875rem',
         color: '#758392',
-        marginTop: -4,
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
-        textAlign: 'left',
+        marginTop: 'auto', 
+        marginBottom: 'auto',
+        marginLeft: 'auto'
     }, border: {
-        borderStyle: "solid",
+        /*borderStyle: "solid",
         borderWidth: "1px",
         borderColor: "#BEBEBE",
-        borderRadius: "5px",
+        borderRadius: "5px",*/
         padding: "5px",
     }
 }
   
-export function PrescriptionCard(props) {
+function PrescriptionCard({prescription, downloadPrescription}) {
 
+  const classes = useStyles();
   const [doctor, setDoctor] = useState({})
 
   useEffect(() => {
-    API_doctor.getDoctor(props.doctorId)
+    API_doctor.getDoctor(prescription.doctorId)
     .then((doctor) =>{
       if (doctor !== undefined) {
         setDoctor(doctor)
@@ -57,41 +58,48 @@ export function PrescriptionCard(props) {
     .catch((err) =>{
       console.log(err)
     })
-  }, [props.doctorId])
+  }, [prescription.doctorId])
 
   return (
-    <Row gap={2} p={2.5} style={cardstyle.border}>
-      <Item grow minWidth={0}>
-        <div style={cardstyle.title}>{props.title}</div>
-        <div style={cardstyle.caption}>
-          {"Doct. " + doctor.name + " " + doctor.surname}
-        </div>
-      </Item>
-    </Row>
+    <>
+    <AccordionSummary style={{zIndex: '1'}}>
+    <IconButton style={{zIndex: '3'}}>
+      <FaFileDownload style={{color: "#77D353"}} size={40}
+        onFocus={(event) => event.stopPropagation()}
+        onClick={(event) => downloadPrescription(event, prescription.pathFileSystem)} />
+    </IconButton>
+    <Typography style={{marginTop: 'auto', marginBottom: 'auto'}}>{prescription.date}</Typography>
+    <Typography style={cardstyle.caption}>
+      {"Doct. " + doctor.name + " " + doctor.surname}
+    </Typography>
+  </AccordionSummary>
+  </>
   );
 }
 
-var liststyle = { 
-  container: {
-    //width: '90%',
-    //margin: 'auto'
-  }, column: {
-    //width: '40%',
-    //margin: 'auto'
-}, 
-}
+const useStyles = makeStyles({
+  root: {
+    width: '80%',
+    whiteSpace: 'normal',
+    margin: 'auto'
+  },
+});
 
-export function PrescriptionCardList({googleId}) {
+export default function PrescriptionList({googleId}) {
+  const classes = useStyles();
+  const [expanded, setExpanded] = useState();
   const [prescriptionList, setPrescriptionList] = useState([]);
-  const [selectedPrescription, setSelectedPrescription] = useState();
+  const [donwloadProcess, setDownloadProcess] = useState(false)
 
-  const handlePrescription = (event, prescription) => {
-    console.log("Changing selected prescription: ", prescription)
-    setSelectedPrescription(prescription);
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
   };
-  const downloadPrescription = (pathFileSystem, date) =>{
+
+  const downloadPrescription = (event, pathFileSystem) => {
+    event.stopPropagation()
     API_patient.getPrescription(pathFileSystem)
       .then((file) =>{
+        setDownloadProcess(false)
         let url = window.URL.createObjectURL(file)
         let a = document.createElement('a')
         a.href = url;
@@ -122,145 +130,37 @@ export function PrescriptionCardList({googleId}) {
   }, [googleId]);
 
   return (
-    <>
-    <Row p={3} style={liststyle.container}>
-    <Column style={liststyle.column}>
-          <ToggleButtonGroup
-            orientation="vertical"
-            value={selectedPrescription}
-            exclusive
-            onChange={handlePrescription}
-            aria-label="text alignment"
-          >
-            {prescriptionList.length > 0 &&
-              prescriptionList.map((prescription) => (
-                    <ToggleButton value={prescription}>
-                        <PrescriptionCard 
-                          title={prescription.date} doctorId={prescription.doctorId}
-                        />
-                    </ToggleButton>
+    <div className={classes.root}>
+          {prescriptionList.length > 0 &&
+              prescriptionList.map((prescription, index) => (
+                <>
+                <Accordion rounded expanded={expanded === index} 
+                  onChange={donwloadProcess? "" : handleChange(index)}>
+                  <PrescriptionCard 
+                    index={index}
+                    prescription={prescription}
+                    downloadPrescription={downloadPrescription} />
+                  <AccordionDetails>
+                    <Column style={{margin: 'auto'}}>
+                      <Row style={{margin: 'auto', paddingBottom: '10px'}}>
+                        <Item>
+                          <FcFinePrint size={35}/>
+                        </Item>
+                          <Typography style={cardstyle.title}>
+                            Related Observations
+                          </Typography>
+                      </Row>
+                      <Row style={{margin: 'auto'}}>
+                        <Typography variant="body2">
+                          {prescription.notePrescription}
+                        </Typography>
+                      </Row>
+                    </Column>
+                  </AccordionDetails>
+                </Accordion>
+                </>
               ))
             }
-          </ToggleButtonGroup>
-      {prescriptionList.length === 0 &&
-        <Typography align="center" variant="h6">No Prescriptions</Typography>}
-    </Column>
-    <Column style={liststyle.column}>
-        {selectedPrescription !== undefined &&
-          <ObservationCard 
-            downloadPrescription={downloadPrescription}
-            prescription={selectedPrescription} />}
-    </Column>
-    </Row>
-    </>
+    </div>
   );
-}
-
-export function LittlePrescriptionList({googleId}) {
-  const [prescriptionList, setPrescriptionList] = useState([]);
-  const [selectedPrescription, setSelectedPrescription] = useState();
-
-  const handlePrescription = (event, prescription) => {
-    console.log("Changing selected prescription: ", prescription)
-    setSelectedPrescription(prescription);
-  };
-
-  const downloadPrescription = (pathFileSystem, date) =>{
-    console.log("Download prescription: ", pathFileSystem)
-    API_patient.getPrescription(pathFileSystem)
-      .then((file) =>{
-        if (file !== undefined){
-          console.log("File: ", file)
-          let url = window.URL.createObjectURL(file)
-          console.log("URL: ", url)
-          let a = document.createElement('a')
-          a.href = url;
-          a.download = pathFileSystem;
-          a.click();
-          a.remove()
-        }
-      })
-      .catch((err) =>{
-        console.log(err)
-      })
-  }
-
-  useEffect(() => {
-    // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if(googleId !== undefined){
-      API_patient.getAllPrescriptions(googleId)
-        .then((prescription) =>{
-          prescription.sort(function (left, right) {
-            return moment.utc(right.date).diff(moment.utc(left.date))
-          });
-          setPrescriptionList(prescription)
-        })
-        .catch((err) =>{
-          setPrescriptionList([])
-          console.log(err)
-        })
-    }
-  }, [googleId]);
-
-  return (
-    <>
-    <Column p={3} style={liststyle.container}>
-      <Row>
-        {selectedPrescription !== undefined &&
-            <ObservationCard 
-              downloadPrescription={downloadPrescription}
-              prescription={selectedPrescription} />}
-        {!selectedPrescription &&
-            <Typography>Select a prescription to see details</Typography>}
-      </Row>
-      <Row>
-        <ToggleButtonGroup
-          orientation="vertical"
-          value={selectedPrescription}
-          exclusive
-          onChange={handlePrescription}
-          aria-label="text alignment"
-        >
-          {prescriptionList.length > 0 &&
-            prescriptionList.map((prescription) => (
-                  <ToggleButton value={prescription}>
-                      <PrescriptionCard 
-                        title={prescription.date} doctorId={prescription.doctorId}
-                      />
-                  </ToggleButton>
-            ))
-          }
-        </ToggleButtonGroup>
-        {prescriptionList.length === 0 &&
-          <Typography align="center" variant="h6">No Prescriptions</Typography>}
-      </Row>
-    </Column>
-    </>
-  );
-}
-
-function ObservationCard({prescription, downloadPrescription}) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  return (
-    <>
-    {prescription && <Card variant="outlined">
-      <CardHeader
-        avatar={
-          <FcFinePrint size={30}/>
-        }
-        title={"Prescription of " + prescription.date}
-        subheader="Related Observations"
-        action={
-          <IconButton >
-            <FaFileDownload onClick={() => downloadPrescription(prescription.pathFileSystem, prescription.title)} />
-          </IconButton>
-        }
-      />
-      <CardContent>
-        {prescription.notePrescription}
-      </CardContent>
-    </Card>}
-    </>
-  )
 }

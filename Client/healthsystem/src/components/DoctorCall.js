@@ -15,7 +15,7 @@ import { FcAbout, FcComboChart, FcDocument, FcPlanner } from 'react-icons/fc';
 import IframeJitsi from './IframeJitsi';
 import BigCalendar from './BigCalendar';
 import TextField from '@material-ui/core/TextField';
-import { Row, Column } from '@mui-treasury/components/flex';
+import { Row, Column, Item } from '@mui-treasury/components/flex';
 import MeasureList from './MeasureList';
 import FileUpload from './FileUpload.jsx';
 import API_doctor from '../api/API_doctor';
@@ -23,8 +23,9 @@ import API from '../api/API';
 import { useHistory } from 'react-router-dom';
 import { AppointmentList } from './AppointmentCard';
 import moment from 'moment';
-import { LittlePrescriptionList } from './PrescriptionCard';
+import PrescriptionList from './PrescriptionCard';
 import API_patient from '../api/API_patient';
+import Image from 'react-bootstrap/Image';
 
 
 const drawerWidth = '50%';
@@ -213,13 +214,13 @@ export default function DoctorCall({user}) {
                 </ListItem>
             ))}
             </List>
-              <List style={menustyle.content}>
+              <div style={menustyle.content}>
                 <Content 
                     value={content} doctor={user} visible={open} 
                     updateUploadedFiles={(files) => updateUploadedFiles(files)} passedEvents={passedEvents} 
                     uploadPrescription={(patientId) => uploadPrescription(patientId)} 
                     updateObservation={(observation) => updateObservation(observation)} />
-              </List>
+              </div>
             </div>
         </Drawer>
         
@@ -244,10 +245,33 @@ const contentstyle = {
     paddingBottom: '20px'
   }, measures: {
     width: '100%'
+  }, center: {
+    margin: 'auto'
+  }, avatar: {
+      maxHeight: "75px",
+      maxWidth: "75px"
+  }, name: {
+      fontFamily: "Lato",
+      fontWeight: 600,
+      fontSize: '1rem',
+      color: '#122740',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      textAlign: 'left',
   }
 }
 function Content({value, visible, doctor, updateUploadedFiles, uploadPrescription, updateObservation}) {
   const history = useHistory()
+  const [patient, setPatient] = useState({})
+
+  useEffect(() => {
+    API_patient.getPatient(history.location.state.patient.googleId)
+    .then((patient) => {
+      if (patient) {
+        setPatient(patient)
+      }
+    })
+  }, [history.location.state.patient.googleId])
 
   return (
     <>
@@ -287,7 +311,7 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
                   color="secondary"
                   style={menustyle.okbutton}
                   fullWidth
-                  onClick={() => uploadPrescription(history.location.state.patient.googleId)}
+                  onClick={() => uploadPrescription(patient.googleId)}
                   disabled={false}
               >
                   Save Prescription and Notes
@@ -308,11 +332,20 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
         {value === 3 && visible === true &&
         <div>
           <Typography h1 style={contentstyle.title}>Patient's details</Typography>
-          <Row>
-            here's the details
+          <Row gap={5} p={2.5} style={contentstyle.item}>
+            <Column>
+                <Image src={"/api/patient/doctorImage/"+patient.googleId} roundedCircle style={contentstyle.avatar} />
+            </Column>
+            <Column>
+                <Item>
+                    <div style={contentstyle.name}>
+                        {patient.name + " " + patient.surname }
+                    </div>
+                </Item>
+            </Column>
           </Row>
           <Row>
-            <LittlePrescriptionList googleId={history.location.state.patient.googleId} />
+            <PrescriptionList googleId={patient.googleId} />
           </Row>
         </div>}
     </>

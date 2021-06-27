@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
-import { PrescriptionCardList } from './PrescriptionCard';
+import PrescriptionList from './PrescriptionCard';
 
 var detailsstyle = {
     container: {
@@ -130,11 +130,7 @@ export default function PatientDetails(props) {
                 <h1 style={detailsstyle.center}>Appointment List</h1>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
-                <Column style={detailsstyle.appointmentlist}>
-                    <PrescriptionCardList user={history.location.state.patient} />
-                </Column>
-                <Column style={detailsstyle.appointmentlist}>
-                </Column>
+                    <PrescriptionList googleId={history.location.state.patient.googleId} />
             </Row>
         </div>
     );

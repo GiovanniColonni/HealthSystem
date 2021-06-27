@@ -12,7 +12,7 @@ import FirstAccess from "./components/FirstAccess";
 import PatientDetails from "./components/PatientDetails";
 import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
-import { PrescriptionCardList } from './components/PrescriptionCard';
+import PrescriptionList from './components/PrescriptionCard';
 import Home from './components/Home';
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor";
@@ -109,7 +109,7 @@ function App() {
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList googleId={user.googleId}/>
+              <PrescriptionList googleId={user.googleId}/>
             </div>
           </Route>
 
