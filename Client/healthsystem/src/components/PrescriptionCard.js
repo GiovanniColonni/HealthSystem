@@ -130,7 +130,7 @@ export default function PrescriptionList({googleId, title}) {
   return (
     <>
     {title === true &&
-      <Typography variant="h5" style={cardstyle.titles}></Typography>}
+      <Typography variant="h5" style={cardstyle.titles}>My Prescription List</Typography>}
     <div className={classes.root}>
           {prescriptionList.length > 0 &&
               prescriptionList.map((prescription, index) => (
