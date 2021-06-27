@@ -109,7 +109,7 @@ function App() {
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
               <h1>My Prescriptions</h1>
-              <PrescriptionCardList user={user}/>
+              <PrescriptionCardList googleId={user.googleId}/>
             </div>
           </Route>
 

@@ -87,7 +87,7 @@ var liststyle = {
 }, 
 }
 
-export function PrescriptionCardList({user}) {
+export function PrescriptionCardList({googleId}) {
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [selectedPrescription, setSelectedPrescription] = useState();
 
@@ -98,8 +98,8 @@ export function PrescriptionCardList({user}) {
 
   useEffect(() => {
     // REMEMBER to change the doctorId=6; retrieve it from cookies
-    if(user.googleId !== undefined){
-      API_patient.getAllPrescriptions(user.googleId)
+    if(googleId !== undefined){
+      API_patient.getAllPrescriptions(googleId)
         .then((prescription) =>{
           prescription.sort(function (left, right) {
             return moment.utc(right.date).diff(moment.utc(left.date))
@@ -111,7 +111,7 @@ export function PrescriptionCardList({user}) {
           console.log(err)
         })
     }
-  }, [user.googleId]);
+  }, [googleId]);
 
   return (
     <>

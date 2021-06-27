@@ -23,6 +23,8 @@ import API from '../api/API';
 import { useHistory } from 'react-router-dom';
 import { AppointmentList } from './AppointmentCard';
 import moment from 'moment';
+import { PrescriptionCardList } from './PrescriptionCard';
+import API_patient from '../api/API_patient';
 
 
 const drawerWidth = '50%';
@@ -142,7 +144,11 @@ export default function DoctorCall({user}) {
 
   const uploadPrescription = (patientId) =>{
     //use history here
-    API_doctor.uploadPrescription(patientId,prescription)
+    console.log("UPLOAD PRESCRIPTION")
+    console.log("PatientId", patientId)
+    console.log("DoctorId", user.googleId)
+    console.log("Prescription", prescription)
+    API_doctor.uploadPrescription(patientId, prescription, user.googleId)
       .then((resp) =>
         alert("remove this alert")
       )
@@ -240,8 +246,9 @@ const contentstyle = {
     width: '100%'
   }
 }
-function Content({value, visible, doctor, updateUploadedFiles, passedEvents, uploadPrescription, updateObservation}) {
+function Content({value, visible, doctor, updateUploadedFiles, uploadPrescription, updateObservation}) {
   const history = useHistory()
+
   return (
     <>
       {value === 0 && visible === true &&
@@ -280,7 +287,7 @@ function Content({value, visible, doctor, updateUploadedFiles, passedEvents, upl
                   color="secondary"
                   style={menustyle.okbutton}
                   fullWidth
-                  onClick={() => uploadPrescription(history.location.state.patientId)}
+                  onClick={() => uploadPrescription(history.location.state.patient.googleId)}
                   disabled={false}
               >
                   Save Prescription and Notes
@@ -305,9 +312,7 @@ function Content({value, visible, doctor, updateUploadedFiles, passedEvents, upl
             here's the details
           </Row>
           <Row>
-            <AppointmentList events={passedEvents} 
-              isBooking={false} isClickable={true}
-              doctorName={doctor.name} doctorSurname={doctor.surname} />
+            <PrescriptionCardList googleId={history.location.state.patient.googleId} />
           </Row>
         </div>}
     </>

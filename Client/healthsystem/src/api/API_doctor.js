@@ -64,13 +64,14 @@ async function getPatientList(doctorId){
     .catch((err) => console.log(err))
 }
 
-async function uploadPrescription(patientId, prescription){
+async function uploadPrescription(patientId, prescription, doctorId){
     let formData = new FormData()
     formData.set("patientId",patientId)
     formData.set("pathFileSystem",prescription.file.name)
     formData.set("notePrescription",prescription.observation)
     formData.set("date",moment().format('MM/DD/YYYY'))
     formData.set("file",prescription.file)
+    formData.set("doctorId",doctorId)
     return await axios({
         method: "post",
         url: "/api/doctor/prescription",
