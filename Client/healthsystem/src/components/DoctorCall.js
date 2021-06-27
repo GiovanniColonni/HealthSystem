@@ -23,7 +23,7 @@ import API from '../api/API';
 import { useHistory } from 'react-router-dom';
 import { AppointmentList } from './AppointmentCard';
 import moment from 'moment';
-import { PrescriptionCardList } from './PrescriptionCard';
+import { LittlePrescriptionList } from './PrescriptionCard';
 import API_patient from '../api/API_patient';
 
 
@@ -312,7 +312,7 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
             here's the details
           </Row>
           <Row>
-            <PrescriptionCardList googleId={history.location.state.patient.googleId} />
+            <LittlePrescriptionList googleId={history.location.state.patient.googleId} />
           </Row>
         </div>}
     </>

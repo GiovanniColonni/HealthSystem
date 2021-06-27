@@ -4,22 +4,16 @@ import { FaFileDownload } from 'react-icons/fa';
 import IconButton from '@material-ui/core/IconButton';
 import API_patient from '../api/API_patient';
 import API_doctor from '../api/API_doctor';
-import Doctor from '../classes/Doctor';
 import moment from 'moment';
 import { Typography } from '@material-ui/core';
 
-import API from '../api/API';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import { CardHeader } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import { FcFinePrint } from 'react-icons/fc';
-import Divider from '@material-ui/core/Divider';
 
 var cardstyle = { 
     title: {
@@ -79,11 +73,11 @@ export function PrescriptionCard(props) {
 
 var liststyle = { 
   container: {
-    width: '90%',
-    margin: 'auto'
+    //width: '90%',
+    //margin: 'auto'
   }, column: {
-    width: '40%',
-    margin: 'auto'
+    //width: '40%',
+    //margin: 'auto'
 }, 
 }
 
@@ -146,6 +140,66 @@ export function PrescriptionCardList({googleId}) {
   );
 }
 
+export function LittlePrescriptionList({googleId}) {
+  const [prescriptionList, setPrescriptionList] = useState([]);
+  const [selectedPrescription, setSelectedPrescription] = useState();
+
+  const handlePrescription = (event, prescription) => {
+    console.log("Changing selected prescription: ", prescription)
+    setSelectedPrescription(prescription);
+  };
+
+  useEffect(() => {
+    // REMEMBER to change the doctorId=6; retrieve it from cookies
+    if(googleId !== undefined){
+      API_patient.getAllPrescriptions(googleId)
+        .then((prescription) =>{
+          prescription.sort(function (left, right) {
+            return moment.utc(right.date).diff(moment.utc(left.date))
+          });
+          setPrescriptionList(prescription)
+        })
+        .catch((err) =>{
+          setPrescriptionList([])
+          console.log(err)
+        })
+    }
+  }, [googleId]);
+
+  return (
+    <>
+    <Column p={3} style={liststyle.container}>
+      <Row>
+        {selectedPrescription !== undefined &&
+            <ObservationCard prescription={selectedPrescription} />}
+        {!selectedPrescription &&
+            <Typography>Select a prescription to see details</Typography>}
+      </Row>
+      <Row>
+        <ToggleButtonGroup
+          orientation="vertical"
+          value={selectedPrescription}
+          exclusive
+          onChange={handlePrescription}
+          aria-label="text alignment"
+        >
+          {prescriptionList.length > 0 &&
+            prescriptionList.map((prescription) => (
+                  <ToggleButton value={prescription}>
+                      <PrescriptionCard 
+                        title={prescription.date} doctorId={prescription.doctorId}
+                      />
+                  </ToggleButton>
+            ))
+          }
+        </ToggleButtonGroup>
+        {prescriptionList.length === 0 &&
+          <Typography align="center" variant="h6">No Prescriptions</Typography>}
+      </Row>
+    </Column>
+    </>
+  );
+}
 
 function ObservationCard({prescription}) {
   const [expanded, setExpanded] = React.useState(false);
@@ -170,7 +224,8 @@ function ObservationCard({prescription}) {
   }
 
   return (
-    <Card variant="outlined">
+    <>
+    {prescription && <Card variant="outlined">
       <CardHeader
         avatar={
           <FcFinePrint size={30}/>
@@ -186,6 +241,7 @@ function ObservationCard({prescription}) {
       <CardContent>
         {prescription.notePrescription}
       </CardContent>
-    </Card>
+    </Card>}
+    </>
   )
 }
