@@ -68,7 +68,7 @@ function App() {
           </Route>
           <Route exact path={"/home"}>
             <NavigationBar user={user} logout={handleLogout}/>
-            <Home/>
+            <Home user={user} />
           </Route>
           <Route exact path="/measure">
             <NavigationBar user={user} logout={handleLogout}/>
