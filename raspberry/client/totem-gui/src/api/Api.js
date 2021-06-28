@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from 'moment';
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -48,6 +49,38 @@ async function logout(){
         return false
     }catch(e){
         return false
+    }
+}
+
+async function getEvents(id,type){
+    if(type === 'Doctor'){
+        const events = await axios.get('/api/doctor/event',{
+            params:{
+                doctorId: id
+            }
+        })
+        .then((response) =>{ 
+            let events = []
+            response.data.forEach(element => {
+            events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL, element.doctorId, element.patientId))
+            });
+            return events
+        })
+        .catch((err) => console.log("error"))
+        return events
+        //tornare i dati 
+    }else if(type === 'Patient'){
+        const events = await axios.get('/api/patient/event/'+id,{
+        })
+        .then((response) =>{ 
+            let events = []
+            response.data.forEach(element => {
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL, element.doctorId, element.patientId))
+            });
+            return events
+        })
+        .catch((err) => console.log(err))
+        return events
     }
 }
 
@@ -113,5 +146,5 @@ async function getMeasure(){
 
 }
 
-let Api = {login,logout,isAuthenticated,startMeasure,getMeasure,postMeasure}
+let Api = {login,logout,isAuthenticated,getEvents,startMeasure,getMeasure,postMeasure}
 export default Api;
