@@ -12,6 +12,7 @@ import Home from "./components/Home"
 import NavigationBar from './components/NavigationBar';
 
 import axios from "axios"
+import PrescriptionList from './components/PrescriptionCard';
 
 
 function App() {
@@ -76,7 +77,7 @@ function App() {
           <Route exact path={"/prescriptionList"}>
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
-              <h1>My Prescriptions</h1>
+              <PrescriptionList googleId={user.googleId} />
               
             </div>
           </Route>
