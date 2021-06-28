@@ -29,15 +29,16 @@ var homestyle = {
         fontStyle: 'italic',
         color: '#616161'
     },
-    todayList: {
-        width: '40%',
-        minWidth: '280px',
-        marginLeft: 'auto', 
-        marginRight: 'auto',
+    border: {
         borderStyle: 'solid',
         borderRadius: '5px',
         borderWidth: '1px',
-        borderColor: '#bdbdbd'
+        borderColor: '#bdbdbd',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        paddingLeft: '28px',
+        paddingRight: '28px',
+        paddingBottom: '28px'
     }
 }
 
@@ -111,12 +112,14 @@ export default function Home({user}){
                         <PassedAppointmentList user={user} />
                     </div>
                 </Column>
-                <Column style={homestyle.todayList}>
+                <Column>
+                    <div style={homestyle.border}>
                     <Item>
                         <Typography variant="h5" style={homestyle.titles}>Today</Typography></Item>
                     <Item style={{marginLeft: 'auto', marginRight: 'auto'}}>
                         <TodayAppointmentList user={user} />
                     </Item>
+                    </div>
                 </Column>
             </Row></>}
         </>
