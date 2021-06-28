@@ -124,7 +124,7 @@ export default function PatientDetails(props) {
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
-                    <MeasureList />
+                    <MeasureList googleId={history.location.state.patient.googleId} />
                 </div>
                 
             </Row>

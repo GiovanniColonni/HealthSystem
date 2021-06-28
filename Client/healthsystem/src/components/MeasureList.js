@@ -15,7 +15,7 @@ import HeartIcon from '../icons/HeartBeatingIcon.png';
 import BldIcon from '../icons/BloodPressureIcon.png';
 import { Row, Column } from '@mui-treasury/components/flex';
 import API_patient from '../api/API_patient';
-import { useHistory } from 'react-router';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -50,7 +50,6 @@ function MeasureCard({image, data, name}) {
       <CardMedia
         className={classes.media}
         image={image}
-        title="Oxugen Percentage"
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -74,15 +73,13 @@ function MeasureCard({image, data, name}) {
             {data !== undefined && data.length > 0 &&
                 data.map(measure => (
                 <Row>
-                  <Typography>{measure.date}: </Typography>
+                  <Typography>{moment(measure.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}: </Typography>
                   <Row style={{margin: 'auto'}}>
                     <Typography color="secondary">{measure.value}</Typography>
                   </Row>
                 </Row>
             )) }
-            {data === undefined &&
-                <Typography paragraph>No Data Available</Typography>}
-            {data.length === 0 &&
+            {(data === undefined || data.length === 0) &&
                 <Typography paragraph>No Data Available</Typography>}
         </CardContent>
       </Collapse>
@@ -90,18 +87,16 @@ function MeasureCard({image, data, name}) {
   );
 }
 
-export default function MeasureList() {
-
-    const history = useHistory()
+export default function MeasureList({googleId}) {
 
     const [heartMeasures, setHeartMeasures] = useState({})
     const [oxyMeasures, setOxyMeasures] = useState({})
     const [bldMeasures, setBldMeasures] = useState({})
 
     useEffect(() => {
-        console.log("Google id of patient:" , history.location.state.patient.googleId)
-        if (history.location.state.patient.googleId !== undefined) {
-        API_patient.getAllMeasures(history.location.state.patient.googleId)
+        console.log("Google id of patient:" , googleId)
+        if (googleId !== undefined) {
+        API_patient.getAllMeasures(googleId)
             .then((measures) =>{
                 console.log("Some measures: ", measures)
                 const listHeart = []
@@ -121,10 +116,21 @@ export default function MeasureList() {
                         console.log("Unrecognised measure: ", measure)
                     }
                 }
+                listHeart.sort(function (left, right) {
+                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                })
                 setHeartMeasures(listHeart)
                 console.log("Heart list updated: ", heartMeasures)
+
+                listOxy.sort(function (left, right) {
+                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                })
                 setOxyMeasures(listOxy)
                 console.log("Oxy list updated: ", oxyMeasures)
+
+                listBld.sort(function (left, right) {
+                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                })
                 setBldMeasures(listBld)
                 console.log("Bld list updated: ", bldMeasures)
             })
@@ -132,7 +138,7 @@ export default function MeasureList() {
                 console.log(err)
             })
         }
-    },[]);
+    },[googleId]);
 
     return (
         <>

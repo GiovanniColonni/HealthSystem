@@ -102,8 +102,11 @@ export default function NavigationBar({user,logout}) {
                 <Nav.Link href="/home">My Appointments</Nav.Link>
                 {user.userType === 'Doctor' && 
                     <Nav.Link href="/patientList">My Patient list</Nav.Link>}
-                {user.userType === 'Patient' && 
-                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
+                {user.userType === 'Patient' &&
+                    <>
+                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>
+                    <Nav.Link href="/measureList">My Measures</Nav.Link>
+                    </>}
                 </Nav>
                 <Nav>
                     {user.userType === 'Doctor' &&

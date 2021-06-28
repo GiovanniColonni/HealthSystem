@@ -20,6 +20,8 @@ import NewAppointment from "./components/NewAppointment";
 import PatientList from './components/PatientList';
 import PatientCall from './components/PatientCall';
 import DoctorCall from './components/DoctorCall';
+import MeasureList from './components/MeasureList';
+import { Typography } from '@material-ui/core';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -94,6 +96,18 @@ function App() {
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
               <PrescriptionList googleId={user.googleId} title={true}/>
+            </div>
+          </Route>
+
+          {/* Only accessible for patient users */}
+          <Route exact path={"/measureList"}>
+            <NavigationBar user={user} logout={handleLogout}/>
+            <div style={{width: '65%', margin: 'auto'}}>
+              <Typography variant="h5" 
+                style={{fontSize: '30px', fontStyle: 'italic', color: '#616161', marginBottom: '30px'}}>
+                  My Measures
+              </Typography>
+              <MeasureList googleId={user.googleId} />
             </div>
           </Route>
 
