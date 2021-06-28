@@ -9,6 +9,7 @@ import API from '../api/API';
 
 import Card from 'react-bootstrap/Card';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useHistory } from 'react-router-dom';
 
 var styles = { 
     title: {
@@ -48,14 +49,19 @@ var styles = {
 
 function MeetingCard({appointment, isPassed}) {
   const [disableButton,setDisableButton] = useState(true)
+  const history = useHistory()
 
   useEffect( () => {
-    const initialDifference = moment(appointment.start).diff(moment(),'minutes')
-    const endDifference = moment().diff(appointment.end,'minutes')
-    if(initialDifference < 15 && endDifference <= 0){
-        setDisableButton(false)
-    }
-},[disableButton, appointment.start, appointment.end])
+      const initialDifference = moment(appointment.start).diff(moment(),'minutes')
+      const endDifference = moment().diff(appointment.end,'minutes')
+      if(initialDifference < 15 && endDifference <= 0){
+          setDisableButton(false)
+      }
+  },[disableButton, appointment.start, appointment.end])
+
+  const handleAppointment = () => {
+        history.push({pathname: '/patient/meeting', state:{URL: appointment.conference}})
+  }
 
   return (
     <>
@@ -71,17 +77,13 @@ function MeetingCard({appointment, isPassed}) {
             <Tooltip title="Available 15 minutes before the beginning" >
               <span>
               <Button variant="contained" color="primary"
-                  disabled={disableButton}
-                  //onClick={() => handleAppointment()}
-              >
+                  disabled>
                   Join Appointment
               </Button></span>
             </Tooltip>}
             {isPassed === false && disableButton === false &&
               <Button variant="contained" color="primary" style={styles.btnJoin}
-                  disabled={disableButton}
-                  //onClick={() => handleAppointment()}
-              >
+                  onClick={() => handleAppointment()}>
                   Join Appointment
               </Button>}
         </Card.Body>
