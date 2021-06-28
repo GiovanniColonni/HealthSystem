@@ -91,16 +91,16 @@ export default function Home({user}){
                             </Button>
                         </Item>
                     </Row>
-                    <Row style={{marginLeft: '50px'}}>
+                    <div style={{marginLeft: '50px'}}>
                         <FutureAppointmentList user={user} />
-                    </Row>
+                    </div>
 
                     <Row style={{marginTop: '30px'}}>
                         <Typography variant="h5" style={homestyle.titles} align="left">My Passed Appointments</Typography>
                     </Row>
-                    <Row style={{marginLeft: '50px'}}>
+                    <div style={{marginLeft: '50px'}}>
                         <PassedAppointmentList user={user} />
-                    </Row>
+                    </div>
                 </Column>
                 <Column style={{width: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <Item>
