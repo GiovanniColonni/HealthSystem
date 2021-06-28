@@ -187,7 +187,7 @@ export function TodayAppointmentList({user}) {
         ))
       }
       {todayEvents.length === 0 &&
-          <Typography align="center" variant="h6">No Appointment Available</Typography>}
+          <Typography align="center" variant="h6">No Appointment Today</Typography>}
     </>
   )
 }

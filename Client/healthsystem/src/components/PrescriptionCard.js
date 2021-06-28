@@ -162,6 +162,9 @@ export default function PrescriptionList({googleId, title}) {
                 </>
               ))
             }
+            {prescriptionList.length === 0 &&
+              <Typography align="center" variant="h6">No Prescription Available</Typography>
+            }
     </div>
     </>
   );
