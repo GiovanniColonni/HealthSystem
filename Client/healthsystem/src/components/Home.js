@@ -22,12 +22,22 @@ var homestyle = {
         fontSize: '24px',
         fontStyle: 'italic',
         color: '#616161',
-        padding: '10px'
+        padding: '6px'
     },
     titleDoc: {
         fontSize: '30px',
         fontStyle: 'italic',
         color: '#616161'
+    },
+    todayList: {
+        width: '40%',
+        minWidth: '280px',
+        marginLeft: 'auto', 
+        marginRight: 'auto',
+        borderStyle: 'solid',
+        borderRadius: '5px',
+        borderWidth: '1px',
+        borderColor: '#bdbdbd'
     }
 }
 
@@ -71,45 +81,44 @@ export default function Home({user}){
                 </div>
             </Row></>}
             {user.userType === 'Patient' && 
-            <Row p={1} style={{width: '80%', margin: 'auto'}}>
-                <Column style={{width: '65%', margin: 'auto'}}>
+            <>
+            <Row p={1} style={{width: '90%', margin: 'auto'}}>
+                <Column style={{width: '60%', margin: 'auto'}}>
                     <Row >
-                        <Item>
-                            <Typography variant="h5" 
-                                style={homestyle.titles}>
-                                    My Future Appointments
-                            </Typography>
-                        </Item>
-                        <Item style={{marginLeft: 'auto', marginRight: 'auto'}}>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                style={homestyle.btnCreate}
-                                onClick={() => gotoNewAppointment()}
-                            >
-                                New Appointment
-                            </Button>
-                        </Item>
+                        <Typography variant="h5" 
+                            style={homestyle.titles}>
+                                My Future Appointments
+                        </Typography>
                     </Row>
-                    <div style={{marginLeft: '50px'}}>
+                    <Row p={1} >
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            style={homestyle.btnCreate}
+                            onClick={() => gotoNewAppointment()}
+                        >
+                            New Appointment
+                        </Button>
+                    </Row>
+                    <div style={{marginLeft: '50px', marginTop: '10px'}}>
                         <FutureAppointmentList user={user} />
                     </div>
 
                     <Row style={{marginTop: '30px'}}>
                         <Typography variant="h5" style={homestyle.titles} align="left">My Passed Appointments</Typography>
                     </Row>
-                    <div style={{marginLeft: '50px'}}>
+                    <div style={{marginLeft: '50px', marginTop: '10px'}}>
                         <PassedAppointmentList user={user} />
                     </div>
                 </Column>
-                <Column style={{width: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
+                <Column style={homestyle.todayList}>
                     <Item>
                         <Typography variant="h5" style={homestyle.titles}>Today</Typography></Item>
                     <Item style={{marginLeft: 'auto', marginRight: 'auto'}}>
                         <TodayAppointmentList user={user} />
                     </Item>
                 </Column>
-            </Row>}
+            </Row></>}
         </>
     )
 }

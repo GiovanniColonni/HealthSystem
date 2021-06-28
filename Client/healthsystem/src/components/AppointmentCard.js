@@ -43,7 +43,8 @@ var styles = {
     }, btnUpload: {
         backgroundColor: "#00A6FF"
     }, card: {
-        width: '260px'
+        width: '260px',
+        margin: '5px'
     }
 }
 
@@ -66,7 +67,7 @@ function MeetingCard({appointment, isPassed}) {
   return (
     <>
     <Card border="success" className="text-center" style={styles.card}>
-        <Card.Header>
+        <Card.Header style={(isPassed || disableButton)? {} : {backgroundColor: "#8BC24A", color: '#fff'}}>
           {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")}
         </Card.Header>
         <Card.Body>
@@ -95,7 +96,7 @@ function MeetingCard({appointment, isPassed}) {
 function MeasureCard({appointment, isPassed}) {
   return (
     <Card border="primary" className="text-center" style={styles.card}>
-        <Card.Header>
+        <Card.Header style={isPassed? {} : {backgroundColor: "#007bff", color: '#fff'}}>
             {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")}
         </Card.Header>
         <Card.Body>
@@ -182,9 +183,7 @@ export function TodayAppointmentList({user}) {
     <>
       {todayEvents && todayEvents.length > 0 &&
         todayEvents.map((appointment) => (
-          <div style={{margin: '5px'}}>
             <AppointmentCard appointment={appointment} isPassed={false} />
-          </div>
         ))
       }
       {todayEvents.length === 0 &&
