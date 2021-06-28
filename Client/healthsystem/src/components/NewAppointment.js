@@ -8,7 +8,7 @@ import API from '../api/API';
 import Button from '@material-ui/core/Button';
 import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
-import AppointmentCard from './AppointmentCard';
+import { BookingAppointmentCard } from './AppointmentCard';
 import {useHistory} from "react-router-dom"
 import Doctor from '../classes/Doctor';
 import Functions from '../functions/Functions';
@@ -106,8 +106,7 @@ export default function NewAppointment({user}){
             <>
             {doctor !== undefined && freeAppointmentList.length > 0 &&
                 freeAppointmentList.map(appointment => (
-                    <AppointmentCard title={appointment} caption={doctor.name +" "+doctor.surname} 
-                        isBooking={true}
+                    <BookingAppointmentCard title={appointment} caption={doctor.name +" "+doctor.surname}
                         onClick={() => validateAppointment(appointment)}/>
                 ))
             }

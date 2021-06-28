@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Item } from '@mui-treasury/components/flex';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import {FaCheck} from 'react-icons/fa';
 import { Typography } from '@material-ui/core';
 import moment from 'moment';
-import API_doctor from '../api/API_doctor';
 import API from '../api/API';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import { CardHeader } from '@material-ui/core';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import { FiChevronDown } from 'react-icons/fi';
+import Card from 'react-bootstrap/Card';
+import Tooltip from '@material-ui/core/Tooltip';
 
-var cardstyle = { 
+var styles = { 
     title: {
         fontFamily: "Lato",
         fontWeight: 600,
@@ -44,74 +37,211 @@ var cardstyle = {
         padding: "5px",
         margin: "auto",
         width: "100%"
+    }, btnJoin: {
+        backgroundColor: "#8BC24A"
+    }, btnUpload: {
+        backgroundColor: "#00A6FF"
+    }, card: {
+        width: '260px'
     }
 }
-  
-export default function AppointmentCard(props) {
+
+function MeetingCard({appointment, isPassed}) {
+  const [disableButton,setDisableButton] = useState(true)
+
+  useEffect( () => {
+    const initialDifference = moment(appointment.start).diff(moment(),'minutes')
+    const endDifference = moment().diff(appointment.end,'minutes')
+    if(initialDifference < 15 && endDifference <= 0){
+        setDisableButton(false)
+    }
+},[disableButton, appointment.start, appointment.end])
 
   return (
-    <Row gap={2} p={2.5} style={cardstyle.border}>
+    <>
+    <Card border="success" className="text-center" style={styles.card}>
+        <Card.Header>
+          {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")}
+        </Card.Header>
+        <Card.Body>
+            <Card.Text>
+                {appointment.description}
+            </Card.Text>
+            {isPassed === false && disableButton === true &&
+            <Tooltip title="Available 15 minutes before the beginning" >
+              <span>
+              <Button variant="contained" color="primary"
+                  disabled={disableButton}
+                  //onClick={() => handleAppointment()}
+              >
+                  Join Appointment
+              </Button></span>
+            </Tooltip>}
+            {isPassed === false && disableButton === false &&
+              <Button variant="contained" color="primary" style={styles.btnJoin}
+                  disabled={disableButton}
+                  //onClick={() => handleAppointment()}
+              >
+                  Join Appointment
+              </Button>}
+        </Card.Body>
+    </Card>
+    </>
+  )
+}
+
+function MeasureCard({appointment, isPassed}) {
+  return (
+    <Card border="primary" className="text-center" style={styles.card}>
+        <Card.Header>
+            {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")}
+        </Card.Header>
+        <Card.Body>
+            <Card.Text>
+                {appointment.description}
+            </Card.Text>
+            {isPassed === false &&
+            <Tooltip title="Available only on totem" >
+              <span>
+              <Button variant="contained" color="primary"disabled>
+                  Upload measures
+              </Button>
+              </span>
+            </Tooltip>}
+        </Card.Body>
+    </Card>
+  )
+}
+
+export function BookingAppointmentCard(props) {
+
+  return (
+    <Row gap={2} p={2.5} style={styles.border}>
       <Item grow minWidth={0}>
-        <div style={cardstyle.title}>{props.title}</div>
-        <div style={cardstyle.caption}>
+        <div style={styles.title}>{props.title}</div>
+        <div style={styles.caption}>
           {props.caption}
         </div>
       </Item>
       <Row>
-        {props.isBooking === true &&
         <IconButton onClick={props.onClick}>
           <FaCheck />
-        </IconButton>}
+        </IconButton>
       </Row>
     </Row>
   );
 }
 
-export function AppointmentCardClickable(props) {
+export function AppointmentCard({appointment, isPassed}) {
+  console.log("AppointmentCard: ", appointment)
+
   return (
-    <div onClick={props.onClick} style={{cursor: "pointer"}}>
-      <AppointmentCard title={props.title} doctorId={props.doctorId}
-        isBooking={props.isBooking} />
-    </div>
+    <>
+    {appointment && appointment.title === "measure" &&
+      <MeasureCard appointment={appointment} isPassed={isPassed}/>}
+    {appointment.title === "meeting" &&
+      <MeetingCard appointment={appointment} isPassed={isPassed}/>}
+    </>
   )
 }
 
-export function AppointmentList({events, isClickable, isBooking}) {
+export function TodayAppointmentList({user}) {
+  
+  const [todayEvents, setTodayEvents] = useState([])
+
+  useEffect(() => {
+    API.getEvents(user.googleId, user.userType)
+      .then((events) =>{
+        let todayEvents = []
+        console.log("Appointment List ", events);
+        if (events !== undefined){
+            todayEvents = events.filter(isTodayEvent)
+            console.log("Today appointment List ", todayEvents);
+            todayEvents = todayEvents.sort(function(a, b) {
+              if (moment(a.start).isBefore(b.start)) {
+                return 1
+              }
+              if (moment(a.start).isAfter(b.start)) {
+                return -1
+              }
+              return 0
+            })
+            console.log("Sorted today appointment List ", todayEvents);
+            setTodayEvents(todayEvents)
+        }
+        console.log("Events: ", todayEvents)
+      })
+  }, [user.googleId, user.userType]);
+
+  const isTodayEvent = (event) => {
+    return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'hour')
+  }
   return (
     <>
-      {isClickable === true && events.length > 0 &&
-        events.map(appointment => (
-            <AppointmentCardClickable 
-                title={moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
-                doctorId={appointment.doctorId} 
-                isBooking={isBooking}/>
+      {todayEvents && todayEvents.length > 0 &&
+        todayEvents.map((appointment) => (
+          <div style={{margin: '5px'}}>
+            <AppointmentCard appointment={appointment} isPassed={false} />
+          </div>
         ))
       }
-      {isClickable === false && events.length > 0 &&
-        events.map(appointment => (
-            <AppointmentCard 
-                title={moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
-                doctorId={appointment.doctorId}
-                isBooking={isBooking}/>
-        ))
-      }
-      {events.length === 0 &&
+      {todayEvents.length === 0 &&
           <Typography align="center" variant="h6">No Appointment Available</Typography>}
     </>
   )
 }
 
-export function PassedAppointmentList({patientId}) {
-
-  const [passedEvents, setPassedEvents] = useState([])
-  const [selectedAppointment, setSelectedAppointment] = useState({});
-
-  const handleAppointment = (event, appointment) => {
-    setSelectedAppointment(appointment);
-  };
+export function FutureAppointmentList({user}) {
+  
+  const [futureEvents, setFutureEvents] = useState([])
 
   useEffect(() => {
-    API.getEvents(patientId, "Patient")
+    API.getEvents(user.googleId, user.userType)
+      .then((events) =>{
+        let futureEvents = []
+        console.log("Appointment List ", events);
+        if (events !== undefined){
+            futureEvents = events.filter(isFutureEvent)
+            console.log("Future appointment List ", futureEvents);
+            futureEvents = futureEvents.sort(function(a, b) {
+              if (moment(a.start).isBefore(b.start)) {
+                return 1
+              }
+              if (moment(a.start).isAfter(b.start)) {
+                return -1
+              }
+              return 0
+            })
+            console.log("Sorted future appointment List ", futureEvents);
+            setFutureEvents(futureEvents)
+        }
+        console.log("Events: ", futureEvents)
+      })
+  }, [user.googleId, user.userType]);
+
+  const isFutureEvent = (event) => {
+    return moment().isBefore(event.start, 'day')
+  }
+
+  return (
+    <>
+      {futureEvents.length > 0 &&
+        futureEvents.map((appointment) => (
+            <AppointmentCard appointment={appointment} isPassed={false} />
+        ))
+      }
+      {futureEvents.length === 0 &&
+          <Typography align="center" variant="h6">No Future Appointment</Typography>}
+    </>
+  )
+}
+
+export function PassedAppointmentList({user}) {
+
+  const [passedEvents, setPassedEvents] = useState([])
+
+  useEffect(() => {
+    API.getEvents(user.googleId, user.userType)
     .then((events) => {
         let passedEvents = []
         console.log("Appointment List ", events);
@@ -135,65 +265,21 @@ export function PassedAppointmentList({patientId}) {
     .catch((err) =>{
         console.log(err)
     })
-  }, [patientId])
+  }, [user.googleId, user.userType])
 
   const isPassedEvent = (event) => {
     return moment().isAfter(event.end)
   }
 
   return (
-    <ToggleButtonGroup
-      orientation="vertical"
-      value={selectedAppointment}
-      exclusive
-      onChange={handleAppointment}
-      aria-label="text alignment"
-    >
-      {passedEvents.map((event) => (
-          <ToggleButton value={event}>
-            <AppointmentCard 
-              title={moment(event.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")} 
-              doctorId={event.doctorId}
-              isBooking={false}
-            />
-          </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
-  )
-}
-
-function AppointmentDetails({event}) {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  return (
-    <Card>
-      <CardHeader>
-
-      </CardHeader>
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {event.title}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Typography variant="body2" color="textSecondary" component="p">Observations</Typography>
-        <IconButton
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <FiChevronDown />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-            OBSERVATION
-        </CardContent>
-      </Collapse>
-    </Card>
+    <>
+    {passedEvents.length > 0 &&
+      passedEvents.map((appointment) => (
+          <AppointmentCard appointment={appointment} isPassed={true} />
+      ))
+    }
+    {passedEvents.length === 0 &&
+        <Typography align="center" variant="h6">No Passed Appointment</Typography>}
+    </>
   )
 }

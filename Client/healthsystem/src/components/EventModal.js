@@ -28,7 +28,8 @@ export default function EventModal(props) {
                     <Modal.Footer>
                         {props.event.title === "meeting" &&
                             <Button variant="contained" color="primary" disabled={disableButton}
-                            onClick={() => history.push({pathname: props.user.userType === "Patient" ? '/patient/meeting' : 'doctor/meeting', state:{URL: props.event.conference, patient: { googleId: props.patientId}}})}>Meeting
+                            onClick={() => history.push({pathname: props.user.userType === "Patient" ? '/patient/meeting' : 'doctor/meeting', state:{URL: props.event.conference, patient: { googleId: props.patientId}}})}>
+                                Join Appointment
                             </Button> 
                         }
                     </Modal.Footer>
