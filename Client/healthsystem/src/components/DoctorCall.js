@@ -328,7 +328,7 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
           <Typography variant="h5" style={contentstyle.title}>Measures</Typography>
           <Row style={contentstyle.item}>
             <div style={contentstyle.measures}>
-              <MeasureList />
+              <MeasureList googleId={patient.googleId}/>
             </div>
           </Row>
         </>}
