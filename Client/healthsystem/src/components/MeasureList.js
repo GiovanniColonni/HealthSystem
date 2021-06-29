@@ -103,7 +103,7 @@ export default function MeasureList({googleId}) {
                 const listOxy = []
                 const listBld = []
                 for (const measure of measures) {
-                    if (measure.type === "OxygenSaturatino"){
+                    if (measure.type === "OxygenSaturation"){
                         console.log("Adding oxygen measure: ", measure)
                         listOxy.push(measure)
                     } else if (measure.type === "HeartRate"){
