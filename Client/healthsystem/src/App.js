@@ -10,7 +10,6 @@ import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
 import PatientDetails from "./components/PatientDetails";
-import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
 import PrescriptionList from './components/PrescriptionCard';
 import Home from './components/Home';

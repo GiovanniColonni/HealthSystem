@@ -22,7 +22,6 @@ var cardstyle = {
         fontFamily: "Lato",
         fontWeight: 600,
         fontSize: '1rem',
-        color: '#122740',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         overflow: 'hidden',
@@ -97,12 +96,7 @@ export function ChooseDoctorCard(props) {
 }
 
 export function UserCard(props) {
-  
   let history = useHistory()
-
-  useEffect( () => {
-    console.log(props)
-  },[]) 
   
       return (
         <div onClick={() => history.push({pathname:"/patientDetails",state: {patient: props.patient}})}>
@@ -124,11 +118,6 @@ export function UserCard(props) {
 }
 
 export function UserCardFiltered(props) {
-
-  useEffect( () => {
-    console.log(props)
-  },[]) 
-  
       return (
         <Row gap={2} p={2.5} style={props.selected? cardstyle.selectedBorder : cardstyle.border}>
           <Item>

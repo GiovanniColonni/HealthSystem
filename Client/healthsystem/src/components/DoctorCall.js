@@ -21,7 +21,6 @@ import FileUpload from './FileUpload.jsx';
 import API_doctor from '../api/API_doctor';
 import API from '../api/API';
 import { useHistory } from 'react-router-dom';
-import { AppointmentList } from './AppointmentCard';
 import moment from 'moment';
 import PrescriptionList from './PrescriptionCard';
 import API_patient from '../api/API_patient';
