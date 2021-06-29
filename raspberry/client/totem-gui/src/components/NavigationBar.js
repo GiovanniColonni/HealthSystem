@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-//import NotificationMenuModal from './NotificationModal';
+import NotificationMenuModal from './NotificationModal';
 import Api from '../api/Api';
 import moment from 'moment';
 import Logo from './Logo'
@@ -87,10 +87,11 @@ export default function NavigationBar({user,logout}) {
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
                 <Nav.Link href="/home">Home</Nav.Link>
+                <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>
+                <Nav.Link href="/measure">My Measures</Nav.Link>
                 </Nav>
                 <Nav>
-                    {/*<NotificationMenuModal user={user} notifList={notifList}/>*/}
-                    <Nav.Link href="/personalProfile">My Profile</Nav.Link>
+                    <NotificationMenuModal user={user} notifList={notifList}/>
                     <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

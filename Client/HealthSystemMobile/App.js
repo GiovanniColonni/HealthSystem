@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState,useEffect, useRef  } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet,Image } from 'react-native';
 
 import 'react-native-gesture-handler';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -14,8 +13,6 @@ import Login from "./components/Login"
 import Home from "./components/Home"
 import MeasureHistory from './components/MeasureHistory';
 
-
-import Api from './api/Api';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -37,18 +34,18 @@ export default function App() {
   const img = require('./assets/greenCross.png')
   const styleImg = {width:51,height:51,resizeMode: 'contain'}
   const AppStackNavigator = createStackNavigator({
-    
+
     Home:{
       screen: Home,
-      navigationOptions: ({navigation}) =>({
+      navigationOptions: ({}) =>({
        
        title: `Benvenuto ${user.name}`,
-       headerLeft: () => <Image style={styleImg} source={img}/>
+       headerLeft: () => <Image style={styleImg} source={img} />
       })
     },
     Login:{
       screen: Login,
-      navigationOptions: ({navigation}) =>({
+      navigationOptions: ({}) =>({
         title: `Autenticazione`,
         headerShown:false 
        // headerLeft: () => <></> 
@@ -59,8 +56,11 @@ export default function App() {
       navigationOptions: ({navigation}) =>({
         title: `Storico Misure`,
         headerLeft: () => <Image style={styleImg} source={img}/>
+        
       })
     }
+    
+
   });
   
   const AppContainer = createAppContainer(AppStackNavigator); 
@@ -84,7 +84,7 @@ export default function App() {
  
   return (
     <UserContext.Provider value={userState}>
-      <AppContainer/>
+        <AppContainer/>
     </UserContext.Provider>
     
   );

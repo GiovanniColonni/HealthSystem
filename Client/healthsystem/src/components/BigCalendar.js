@@ -10,6 +10,7 @@ import { FormControl, FormControlLabel, Input, Radio, RadioGroup } from '@materi
 import API_patient from '../api/API_patient';
 import Functions from '../functions/Functions';
 import PatientList from '../components/PatientList'
+import TextField from '@material-ui/core/TextField';
 const localizer = momentLocalizer(moment)
 
 
@@ -19,6 +20,7 @@ export default function BigCalendar(props) {
   const [createEvent, setCreateEvent] = useState(undefined)
   const [patientNameFilter, setPatientNameFilter] = useState("")
   const [patientId, setPatientId] = useState(undefined)
+  const [repeatValue, setRepeatValue] = useState(1)
   const [eventClk, setEventClk] = useState(null)
   const [typeExamination, setTypeExamination] = useState("meeting")
   let ev = []
@@ -51,7 +53,7 @@ export default function BigCalendar(props) {
     if(createEvent.typeExamination !== undefined && createEvent.typeExamination !== ""){
       let URL = ""
       if(createEvent.typeExamination === "meeting"){
-        URL = Functions.createMeeting(patientId,user.googleId) //put patientId here
+        URL = Functions.createMeeting(patientId,user.googleId)
       }
       if(createEvent.description === undefined){
         createEvent.description = ""
@@ -60,24 +62,35 @@ export default function BigCalendar(props) {
       if(createEvent.typeExamination === "busy"){
         patId = undefined
       }
-      console.log(patId)
-      API_patient.setAppointment(patId,user.googleId,moment(createEvent.start).format("MM/DD/YYYY hh:mm A"),createEvent.typeExamination,createEvent.description,moment(createEvent.end).format("MM/DD/YYYY hh:mm A"),URL)
-        .then((resp) =>{
-          setShowCreateModal(false)
-          setCreateEvent({})
-          API.getEvents(user.googleId,user.userType)
-            .then((events) =>{
-              if(events !== undefined){
-                setEvents(events)
-              }
-            })
-            .catch((err)=>{
+      let doctId = user.googleId
+      if(createEvent.typeExamination === "reminder"){
+        doctId = undefined
+      }
+      let startDate = moment(createEvent.start).format("MM/DD/YYYY hh:mm A")
+      let endDate = moment(createEvent.end).format("MM/DD/YYYY hh:mm A")
+      let repeatV = repeatValue
+      do{
+        API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)
+          .then((resp) =>{
+            setShowCreateModal(false)
+            setCreateEvent({})
+            API.getEvents(user.googleId,user.userType)
+              .then((events) =>{
+                if(events !== undefined){
+                  setEvents(events)
+                }
+              })
+              .catch((err)=>{
 
-          });
-        })
-        .catch((err) =>{
-          console.log(err)
-        })
+            });
+          })
+          .catch((err) =>{
+            console.log(err)
+          })
+          repeatV --
+        startDate = moment(startDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+        endDate = moment(endDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+      }while(createEvent.typeExamination === "reminder" && repeatV > 0)
     }
   }
 
@@ -127,6 +140,7 @@ export default function BigCalendar(props) {
               <div className="RadioGroup">
                 <RadioGroup aria-label="gender" name="gender1" value={typeExamination} onChange={(e) => updateTypeExamination(e.target.value)}>
                   <FormControlLabel value="meeting" label="meeting" control={<Radio />} />
+                  <FormControlLabel value="reminder" label="reminder" control={<Radio />} />
                   <FormControlLabel value="busy" label="busy" control={<Radio />} />
                 </RadioGroup>
               </div>
@@ -135,6 +149,14 @@ export default function BigCalendar(props) {
           <div>
             <Input placeholder="Description" name="Description" onChange={(e) => updateDescription(e.target.value) } />
             {createEvent !== undefined && createEvent.typeExamination !== "busy" && <Input placeholder="Patient Name" name="patientName" onChange={(e) => updatePatientName(e.target.value) } />}
+            {createEvent !== undefined && createEvent.typeExamination === "reminder" && 
+            <TextField
+              id="outlined-number" label="Repeat for # days" type="number" defaultValue={1} onChange={(e) => setRepeatValue(e.target.value)} InputProps={{ inputProps: { min: 1, max: 30 } }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            }            
           </div>
           <div>
           {createEvent !== undefined && createEvent.typeExamination !== "busy" && <PatientList user={user} filter={patientNameFilter} setPatient={(patientId) => setPatientId(patientId)}/> }

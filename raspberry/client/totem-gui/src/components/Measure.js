@@ -7,20 +7,29 @@ import { Row, Column } from '@mui-treasury/components/flex';
 import { WiHumidity } from "react-icons/wi";
 import { FaHeartbeat, FaHeart } from "react-icons/fa";
 import { Typography } from '@material-ui/core';
+import NavigationBar from "./NavigationBar"
 
 const style = {
     information: {
-      justifyContent: "right",
-      alignItems: "right",
-      marginLeft: 'auto'
+      justifyContent: "center",
+      alignItems: "center",
+      margin: 'auto'
     }, graph: {
         width: '80%',
         margin: 'auto',
         height: '80vh'
+    }, message: {
+        justifyContent: "center",
+        alignItems: "center",
+        margin: 'auto'
+    }, btn: {
+        marginLeft: '20px'
+    }, container: {
+        
     }
 }
 
-function Measure ({setMeasure,measure,user}) {
+function Measure ({setMeasure, measure, user, handleLogout}) {
     
     let [mProgres,setMProgres] = useState(false)
     let [period,setPeriod] = useState(6000) // T = 5 secondi intervallo tra due misure
@@ -29,13 +38,14 @@ function Measure ({setMeasure,measure,user}) {
     let [measureValue,setMeasureValue] = useState([])
     let [yGraph,setYGraph] = useState([])
     let [xGraph,setXGraph] = useState([])
+    let [isCritic, setIsCritic] = useState(false)
     let average = 0
 
     let [name,setName] = useState("")
 
     let [message,setMessage] = useState("first")
 
-    let x = [1,2,3,4,7,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+    let x = [1,2,3,4,7,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
     
     const options = {scales: {
         yAxes: [
@@ -105,9 +115,9 @@ function Measure ({setMeasure,measure,user}) {
                                 
                                 if(m === false){
                                     setMProgres(false)
-                                    setMeasure("no active measure")
+                                    setMeasure("No active measure")
                                 }else{
-                                    setMessage("process measure")
+                                    setMessage("Process measure")
                                     let measure_json = JSON.parse(m.measureValue)
 
                                     setMeasure(m)
@@ -158,8 +168,9 @@ function Measure ({setMeasure,measure,user}) {
             //console.log("end measure")
         }
         if(mProgres){
+            console.log(measure.thReached )
            if(measure.thReached === 1){
-               
+               setIsCritic(true)
                Api.postMeasure(user.googleId,
                 "type",JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
@@ -173,7 +184,9 @@ function Measure ({setMeasure,measure,user}) {
                    console.log("Error posting the measure into main server")
                })
                
-           } 
+           } else {
+               setIsCritic(false)
+           }
         }
         
     })
@@ -181,24 +194,36 @@ function Measure ({setMeasure,measure,user}) {
     
     return(
         <>
-        <Row p={3}>
+        <Row p={2}>
             {mProgres == false &&
                 <>
-                <Button onClick={()=>onStartMeasure()} variant="contained"> Start Measure</Button>
+                <Button variant="contained" color="primary" style={style.btn}
+                    onClick={()=>onStartMeasure()}
+                > 
+                    Start Measure
+                </Button>
                 {/*<Typography>Average: {average}</Typography>*/}
+                <Row style={style.message}>
+                    {<Typography variant="h4">{message}</Typography>}
+                    {measureError && <Typography>Problema con misurazione</Typography>}
+                </Row>
                 </>
             }
-            {<Typography>{message}</Typography>}
-            {measureError && <Typography>Problema con misurazione</Typography>}
+            
 
+            {mProgres == true &&
+            <>
+            <Typography variant="h6">Status: {message}</Typography>
             <Row style={style.information}>
-                {mProgres == true && name == "BloodPressure" && <FaHeart />}
-                {mProgres == true && name == "OxygenSaturation" && <WiHumidity />}
-                {mProgres == true && name == "HeartBeat" && <FaHeartbeat />}
-                {<Typography>Measure in progress : </Typography> && <Typography>{convertMeasureValue(measureValue)}</Typography>}
-            </Row>
+                {name == "BloodPressure" && <FaHeart size="4em" color={isCritic? 'red' : 'green'} />}
+                {name == "OxygenSaturation" && <WiHumidity size="4em" color={isCritic? 'red' : 'green'}/>}
+                {name == "HeartBeat" && <FaHeartbeat size="4em" color={isCritic? 'red' : 'green'}/>}
+                <Row>
+                    <Typography>{convertMeasureValue(measureValue)}</Typography>
+                </Row>
+            </Row></>}
         </Row>
-        <Row p={3} style={style.graph}>
+        <Row p={2} style={style.graph}>
             {mProgres == true &&
             <Line type={"line"} width={100} height={50} data={data} options={options}/>}
         </Row>
