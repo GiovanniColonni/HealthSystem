@@ -177,9 +177,6 @@ export function TodayAppointmentList({user}) {
   }, [user.googleId, user.userType]);
 
   const isTodayEvent = (event) => {
-    console.log("Current: ", event)
-    console.log("isSameDay: ", moment().isSame(event.start, 'day'))
-    console.log("isBefore: ", moment().isBefore(event.end, 'minute'))
     return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'minute')
   }
   return (
