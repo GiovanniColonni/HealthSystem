@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Column } from '@mui-treasury/components/flex';
 import { Typography } from '@material-ui/core';
-import { UserCardNoLink } from './UserCard';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
-import API from '../api/API';
-import Button from '@material-ui/core/Button';
+import Api from '../api/Api';
 import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
 import { BookingAppointmentCard } from './AppointmentCard';
-import {useHistory} from "react-router-dom"
 import Doctor from '../classes/Doctor';
 import Functions from '../functions/Functions';
 import BigCalendar from './BigCalendar';
@@ -61,9 +58,13 @@ export default function NewAppointment({user}){
     const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
+        console.log("User: ", user)
         API_patient.getPatient(user.googleId)
         .then((patient) =>{
-        setPatient(patient)
+            console.log("Patient: ", patient)
+            if (patient !== undefined) {
+                setPatient(patient)
+            }
         })
         .catch((err)=>{
             console.log(err)
@@ -79,20 +80,23 @@ export default function NewAppointment({user}){
             });
         }
         if (patient.doctorId !== undefined){
-            API.getEvents(patient.doctorId, "Doctor")
+            Api.getEvents(patient.doctorId, "Doctor")
             .then((appointments) =>{
-                appointments.sort(function (left, right) {
-                        return moment.utc(right.date).diff(moment.utc(left.date))
-                })
-                setdocAppointmentList(appointments)
-                let updatedList = freeAppointmentList
-                for (const busyAppointment of appointments) {
-                    console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
-                    const date = moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")
-                    updatedList = updatedList.filter((appointmentDate) => appointmentDate !== date);
+                console.log("Doctor's appointments: ", appointments)
+                if (appointments !== undefined) {
+                    appointments.sort(function (left, right) {
+                            return moment.utc(right.date).diff(moment.utc(left.date))
+                    })
+                    setdocAppointmentList(appointments)
+                    let updatedList = freeAppointmentList
+                    for (const busyAppointment of appointments) {
+                        console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
+                        const date = moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")
+                        updatedList = updatedList.filter((appointmentDate) => appointmentDate !== date);
+                    }
+                    console.log("Free List ", updatedList); 
+                    setFreeAppointmentList(updatedList)
                 }
-                console.log("Free List ", updatedList); 
-                setFreeAppointmentList(updatedList)
             })
             .catch((err) =>{
                 setdocAppointmentList([])

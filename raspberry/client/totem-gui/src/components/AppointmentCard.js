@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import {FaCheck} from 'react-icons/fa';
 import { Typography } from '@material-ui/core';
 import moment from 'moment';
-import API from '../api/API';
+import Api from '../api/Api';
 
 import Card from 'react-bootstrap/Card';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -153,7 +153,7 @@ export function TodayAppointmentList({user}) {
   const [todayEvents, setTodayEvents] = useState([])
 
   useEffect(() => {
-    API.getEvents(user.googleId, user.userType)
+    Api.getEvents(user.googleId, user.userType)
       .then((events) =>{
         let todayEvents = []
         console.log("Appointment List ", events);
@@ -172,7 +172,6 @@ export function TodayAppointmentList({user}) {
             console.log("Sorted today appointment List ", todayEvents);
             setTodayEvents(todayEvents)
         }
-        console.log("Events: ", todayEvents)
       })
   }, [user.googleId, user.userType]);
 
@@ -197,7 +196,7 @@ export function FutureAppointmentList({user}) {
   const [futureEvents, setFutureEvents] = useState([])
 
   useEffect(() => {
-    API.getEvents(user.googleId, user.userType)
+    Api.getEvents(user.googleId, user.userType)
       .then((events) =>{
         let futureEvents = []
         console.log("Appointment List ", events);
@@ -216,7 +215,6 @@ export function FutureAppointmentList({user}) {
             console.log("Sorted future appointment List ", futureEvents);
             setFutureEvents(futureEvents)
         }
-        console.log("Events: ", futureEvents)
       })
   }, [user.googleId, user.userType]);
 
@@ -242,7 +240,7 @@ export function PassedAppointmentList({user}) {
   const [passedEvents, setPassedEvents] = useState([])
 
   useEffect(() => {
-    API.getEvents(user.googleId, user.userType)
+    Api.getEvents(user.googleId, user.userType)
     .then((events) => {
         let passedEvents = []
         console.log("Appointment List ", events);
@@ -261,7 +259,6 @@ export function PassedAppointmentList({user}) {
             console.log("Sorted passed appointment List ", passedEvents);
             setPassedEvents(passedEvents)
         }
-        console.log("Events: ", passedEvents)
     })
     .catch((err) =>{
         console.log(err)

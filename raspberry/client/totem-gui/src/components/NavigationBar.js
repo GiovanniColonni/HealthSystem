@@ -86,7 +86,7 @@ export default function NavigationBar({user,logout}) {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav" >
                 <Nav className="mr-auto" >
-                <Nav.Link href="/home">Home</Nav.Link>
+                <Nav.Link href="/home">My Appointments</Nav.Link>
                 <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>
                 <Nav.Link href="/measure">My Measures</Nav.Link>
                 </Nav>

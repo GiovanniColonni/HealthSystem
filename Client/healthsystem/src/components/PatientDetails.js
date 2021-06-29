@@ -5,15 +5,19 @@ import Divider from '@material-ui/core/Divider';
 import MeasureList from './MeasureList';
 import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
+import PrescriptionList from './PrescriptionCard';
+import Typography from '@material-ui/core/Typography';
 
 var detailsstyle = {
     container: {
         width: '80%',
         marginLeft: 'auto',
         marginRight: 'auto'
-    }, center: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
+    }, titles: {
+        margin: 'auto',
+        fontSize: '30px',
+        fontStyle: 'italic',
+        color: '#616161'
     }, avatar: {
         maxHeight: "150px",
         maxWidth: "150px"
@@ -55,14 +59,17 @@ var detailsstyle = {
         justifyContent: "center",
         alignItems: "center"
     }, measures: {
-        width: '60%',
+        width: '70%',
+        margin: 'auto'
+    }, appointmentlist: {
+        width: '50%',
         margin: 'auto'
     }
 }
 
 export default function PatientDetails(props) {
     const history = useHistory()
-    console.log(history.location.state.patient)
+    console.log("History patient: ", history.location.state.patient)
 
     const [comment, setComment] = useState("")
 
@@ -77,10 +84,11 @@ export default function PatientDetails(props) {
             })
     },[history.location.state.patient.googleId]);
 
+    
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Patient Details</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Patient Details</Typography>
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
@@ -112,17 +120,20 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Sensor Details</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Sensor Details</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
-                    <MeasureList />
+                    <MeasureList googleId={history.location.state.patient.googleId} />
                 </div>
                 
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <h1 style={detailsstyle.center}>Appointment List</h1>
+                <Typography variant="h5" style={detailsstyle.titles}>Appointment List</Typography>
+            </Row>
+            <Row gap={5} p={2.5} style={detailsstyle.item}>
+                    <PrescriptionList googleId={history.location.state.patient.googleId} />
             </Row>
         </div>
     );

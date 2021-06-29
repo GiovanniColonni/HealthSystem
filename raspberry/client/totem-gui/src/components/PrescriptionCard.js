@@ -83,7 +83,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PrescriptionList({googleId, title}) {
+export default function PrescriptionList({googleId}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState();
   const [prescriptionList, setPrescriptionList] = useState([]);
@@ -129,8 +129,7 @@ export default function PrescriptionList({googleId, title}) {
 
   return (
     <>
-    {title === true &&
-      <Typography variant="h5" style={cardstyle.titles}>My Prescription List</Typography>}
+    <Typography variant="h5" style={cardstyle.titles}>My Prescription List</Typography>
     <div className={classes.root}>
           {prescriptionList.length > 0 &&
               prescriptionList.map((prescription, index) => (

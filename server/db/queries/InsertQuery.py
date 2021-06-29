@@ -143,12 +143,13 @@ class InsertQuery:
             print("HANDLE THIS EXCEPTION")
             return False
 
-    def insert_prescription(self, patientId, pathFileSystem, notePrescription, date):
+    def insert_prescription(self, patientId, pathFileSystem, notePrescription, date, doctorId):
         user_entity = Prescription
         instance = user_entity(patientId=patientId,
                                pathFileSystem=pathFileSystem,
                                notePrescription=notePrescription,
-                               date=date
+                               date=date,
+                               doctorId=doctorId
                                )
         try:
             with DatabaseSession() as session:

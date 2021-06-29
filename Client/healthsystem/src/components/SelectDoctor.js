@@ -7,6 +7,13 @@ import Patient from '../classes/Patient';
 import {ChooseDoctorCard} from './UserCard';
 import { Typography } from "@material-ui/core";
 
+const liststyle = {
+    container: {
+        width: '40%',
+        margin: 'auto'
+    }
+}
+
 const SelectDoctor = (props) =>{
     let {user} = props
     const [doctors,setDoctors] = useState([])
@@ -72,7 +79,7 @@ const SelectDoctor = (props) =>{
     
 
     return (
-        <div>
+        <div style={liststyle.container}>
             <DoctorListComponent />
         </div>
     );

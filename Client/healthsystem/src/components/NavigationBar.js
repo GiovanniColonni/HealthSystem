@@ -42,7 +42,7 @@ export default function NavigationBar({user,logout}) {
                                 API_patient.getPatient(evnt.patientId)
                                     .then((patient) =>{
                                         evnt.patient = patient.name + " " + patient.surname
-                                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: evnt.patient, patientId: evnt.patientId})
+                                        notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: patient, patientId: evnt.patientId})
                                         setNotifList(notifications)
                                         setEvents(events)
                                     })
@@ -102,11 +102,15 @@ export default function NavigationBar({user,logout}) {
                 <Nav.Link href="/home">My Appointments</Nav.Link>
                 {user.userType === 'Doctor' && 
                     <Nav.Link href="/patientList">My Patient list</Nav.Link>}
-                {user.userType === 'Patient' && 
-                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>}
+                {user.userType === 'Patient' &&
+                    <>
+                    <Nav.Link href="/prescriptionList">My Prescriptions</Nav.Link>
+                    <Nav.Link href="/measureList">My Measures</Nav.Link>
+                    </>}
                 </Nav>
                 <Nav>
-                    <NotificationMenuModal user={user} notifList={notifList}/>
+                    {user.userType === 'Doctor' &&
+                        <NotificationMenuModal user={user} notifList={notifList}/>}
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                     <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>
