@@ -57,7 +57,21 @@ function MeasureHistory({navigation}){
 
         }});
      
-    
+    const retMeasure = (item,i) => {
+      if(item.type !== "type"){
+
+        return(
+          <ListItem key={i} bottomDivider>
+            {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
+            {item.type ==  "OxygenSaturatino" && <Image style={styles.icons} source={oxygenIcon} />}
+            {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
+            <ListItem.Title>{item.type}</ListItem.Title>
+            <ListItem.Subtitle>{item.value + "  " + item.date}</ListItem.Subtitle>
+          </ListItem>            
+        )
+        }
+     }
+     
     return(
       <View style={styles.container}>
       <SafeAreaView>
