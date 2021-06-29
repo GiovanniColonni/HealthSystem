@@ -172,7 +172,6 @@ export function TodayAppointmentList({user}) {
             console.log("Sorted today appointment List ", todayEvents);
             setTodayEvents(todayEvents)
         }
-        console.log("Events: ", todayEvents)
       })
   }, [user.googleId, user.userType]);
 
@@ -216,7 +215,6 @@ export function FutureAppointmentList({user}) {
             console.log("Sorted future appointment List ", futureEvents);
             setFutureEvents(futureEvents)
         }
-        console.log("Events: ", futureEvents)
       })
   }, [user.googleId, user.userType]);
 
@@ -261,7 +259,6 @@ export function PassedAppointmentList({user}) {
             console.log("Sorted passed appointment List ", passedEvents);
             setPassedEvents(passedEvents)
         }
-        console.log("Events: ", passedEvents)
     })
     .catch((err) =>{
         console.log(err)

@@ -13,6 +13,7 @@ import NavigationBar from './components/NavigationBar';
 
 import axios from "axios"
 import PrescriptionList from './components/PrescriptionCard';
+import NewAppointment from './components/NewAppointment';
 
 
 function App() {
@@ -69,6 +70,10 @@ function App() {
           <Route exact path={"/home"}>
             <NavigationBar user={user} logout={handleLogout}/>
             <Home user={user} />
+          </Route>
+          <Route exact path={"/newAppointment"}>
+              <NavigationBar user={user} logout={handleLogout}/>
+              <NewAppointment user={user} />
           </Route>
           <Route exact path="/measure">
             <NavigationBar user={user} logout={handleLogout}/>
