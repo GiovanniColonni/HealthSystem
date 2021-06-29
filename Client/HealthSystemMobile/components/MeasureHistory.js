@@ -35,6 +35,9 @@ function MeasureHistory({navigation}){
         width:31,
         height:31
     },
+    listItem:{
+      overflow:"hidden"
+    },
     });
   
     useEffect(()=>{    
@@ -45,7 +48,7 @@ function MeasureHistory({navigation}){
         Api.getMeasure(userState.user.googleId)
         .then((resp)=>{
           if(resp !== false && resp !== undefined){
-            //console.log(resp)
+            console.log(resp)
             setMeasureData(resp)
             setAvaible(true)
           }
@@ -57,25 +60,47 @@ function MeasureHistory({navigation}){
 
         }});
      
-    
+    const retMeasure = (item,i) => {
+      let u_mis = ""
+      let value = ""
+      // tipo di misura
+      if(item.type ==  "OxygenSaturatino"){
+        u_mis = " %"
+        value = item.value
+      }
+      
+      if(item.type ==  "HeartRate"){
+        u_mis = " bps"
+        value = item.value
+      }
+      
+      if(item.type ==  "BloodPressure"){
+        u_mis = " mmHg"
+        value = item.value + "/" + "123"
+      }
+      
+      if(item.type !== "type"){
+
+        return(
+          <ListItem style={styles.listItem} key={i} bottomDivider>
+            {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
+            {item.type ==  "OxygenSaturatino" && <Image style={styles.icons} source={oxygenIcon} />}
+            {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
+            <ListItem.Title>{item.type}</ListItem.Title>
+            <ListItem.Subtitle>{value + u_mis + "  "}</ListItem.Subtitle>
+            <ListItem.Subtitle>{item.date}</ListItem.Subtitle>
+          </ListItem>            
+        )
+        }
+     }
+
     return(
       <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-           {measureData.map((item,i)=>{
-             if(item.type !== "type"){
-
-              return(
-                <ListItem key={i} bottomDivider>
-                  {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
-                  {item.type ==  "OxygenSaturatino" && <Image style={styles.icons} source={oxygenIcon} />}
-                  {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
-                  <ListItem.Title>{item.type}</ListItem.Title>
-                  <ListItem.Subtitle>{item.value + "  " + item.date}</ListItem.Subtitle>
-                </ListItem>            
-              )
-              }
-           })}
+           {measureData.map((item,i)=>
+            retMeasure(item,i)
+           )}
         </ScrollView>
       </SafeAreaView>
       </View>
