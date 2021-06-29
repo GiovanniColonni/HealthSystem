@@ -59,8 +59,6 @@ var detailsstyle = {
         justifyContent: "center",
         alignItems: "center"
     }, measures: {
-        width: '70%',
-        margin: 'auto'
     }, appointmentlist: {
         width: '50%',
         margin: 'auto'

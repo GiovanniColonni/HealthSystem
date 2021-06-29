@@ -117,19 +117,19 @@ export default function MeasureList({googleId}) {
                     }
                 }
                 listHeart.sort(function (left, right) {
-                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                  return moment(right.date, "YYYY-MM-DD").diff(moment(left.date, "YYYY-MM-DD"))
                 })
                 setHeartMeasures(listHeart)
                 console.log("Heart list updated: ", heartMeasures)
 
                 listOxy.sort(function (left, right) {
-                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                  return moment(right.date, "YYYY-MM-DD").diff(moment(left.date, "YYYY-MM-DD"))
                 })
                 setOxyMeasures(listOxy)
                 console.log("Oxy list updated: ", oxyMeasures)
 
                 listBld.sort(function (left, right) {
-                  return moment(left.date, "YYYY-MM-DD").diff(moment(right.date, "YYYY-MM-DD"))
+                  return moment(right.date, "YYYY-MM-DD").diff(moment(left.date, "YYYY-MM-DD"))
                 })
                 setBldMeasures(listBld)
                 console.log("Bld list updated: ", bldMeasures)
@@ -142,14 +142,14 @@ export default function MeasureList({googleId}) {
 
     return (
         <>
-        <Row>
-            <Column style={{width: '33%'}}>
+        <Row style={{margin: 'auto'}}>
+            <Column style={{width: '33%', minWidth: '180px'}}>
                 <MeasureCard image={OxygenIcon} data={oxyMeasures} name="Oxygen percentage"/>
             </Column>
-            <Column style={{width: '34%'}}>
+            <Column style={{width: '34%', minWidth: '180px'}}>
                 <MeasureCard image={HeartIcon} data={heartMeasures} name="Heart rate"/>
             </Column>
-            <Column style={{width: '33%'}}>
+            <Column style={{width: '33%', minWidth: '180px'}}>
                 <MeasureCard image={BldIcon} data={bldMeasures} name="Blood pressure"/>
             </Column>
         </Row>
