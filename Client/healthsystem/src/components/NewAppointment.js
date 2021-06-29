@@ -121,7 +121,7 @@ export default function NewAppointment({user}){
         const formatedEndDate = moment(date, "MM/DD/YYYY hh:mm A").add(1, 'hours').format("MM/DD/YYYY hh:mm A");
 
         API_patient.setAppointment(patient.googleId,patient.doctorId,formatedStartDate,"meeting",
-                                    "my description",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
+                                    "Created by patient",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
             .then((resp) =>{
                 if(resp.status === 200){
                     setModalShow(true)
