@@ -159,12 +159,12 @@ export function UserCardList({user, filter, setPatient}) {
       {patientList !== undefined && patientList.length > 0 && filter !== undefined && 
         patientList.map(user => (
           user.name !== undefined && (user.surname + " " + user.name).toLowerCase().includes(filter.toLowerCase()) && 
-          <UserCardFiltered title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user} setPatient={(patientId) => setPatient(patientId)}/>
+          <UserCardFiltered title={user.surname + " " + user.name} caption={user.fiscalCode} patientId={user.googleId} patient={user} setPatient={(patientId) => setPatient(patientId)}/>
       )) }
       {patientList !== undefined && patientList.length > 0 && filter === undefined && 
         patientList.map(user => (
           user.name !== undefined &&
-          <UserCard title={user.surname + " " + user.name} caption={""} patientId={user.googleId} patient={user}/>
+          <UserCard title={user.surname + " " + user.name} caption={user.fiscalCode} patientId={user.googleId} patient={user}/>
       )) }
       {patientList.length === 0 &&
         <Typography align="center" variant="h6">No Patients</Typography>}
