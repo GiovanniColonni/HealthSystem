@@ -38,6 +38,10 @@ function MeasureHistory({navigation}){
     listItem:{
       overflow:"hidden"
     },
+    message:{
+      fontSize:21,
+      textAlign:"center"
+  }
     });
   
     useEffect(()=>{    
@@ -87,8 +91,11 @@ function MeasureHistory({navigation}){
             {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
             {item.type ==  "OxygenSaturation" && <Image style={styles.icons} source={oxygenIcon} />}
             {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
-            <ListItem.Title>{item.type}</ListItem.Title>
-            <ListItem.Subtitle>{value + u_mis + " " +item.date}</ListItem.Subtitle>
+            
+            <ListItem.Subtitle>{value + u_mis}</ListItem.Subtitle>
+            <ListItem.Title>{item.type + "\n " +item.date}</ListItem.Title>  
+            
+            
             
           </ListItem>            
         )
@@ -99,9 +106,10 @@ function MeasureHistory({navigation}){
       <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-           {measureData.map((item,i)=>
+           {measureData.length != 0 && measureData.map((item,i)=>
             retMeasure(item,i)
            )}
+           {measureData.length == 0 && <Text style={styles.message}>Non ci sono misure da mostrare</Text>}
         </ScrollView>
       </SafeAreaView>
       </View>

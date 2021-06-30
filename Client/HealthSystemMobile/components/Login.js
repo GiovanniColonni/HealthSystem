@@ -17,6 +17,16 @@ export default function Login({navigation}) {
   let userState = useContext(UserContext)
 
   const img = require('../assets/greenCross.png')
+
+  const actionReset = StackActions.reset(
+    {
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Home' }),
+      ],
+    }
+  )
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -87,6 +97,8 @@ export default function Login({navigation}) {
             })
           
           if(resp){
+            //navigation.reset({index:0,routes:[{name:"Login"}]})
+            navigation.dispatch(actionReset)
             navigation.push("Home")
           }
         })

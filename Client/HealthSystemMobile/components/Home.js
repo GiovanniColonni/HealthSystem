@@ -79,6 +79,7 @@ function Home({navigation}){
     Api.getEventList(userState.user.googleId)
     .then((resp)=>{
         if(resp !== false){
+            console.log(resp)
             setEvents(resp)
             setAvaible(true)
         }
