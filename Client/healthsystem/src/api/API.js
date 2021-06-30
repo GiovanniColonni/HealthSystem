@@ -108,7 +108,7 @@ async function getEvents(id,type){
         .then((response) =>{ 
             let events = []
             response.data.forEach(element => {
-                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL))
+                events.push(new Event(element.id,element.typeExamination,moment(element.dateStart).toDate(),moment(element.dateEnd).toDate(),false,element.description,element.meetingURL, element.doctorId, element.patientId))
             });
             return events
         })

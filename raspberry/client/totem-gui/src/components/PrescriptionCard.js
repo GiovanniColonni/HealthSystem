@@ -64,7 +64,7 @@ function PrescriptionCard({prescription, downloadPrescription}) {
     <IconButton style={{zIndex: '3'}}>
       <FaFileDownload style={{color: "#77D353"}} size={40}
         onFocus={(event) => event.stopPropagation()}
-        onClick={(event) => downloadPrescription(event, prescription.patientId, prescription.pathFileSystem)} />
+        onClick={(event) => downloadPrescription(event, prescription.pathFileSystem)} />
     </IconButton>
     <Typography style={{marginTop: 'auto', marginBottom: 'auto'}}>{prescription.date}</Typography>
     <Typography style={cardstyle.caption}>
@@ -83,7 +83,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PrescriptionList({googleId, title}) {
+export default function PrescriptionList({googleId}) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState();
   const [prescriptionList, setPrescriptionList] = useState([]);
@@ -93,9 +93,9 @@ export default function PrescriptionList({googleId, title}) {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const downloadPrescription = (event, patientId, pathFileSystem) => {
+  const downloadPrescription = (event, pathFileSystem) => {
     event.stopPropagation()
-    API_patient.getPrescription(patientId, pathFileSystem)
+    API_patient.getPrescription(pathFileSystem)
       .then((file) =>{
         setDownloadProcess(false)
         let url = window.URL.createObjectURL(file)
@@ -129,8 +129,7 @@ export default function PrescriptionList({googleId, title}) {
 
   return (
     <>
-    {title === true &&
-      <Typography variant="h5" style={cardstyle.titles}>My Prescription List</Typography>}
+    <Typography variant="h5" style={cardstyle.titles}>My Prescription List</Typography>
     <div className={classes.root}>
           {prescriptionList.length > 0 &&
               prescriptionList.map((prescription, index) => (

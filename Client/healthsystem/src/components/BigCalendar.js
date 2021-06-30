@@ -50,6 +50,7 @@ export default function BigCalendar(props) {
   }
 
   const submit = () =>{
+    console.log("Patient selected: ", patientId)
     if(createEvent.typeExamination !== undefined && createEvent.typeExamination !== ""){
       let URL = ""
       if(createEvent.typeExamination === "meeting"){

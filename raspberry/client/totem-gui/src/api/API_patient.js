@@ -34,8 +34,8 @@ async function getDoctorImage(doctorId){
     return image
 }
 
-async function getPrescription(patientId, pathFileSystem){
-    const file = await axios.get('/api/patient/' + patientId + '/prescription/'+pathFileSystem,{
+async function getPrescription(pathFileSystem){
+    const file = await axios.get('/api/patient/prescription/'+pathFileSystem,{
         responseType: 'blob', // Important
         headers: {
             'Content-Type': 'application/json'

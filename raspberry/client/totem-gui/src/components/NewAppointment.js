@@ -3,7 +3,7 @@ import { Row, Column } from '@mui-treasury/components/flex';
 import { Typography } from '@material-ui/core';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
-import API from '../api/API';
+import Api from '../api/Api';
 import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
 import { BookingAppointmentCard } from './AppointmentCard';
@@ -52,14 +52,19 @@ export default function NewAppointment({user}){
     }
 
     const [freeAppointmentList, setFreeAppointmentList] = useState(initAppointmentList());
+    const [docAppointmentList, setdocAppointmentList] = useState([]);
     const [patient, setPatient] = useState({})
     const [doctor, setDoctor] = useState(new Doctor())
     const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
+        console.log("User: ", user)
         API_patient.getPatient(user.googleId)
         .then((patient) =>{
-        setPatient(patient)
+            console.log("Patient: ", patient)
+            if (patient !== undefined) {
+                setPatient(patient)
+            }
         })
         .catch((err)=>{
             console.log(err)
@@ -75,21 +80,26 @@ export default function NewAppointment({user}){
             });
         }
         if (patient.doctorId !== undefined){
-            API.getEvents(patient.doctorId, "Doctor")
+            Api.getEvents(patient.doctorId, "Doctor")
             .then((appointments) =>{
-                appointments.sort(function (left, right) {
-                        return moment.utc(right.date).diff(moment.utc(left.date))
-                })
-                let updatedList = freeAppointmentList
-                for (const busyAppointment of appointments) {
-                    console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
-                    const date = moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")
-                    updatedList = updatedList.filter((appointmentDate) => appointmentDate !== date);
+                console.log("Doctor's appointments: ", appointments)
+                if (appointments !== undefined) {
+                    appointments.sort(function (left, right) {
+                            return moment.utc(right.date).diff(moment.utc(left.date))
+                    })
+                    setdocAppointmentList(appointments)
+                    let updatedList = freeAppointmentList
+                    for (const busyAppointment of appointments) {
+                        console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
+                        const date = moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")
+                        updatedList = updatedList.filter((appointmentDate) => appointmentDate !== date);
+                    }
+                    console.log("Free List ", updatedList); 
+                    setFreeAppointmentList(updatedList)
                 }
-                console.log("Free List ", updatedList); 
-                setFreeAppointmentList(updatedList)
             })
             .catch((err) =>{
+                setdocAppointmentList([])
                 console.log(err)
             })
         }
@@ -115,7 +125,7 @@ export default function NewAppointment({user}){
         const formatedEndDate = moment(date, "MM/DD/YYYY hh:mm A").add(1, 'hours').format("MM/DD/YYYY hh:mm A");
 
         API_patient.setAppointment(patient.googleId,patient.doctorId,formatedStartDate,"meeting",
-                                    "Created by patient",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
+                                    "my description",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
             .then((resp) =>{
                 if(resp.status === 200){
                     setModalShow(true)

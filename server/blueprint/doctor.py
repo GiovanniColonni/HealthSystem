@@ -60,13 +60,14 @@ def insert_prescription():
     pathFileSystem = request.form.get('pathFileSystem')
     notePrescription = request.form.get('notePrescription')
     date = request.form.get('date')
+    doctorId = request.form.get('doctorId')
     file = request.files['file']
     i = InsertQuery()
     if not Path('prescriptions/' + patientId).is_dir():
         Path('prescriptions/' + patientId).mkdir()
     destination = 'prescriptions/' + patientId + '/' + file.filename
     # save prescription in the database
-    if i.insert_prescription(patientId, file.filename, notePrescription, date):
+    if i.insert_prescription(patientId, file.filename, notePrescription, date, doctorId):
         file.save(destination)
         return make_response(jsonify("upload successfully"), 200)
     return make_response(jsonify("ERROR"), 400)

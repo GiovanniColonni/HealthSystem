@@ -10,7 +10,6 @@ import API from "../api/API"
 import {useHistory} from "react-router-dom"
 import Logo from "./Logo"
 import doctor from '../icons/doctor.png'
-import nurse from '../icons/nurse.png'
 import patient from '../icons/patient.png'
 import Modal from 'react-bootstrap/Modal';
 import Divider from '@material-ui/core/Divider';
@@ -21,17 +20,12 @@ const images = [
   {
     url: doctor,
     title: 'Doctor',
-    width: '33%',
-  },
-  {
-    url: nurse,
-    title: 'Nurse',
-    width: '34%',
+    width: '50%',
   },
   {
     url: patient,
     title: 'Patient',
-    width: '33%',
+    width: '50%',
   },
 ];
 
@@ -67,10 +61,7 @@ var firstaccstyle = {
     fontWeight: "bold",
     fontSize: "24px",
   }, btn: {
-      backgroundColor: "#8BC24A"
-  }, image: {
-    height: 100,
-    width: 50
+    backgroundColor: "#8BC24A"
   }
 }
 
@@ -78,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    minWidth: 200
+    minWidth: 220
   },
   image: {
     position: 'relative',
-    height: 100,
+    height: 150,
     [theme.breakpoints.down('xs')]: {
       width: '100% !important', // Overrides inline-style
       height: 100,
@@ -96,6 +87,13 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.1,
       },
     },
+  },
+  imageSelected: {
+    position: 'relative',
+    height: 150,
+    '& $imageBackdrop': {
+      opacity: 0.1,
+    }
   },
   imageButton: {
     position: 'absolute',
@@ -166,6 +164,7 @@ export default function FirstAccess({user, setUser}){
     },[user.userType, history]) 
 
     let buttonClick = (e) => {
+      console.log("Set type: ", e)
       setUserType(e)
     }
     function submit() {
@@ -283,11 +282,12 @@ export default function FirstAccess({user, setUser}){
                     </Row>
                     <Row style={firstaccstyle.item}>
                       <div className={classes.root}>
-                        {images.map((image) => (
+                        {images.map((image, index) => (
                           <ButtonBase
                           disableRipple
                             key={image.title}
-                            className={classes.image}
+                            //className={classes.image}
+                            className={(userType === image.title)? classes.imageSelected : classes.image}
                             style={{
                               width: image.width,
                             }}

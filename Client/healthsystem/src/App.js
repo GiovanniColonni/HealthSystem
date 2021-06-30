@@ -10,9 +10,8 @@ import NavigationBar from './components/NavigationBar';
 import Login from "./components/Login";
 import FirstAccess from "./components/FirstAccess";
 import PatientDetails from "./components/PatientDetails";
-import IframeJitsi from "./components/IframeJitsi";
 import PersonalProfile from './components/PersonalProfile';
-import { PrescriptionCardList } from './components/PrescriptionCard';
+import PrescriptionList from './components/PrescriptionCard';
 import Home from './components/Home';
 import HeaderChooseDoctor from './components/HeaderChooseDoctor';
 import SelectDoctor from "./components/SelectDoctor";
@@ -20,6 +19,8 @@ import NewAppointment from "./components/NewAppointment";
 import PatientList from './components/PatientList';
 import PatientCall from './components/PatientCall';
 import DoctorCall from './components/DoctorCall';
+import MeasureList from './components/MeasureList';
+import { Typography } from '@material-ui/core';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -82,21 +83,6 @@ function App() {
             <PatientDetails />
           </Route>
 
-          {/*Route exact path={"/patient" + {patientId} + "/sensor" + {sensorId}}> */}
-          <Route exact path={"/patient/sensor"}>
-            <div>
-              <NavigationBar user={user} logout={handleLogout}/>
-              <h1>Sensor Details of Patient XXX</h1>
-            </div>
-          </Route>
-
-          {/*Route exact path={"/patient" + {patientId} + "/appointment" + {appointmentId}}> */}
-          <Route exact path={"/patient/appointment"}>
-            <div>
-              <NavigationBar user={user} logout={handleLogout}/>
-              <h1>Appointement Details of Patient XXX, Date XXX</h1>
-            </div>
-          </Route>
           <Route exact path={"/patient/meeting"}>
             <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
               <NavigationBar user={user} logout={handleLogout}/>
@@ -108,8 +94,19 @@ function App() {
           <Route exact path={"/prescriptionList"}>
             <div>
               <NavigationBar user={user} logout={handleLogout}/>
-              <h1>My Prescriptions</h1>
-              <PrescriptionCardList user={user}/>
+              <PrescriptionList googleId={user.googleId} title={true}/>
+            </div>
+          </Route>
+
+          {/* Only accessible for patient users */}
+          <Route exact path={"/measureList"}>
+            <NavigationBar user={user} logout={handleLogout}/>
+            <div style={{width: '65%', margin: 'auto'}}>
+              <Typography variant="h5" 
+                style={{fontSize: '30px', fontStyle: 'italic', color: '#616161', marginBottom: '30px'}}>
+                  My Measures
+              </Typography>
+              <MeasureList googleId={user.googleId} />
             </div>
           </Route>
 
