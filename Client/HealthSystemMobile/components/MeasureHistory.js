@@ -64,7 +64,7 @@ function MeasureHistory({navigation}){
       let u_mis = ""
       let value = ""
       // tipo di misura
-      if(item.type ==  "OxygenSaturatino"){
+      if(item.type ==  "OxygenSaturation"){
         u_mis = " %"
         value = item.value
       }
@@ -76,19 +76,20 @@ function MeasureHistory({navigation}){
       
       if(item.type ==  "BloodPressure"){
         u_mis = " mmHg"
+        // value = JSON.parse(item.value)
         value = item.value + "/" + "123"
       }
       
       if(item.type !== "type"){
-
+        let subTitle = ``
         return(
           <ListItem style={styles.listItem} key={i} bottomDivider>
             {item.type == "BloodPressure" && <Image style={styles.icons} source={bloodIcon} />}
-            {item.type ==  "OxygenSaturatino" && <Image style={styles.icons} source={oxygenIcon} />}
+            {item.type ==  "OxygenSaturation" && <Image style={styles.icons} source={oxygenIcon} />}
             {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
             <ListItem.Title>{item.type}</ListItem.Title>
-            <ListItem.Subtitle>{value + u_mis + "  "}</ListItem.Subtitle>
-            <ListItem.Subtitle>{item.date}</ListItem.Subtitle>
+            <ListItem.Subtitle>{value + u_mis + " " +item.date}</ListItem.Subtitle>
+            
           </ListItem>            
         )
         }

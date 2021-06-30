@@ -1,5 +1,5 @@
 import React, { useState,useEffect, useRef  } from 'react';
-import { StyleSheet,Image } from 'react-native';
+import { StyleSheet,Image,TouchableOpacity } from 'react-native';
 
 import 'react-native-gesture-handler';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -33,6 +33,7 @@ export default function App() {
   
   const img = require('./assets/greenCross.png')
   const styleImg = {width:51,height:51,resizeMode: 'contain'}
+  const styileArrow = {width:41,height:41,resizeMode: 'contain'}
   const AppStackNavigator = createStackNavigator({
 
     Home:{
@@ -53,11 +54,27 @@ export default function App() {
     },
     MeasureHistory:{
       screen: MeasureHistory,
-      navigationOptions: ({navigation}) =>({
-        title: `Storico Misure`,
-        headerLeft: () => <Image style={styleImg} source={img}/>
+      navigationOptions: ({navigation}) =>{ 
         
-      })
+        if(Platform.OS === 'android'){
+          return({
+            title: `Storico Misure`,
+            headerLeft: () => <Image style={styleImg} source={img}/> 
+            })
+        }
+        
+        return(
+          {title:`Storico Misure`,
+          headerRight:() => <Image style={styleImg} source={img}/>,
+          headerLeft:() => {
+            return(
+          <TouchableOpacity onPress={()=>navigation.navigate("Home")}>
+              <Image source={require('./assets/arrow.png')}  style={styleImg} />
+          </TouchableOpacity>)
+          } 
+        }
+        )
+        }
     }
     
 
