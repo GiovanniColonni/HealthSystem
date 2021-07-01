@@ -64,7 +64,7 @@ function PrescriptionCard({prescription, downloadPrescription}) {
     <IconButton style={{zIndex: '3'}}>
       <FaFileDownload style={{color: "#77D353"}} size={40}
         onFocus={(event) => event.stopPropagation()}
-        onClick={(event) => downloadPrescription(event, prescription.pathFileSystem)} />
+        onClick={(event) => downloadPrescription(event, prescription.patientId, prescription.pathFileSystem)} />
     </IconButton>
     <Typography style={{marginTop: 'auto', marginBottom: 'auto'}}>{prescription.date}</Typography>
     <Typography style={cardstyle.caption}>
@@ -93,9 +93,9 @@ export default function PrescriptionList({googleId, title}) {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const downloadPrescription = (event, pathFileSystem) => {
+  const downloadPrescription = (event, patientId, pathFileSystem) => {
     event.stopPropagation()
-    API_patient.getPrescription(pathFileSystem)
+    API_patient.getPrescription(patientId, pathFileSystem)
       .then((file) =>{
         setDownloadProcess(false)
         let url = window.URL.createObjectURL(file)

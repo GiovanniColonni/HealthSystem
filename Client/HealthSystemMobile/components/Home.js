@@ -61,6 +61,10 @@ function Home({navigation}){
             borderColor:"#8bc24a",
             borderEndColor:"#8bc24a",
             padding:10
+        },
+        message:{
+            fontSize:21,
+            textAlign:"center"
         }
     });
         
@@ -75,6 +79,7 @@ function Home({navigation}){
     Api.getEventList(userState.user.googleId)
     .then((resp)=>{
         if(resp !== false){
+            console.log(resp)
             setEvents(resp)
             setAvaible(true)
         }
@@ -94,11 +99,6 @@ function Home({navigation}){
             left15 = left15 / (1000*60) // in minuti 
             
             console.log(` left 15 : ${left15}`)
-            if(left15 < -60){ // min
-                // 1 ora dopo l'appuntamento
-                Alert.alert("Appuntamento terminato","questo appuntamento è terminato")
-                return;
-            }
             if(left15 > 15){
                 const hs = left15/60 // ore
                 let titleAlert = ""
@@ -129,12 +129,17 @@ function Home({navigation}){
             <View style={styles.container}>
                 <View style={styles.buttonView}>
                     <Button icon={{name:"history", size:35}} type="outline" titleStyle={styles.changePage} title="Go to measure history"
-                            onPress={()=>{navigation.push("MeasureHistory")}}/>
+                            onPress={()=>{navigation.navigate("MeasureHistory")}}/>
                 </View>
                 <View style={styles.scrollView}>
                     <SafeAreaView>
                         <ScrollView >
-                            {events.map((item,i)=>{
+                            {events.length != 0 && events.map((item,i)=>{
+                                var now = new Date();
+                                now.setHours(now.getHours()+3) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
+                                if(new Date(item.dateStart)  < now){ // appuntamento terminato 
+                                    return;
+                                }
                                 return(
                                     <ListItem key={i} bottomDivider>
                                         {item.typeExamination === "meeting" &&  <ImageCall url={item.meetingURL} date={item.dateStart}/> }
@@ -145,6 +150,7 @@ function Home({navigation}){
                                     </ListItem>
                                 )
                             })}
+                            {events.length == 0 && <Text style={styles.message}>Mangi molte mele ? non ci sono appuntamenti futuri per te !</Text>}
                         </ScrollView>
                     </SafeAreaView>        
                 </View>

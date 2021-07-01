@@ -59,8 +59,6 @@ var detailsstyle = {
         justifyContent: "center",
         alignItems: "center"
     }, measures: {
-        width: '70%',
-        margin: 'auto'
     }, appointmentlist: {
         width: '50%',
         margin: 'auto'
@@ -100,8 +98,7 @@ export default function PatientDetails(props) {
                             {history.location.state.patient.name + " " + history.location.state.patient.surname }
                         </div>
                         <div style={detailsstyle.caption}>
-                            {/*Some info
-                            Some other info... */}
+                            {history.location.state.patient.fiscalCode}
                         </div>
                     </Item>
                 </Column>

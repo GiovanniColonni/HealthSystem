@@ -43,11 +43,11 @@ def get_doctor_image(doctorId):
     return send_file("doctor_image/empty_user.png", mimetype='image/gif')
 
 
-@patient.route('/prescription/<pathFileSystem>')
+@patient.route('/<patientId>/prescription/<pathFileSystem>')
 @login_required
-def get_prescription_file(pathFileSystem):
+def get_prescription_file(pathFileSystem, patientId):
     s = SelectQuery()
-    patientId = request.cookies.get('remember_token').split('|')[0]  # instruction to get googleID from request
+    #patientId = request.cookies.get('remember_token').split('|')[0]  # instruction to get googleID from request
     image = s.get_prescription_file(patientId, pathFileSystem)
     if image is not None:
         my_file = Path("prescriptions/"+patientId+"/" + image)

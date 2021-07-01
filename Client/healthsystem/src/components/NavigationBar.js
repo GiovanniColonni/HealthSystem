@@ -20,7 +20,6 @@ var navstyle = {
 
 
 export default function NavigationBar({user,logout}) {
-    const [events, setEvents] = useState([])
     const [notifList, setNotifList] = useState([])
     const history = useHistory()
 
@@ -44,7 +43,6 @@ export default function NavigationBar({user,logout}) {
                                         evnt.patient = patient.name + " " + patient.surname
                                         notifications.push({type: "join", date: evnt.start, URL: evnt.conference, patient: patient, patientId: evnt.patientId})
                                         setNotifList(notifications)
-                                        setEvents(events)
                                     })
                                     .catch((err) =>{
                                         console.log(err)
@@ -52,7 +50,6 @@ export default function NavigationBar({user,logout}) {
                             }else{
                                 notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
                                 setNotifList(notifications)
-                                setEvents(events)
                             }
                         }
                     }
@@ -109,8 +106,7 @@ export default function NavigationBar({user,logout}) {
                     </>}
                 </Nav>
                 <Nav>
-                    {user.userType === 'Doctor' &&
-                        <NotificationMenuModal user={user} notifList={notifList}/>}
+                    <NotificationMenuModal user={user} notifList={notifList}/>
                     <Nav.Link href="/personalProfile">My Profile</Nav.Link>
                     <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
                 </Nav>

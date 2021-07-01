@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Column } from '@mui-treasury/components/flex';
 import { Typography } from '@material-ui/core';
-import { UserCardNoLink } from './UserCard';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
 import API from '../api/API';
-import Button from '@material-ui/core/Button';
 import ModalFeedback from './ModalFeedback';
 import moment from 'moment';
 import { BookingAppointmentCard } from './AppointmentCard';
-import {useHistory} from "react-router-dom"
 import Doctor from '../classes/Doctor';
 import Functions from '../functions/Functions';
 import BigCalendar from './BigCalendar';
@@ -55,7 +52,6 @@ export default function NewAppointment({user}){
     }
 
     const [freeAppointmentList, setFreeAppointmentList] = useState(initAppointmentList());
-    const [docAppointmentList, setdocAppointmentList] = useState([]);
     const [patient, setPatient] = useState({})
     const [doctor, setDoctor] = useState(new Doctor())
     const [modalShow, setModalShow] = useState(false);
@@ -84,7 +80,6 @@ export default function NewAppointment({user}){
                 appointments.sort(function (left, right) {
                         return moment.utc(right.date).diff(moment.utc(left.date))
                 })
-                setdocAppointmentList(appointments)
                 let updatedList = freeAppointmentList
                 for (const busyAppointment of appointments) {
                     console.log("Current: " + moment(busyAppointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY hh:mm A"))
@@ -95,7 +90,6 @@ export default function NewAppointment({user}){
                 setFreeAppointmentList(updatedList)
             })
             .catch((err) =>{
-                setdocAppointmentList([])
                 console.log(err)
             })
         }
@@ -121,7 +115,7 @@ export default function NewAppointment({user}){
         const formatedEndDate = moment(date, "MM/DD/YYYY hh:mm A").add(1, 'hours').format("MM/DD/YYYY hh:mm A");
 
         API_patient.setAppointment(patient.googleId,patient.doctorId,formatedStartDate,"meeting",
-                                    "my description",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
+                                    "Created by patient",formatedEndDate,Functions.createMeeting(patient.googleId, patient.doctorId))
             .then((resp) =>{
                 if(resp.status === 200){
                     setModalShow(true)
