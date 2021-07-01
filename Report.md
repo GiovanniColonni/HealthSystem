@@ -7,6 +7,7 @@ report in PDF con descrizione attività svolta e principali caratteristiche tecn
 
 ## DB schema 
 
+
 # Adopted Technologies
 
 ## Desktop

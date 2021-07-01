@@ -118,18 +118,3 @@ function MeasureHistory({navigation}){
 }
 export default MeasureHistory;
 
-/**
- *       
-  <SafeAreaView>
-      <ScrollView>
-      {avaible & measureData.map((item,index)=>(
-          <ListItem key={index} bottomDivider>
-                      <Image source={HRIcon}/>
-                      
-          </ListItem>
-      
-      ))}           
-      </ScrollView>
-  </SafeAreaView>
-
- */

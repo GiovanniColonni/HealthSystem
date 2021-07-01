@@ -94,11 +94,10 @@ function Home({navigation}){
         const handlePress = useCallback(async () => {
             const s = new Date(date + 2*60*60*1000) /*Timezone sbagliata aggiungo 2 ore */
             
-            console.log(new Date()-date)
             let left15 = new Date(date) - new Date();
             left15 = left15 / (1000*60) // in minuti 
             
-            console.log(` left 15 : ${left15}`)
+            //console.log(` left 15 : ${left15}`)
             if(left15 > 15){
                 const hs = left15/60 // ore
                 let titleAlert = ""
@@ -124,7 +123,22 @@ function Home({navigation}){
             </TouchableOpacity>
         )
     }
-    
+    const prepareDesc = (desc) => {
+
+        let s = ""
+        if(desc.length < 23){
+            return desc
+        }
+        let i = 0;
+        var e;
+        while(i < desc.length){
+            e = Math.min(i+23,desc.length)
+            s += desc.slice(i,e) + "\n";
+            i += 23;
+        } 
+        
+        return s;
+    }
     return(
             <View style={styles.container}>
                 <View style={styles.buttonView}>
@@ -136,7 +150,7 @@ function Home({navigation}){
                         <ScrollView >
                             {events.length != 0 && events.map((item,i)=>{
                                 var now = new Date();
-                                now.setHours(now.getHours()+3) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
+                                now.setHours(now.getHours()) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
                                 if(new Date(item.dateStart)  < now){ // appuntamento terminato 
                                     return;
                                 }
@@ -145,8 +159,10 @@ function Home({navigation}){
                                         {item.typeExamination === "meeting" &&  <ImageCall url={item.meetingURL} date={item.dateStart}/> }
                                         {item.typeExamination === "measure" &&
                                          <Image style={styles.icons} source={measureIcon}/>}
-                                        <ListItem.Title><Text style={{flex: 1, flexWrap: 'wrap'}}>{item.description}</Text></ListItem.Title>
-                                        <ListItem.Subtitle><Text style={{flex: 1, flexWrap: 'wrap'}}>{item.dateStart.slice(0,item.dateStart.length-3)}</Text></ListItem.Subtitle> 
+                                         
+                                            <ListItem.Title><Text style={{flex: 1, flexWrap: 'wrap'}}>{item.dateStart.slice(0,10) + "\n" + item.dateStart.slice(10,19)}</Text></ListItem.Title>
+                                            <ListItem.Subtitle><Text style={{flex: 1, flexWrap: 'wrap'}}>{prepareDesc(item.description)}</Text></ListItem.Subtitle> 
+                                         
                                     </ListItem>
                                 )
                             })}

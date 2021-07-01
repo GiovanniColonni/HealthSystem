@@ -166,6 +166,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             setMessage("Measure is finished")
             average = average / yGraph.length
             setYGraph([]) // azzero dati misura precedente
+            setName("")
             //console.log("end measure")
         }
         if(mProgres){
