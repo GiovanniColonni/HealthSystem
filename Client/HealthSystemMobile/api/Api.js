@@ -48,14 +48,17 @@ async function getEventList(googleId){
         let resp = await axios.get(`${prefix}/patient/event/${googleId}`);
         if(resp.status === 200){        
             // qui bisognerebbe mettere un filtro che toglie le entry la cui data < data odierna
-            var data = []
+            var data = resp.data
+            
             var now = new Date();
-            now.setHours(now.getHours()+3) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
-            for(e in resp.data){
+            now.setHours(now.getHours()) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
+            console.log(data)
+            data.map((item)=>{
                 if(new Date(item.dateStart)  >= now){ // appuntamento terminato 
-                    data.push(e)
+                    return item
                 }
-            }
+            })
+            
             return data
         }
     }catch(e){
