@@ -123,7 +123,7 @@ def insert_measure():
     type = request.form.get('type')
     value = request.form.get('value')
     date = request.form.get('date')
-    
+    print(f"value : {value}")
     i = InsertQuery()
     if i.insert_measure(patientId, type, value, date):
         return make_response("Ok", 200)

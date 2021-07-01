@@ -84,7 +84,7 @@ function MeasureHistory({navigation}){
         value = item.value + "/" + "123"
       }
       
-      if(item.type !== "type"){
+      if(item.type !== "type" && item.type !== ""){
         let subTitle = ``
         return(
           <ListItem style={styles.listItem} key={i} bottomDivider>
@@ -100,6 +100,7 @@ function MeasureHistory({navigation}){
           </ListItem>            
         )
         }
+        return;
      }
 
     return(
