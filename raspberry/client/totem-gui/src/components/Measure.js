@@ -165,12 +165,15 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             clearInterval(interval)
             setMessage("Measure is finished")
             average = average / yGraph.length
+            setYGraph([]) // azzero dati misura precedente
             //console.log("end measure")
         }
         if(mProgres){
             console.log(measure.thReached )
            if(measure.thReached === 1){
 
+
+                console.log(JSON.stringify(measureValue))
                setIsCritic(true)
                Api.postMeasure(user.googleId,
                 name,JSON.stringify(measureValue),
