@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const prefix = "https://9b4755473375.ngrok.io/api"
+const prefix = "https://3e9aa2010c2c.ngrok.io/api"
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -46,8 +46,17 @@ async function getEventList(googleId){
     
     try{
         let resp = await axios.get(`${prefix}/patient/event/${googleId}`);
-        if(resp.status === 200){         
-            return resp.data
+        if(resp.status === 200){        
+            // qui bisognerebbe mettere un filtro che toglie le entry la cui data < data odierna
+            var data = []
+            var now = new Date();
+            now.setHours(now.getHours()+3) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
+            for(e in resp.data){
+                if(new Date(item.dateStart)  >= now){ // appuntamento terminato 
+                    data.push(e)
+                }
+            }
+            return data
         }
     }catch(e){
         return false;
