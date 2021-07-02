@@ -183,10 +183,12 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                 .then((resp)=>{
                    if(resp != false){
                     console.log("Measure seded to main server")
+                   }else{
+                    console.log("Error posting the measure into main server")
                    }
-                   console.log("Error posting the measure into main server")
+                   
                }).catch((resp) => {
-                   console.log("Error posting the measure into main server")
+                   console.log("Error posting the measure into main server"+resp)
                })
                
            } else {

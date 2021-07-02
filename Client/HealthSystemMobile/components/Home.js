@@ -154,6 +154,7 @@ function Home({navigation}){
                                 if(new Date(item.dateStart)  < now){ // appuntamento terminato 
                                     return;
                                 }
+                                
                                 return(
                                     <ListItem key={i} bottomDivider>
                                         {item.typeExamination === "meeting" &&  <ImageCall url={item.meetingURL} date={item.dateStart}/> }

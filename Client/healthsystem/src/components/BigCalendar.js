@@ -39,7 +39,9 @@ export default function BigCalendar(props) {
       .catch((err)=>{
 
       });
-  }, [user.googleId, user.userType]);
+      console.log("typeExamination  " + typeExamination)
+      console.log("patientId  " + patientId)
+  }, [user.googleId, user.userType, typeExamination, patientId]);
   // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
 
   const createEventFunction = (start, end) =>{
@@ -64,34 +66,36 @@ export default function BigCalendar(props) {
         patId = undefined
       }
       let doctId = user.googleId
-      if(createEvent.typeExamination === "reminder"){
+      if(createEvent.typeExamination === "measure"){
         doctId = undefined
       }
       let startDate = moment(createEvent.start).format("MM/DD/YYYY hh:mm A")
       let endDate = moment(createEvent.end).format("MM/DD/YYYY hh:mm A")
       let repeatV = repeatValue
-      do{
-        API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)
-          .then((resp) =>{
-            setShowCreateModal(false)
-            setCreateEvent({})
-            API.getEvents(user.googleId,user.userType)
-              .then((events) =>{
-                if(events !== undefined){
-                  setEvents(events)
-                }
-              })
-              .catch((err)=>{
+      if(!((typeExamination === "measure" || typeExamination === "meeting") && (patientId === undefined || patientId === null))){
+        do{
+          API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)
+            .then((resp) =>{
+              setShowCreateModal(false)
+              setCreateEvent({})
+              API.getEvents(user.googleId,user.userType)
+                .then((events) =>{
+                  if(events !== undefined){
+                    setEvents(events)
+                  }
+                })
+                .catch((err)=>{
 
-            });
-          })
-          .catch((err) =>{
-            console.log(err)
-          })
-          repeatV --
-        startDate = moment(startDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
-        endDate = moment(endDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
-      }while(createEvent.typeExamination === "reminder" && repeatV > 0)
+              });
+            })
+            .catch((err) =>{
+              console.log(err)
+            })
+            repeatV --
+          startDate = moment(startDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+          endDate = moment(endDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+        }while(createEvent.typeExamination === "measure" && repeatV > 0)
+      }
     }
   }
 
@@ -141,7 +145,7 @@ export default function BigCalendar(props) {
               <div className="RadioGroup">
                 <RadioGroup aria-label="gender" name="gender1" value={typeExamination} onChange={(e) => updateTypeExamination(e.target.value)}>
                   <FormControlLabel value="meeting" label="meeting" control={<Radio />} />
-                  <FormControlLabel value="reminder" label="reminder" control={<Radio />} />
+                  <FormControlLabel value="measure" label="measure" control={<Radio />} />
                   <FormControlLabel value="busy" label="busy" control={<Radio />} />
                 </RadioGroup>
               </div>
@@ -150,7 +154,7 @@ export default function BigCalendar(props) {
           <div>
             <Input placeholder="Description" name="Description" onChange={(e) => updateDescription(e.target.value) } />
             {createEvent !== undefined && createEvent.typeExamination !== "busy" && <Input placeholder="Patient Name" name="patientName" onChange={(e) => updatePatientName(e.target.value) } />}
-            {createEvent !== undefined && createEvent.typeExamination === "reminder" && 
+            {createEvent !== undefined && createEvent.typeExamination === "measure" && 
             <TextField
               id="outlined-number" label="Repeat for # days" type="number" defaultValue={1} onChange={(e) => setRepeatValue(e.target.value)} InputProps={{ inputProps: { min: 1, max: 30 } }}
               InputLabelProps={{

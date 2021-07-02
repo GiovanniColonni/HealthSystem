@@ -3,10 +3,12 @@ import Modal from 'react-bootstrap/Modal'
 import Button from "@material-ui/core/Button"
 import moment from 'moment'
 import { useHistory } from 'react-router';
+import API_patient from '../api/API_patient';
 
 export default function EventModal(props) {
     const history = useHistory()
     const [disableButton,setDisableButton] = useState(true)
+    const [patient,setPatient] = useState(undefined)
 
     useEffect( () => {
         const initialDifference = moment(props.event.start).diff(moment(),'minutes')
@@ -14,12 +16,22 @@ export default function EventModal(props) {
         if(initialDifference < 15 && endDifference <= 0){
             setDisableButton(false)
         }
-    },[disableButton, props.event.start, props.event.end])
+        if(props.patientId !== undefined){
+            API_patient.getPatient(props.patientId)
+                .then((patient) =>{
+                    setPatient(patient)
+                })
+                .catch((err) =>{
+                    console.log(err)
+                })
+        }
+    },[disableButton, props.event.start, props.event.end, patient])
 
     return(
         <Modal show={props.show} onHide={props.onHide}>
             <Modal.Header closeButton>
-                <Modal.Title>{props.event.title}</Modal.Title>
+                {props.event.title === "meeting" && patient !== undefined && <Modal.Title>{props.event.title + " with " + patient.name + " " + patient.surname}</Modal.Title>}
+                {props.event.title !== "meeting" && <Modal.Title>{props.event.title}</Modal.Title>}
             </Modal.Header>
             <Modal.Body>
                     <p>{props.event.description}</p>
