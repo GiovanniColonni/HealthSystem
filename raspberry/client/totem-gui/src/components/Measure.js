@@ -162,7 +162,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
     useEffect(()=>{
         
         if(mProgres === false && !first){
-            
+            console.log("qui")
             clearInterval(interval)
             setMessage("Measure is finished")
             average = average / yGraph.length
