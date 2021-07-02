@@ -40,7 +40,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
     let [xGraph,setXGraph] = useState([])
     let [isCritic, setIsCritic] = useState(false)
     let average = 0
-
+    let first = true
     let [name,setName] = useState("")
 
     let [message,setMessage] = useState("first")
@@ -161,7 +161,8 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
 
     useEffect(()=>{
         
-        if(mProgres === false){
+        if(mProgres === false && !first){
+            first = true;
             clearInterval(interval)
             setMessage("Measure is finished")
             average = average / yGraph.length
@@ -170,7 +171,8 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             //console.log("end measure")
         }
         if(mProgres){
-            console.log(measure.thReached )
+            //console.log(measure.thReached )
+           first = false;
            if(measure.thReached === 1){
 
 
