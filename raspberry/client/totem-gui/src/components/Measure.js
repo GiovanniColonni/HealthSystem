@@ -173,8 +173,8 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
         }
         if(mProgres){
             //console.log(measure.thReached )
-           first = false;
-           if(measure.thReached === 1){
+            setFirst(false)
+            if(measure.thReached === 1){
 
 
                 console.log(JSON.stringify(measureValue))
