@@ -33,7 +33,7 @@ const int MaxPressureMAX = 130;
 const int MinPressureMIN = 75;
 const int MinPressureMAX = 85;
 
-const int EarthRateMin = 60 ; // valore tra 60 e 100 battiti al minuto
+const int EarthRateMin = 75 ; // valore tra 60 e 100 battiti al minuto
 const int EarthRateMax = 100; // questi sono soltanto valori di riferimento
 // tachicardia sopra i 100
 
