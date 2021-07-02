@@ -72,28 +72,30 @@ export default function BigCalendar(props) {
       let startDate = moment(createEvent.start).format("MM/DD/YYYY hh:mm A")
       let endDate = moment(createEvent.end).format("MM/DD/YYYY hh:mm A")
       let repeatV = repeatValue
-      do{
-        API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)
-          .then((resp) =>{
-            setShowCreateModal(false)
-            setCreateEvent({})
-            API.getEvents(user.googleId,user.userType)
-              .then((events) =>{
-                if(events !== undefined){
-                  setEvents(events)
-                }
-              })
-              .catch((err)=>{
+      if(!((typeExamination === "measure" || typeExamination === "meeting") && (patientId === undefined || patientId === null))){
+        do{
+          API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)
+            .then((resp) =>{
+              setShowCreateModal(false)
+              setCreateEvent({})
+              API.getEvents(user.googleId,user.userType)
+                .then((events) =>{
+                  if(events !== undefined){
+                    setEvents(events)
+                  }
+                })
+                .catch((err)=>{
 
-            });
-          })
-          .catch((err) =>{
-            console.log(err)
-          })
-          repeatV --
-        startDate = moment(startDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
-        endDate = moment(endDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
-      }while(createEvent.typeExamination === "measure" && repeatV > 0)
+              });
+            })
+            .catch((err) =>{
+              console.log(err)
+            })
+            repeatV --
+          startDate = moment(startDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+          endDate = moment(endDate).add(1,"days").format("MM/DD/YYYY hh:mm A")
+        }while(createEvent.typeExamination === "measure" && repeatV > 0)
+      }
     }
   }
 
