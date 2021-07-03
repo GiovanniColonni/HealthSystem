@@ -32,7 +32,7 @@ const style = {
 function Measure ({setMeasure, measure, user, handleLogout}) {
     
     let [mProgres,setMProgres] = useState(false)
-    let [period,setPeriod] = useState(6000) // T = 5 secondi intervallo tra due misure
+    let [period,setPeriod] = useState(6000) // T = 6 secondi intervallo tra due misure
     let [measureError,setMeasureError] = useState(false)
     let [interval,setInt] = useState(0) // intervalId, viene 
     let [measureValue,setMeasureValue] = useState([])

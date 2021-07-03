@@ -38,7 +38,7 @@ const int EarthRateMax = 100; // questi sono soltanto valori di riferimento
 // tachicardia sopra i 100
 
 const int Operc = 100; // Oxigen perc
-const int Tmeasurement = 5000 ; // ms from one measure to another
+const int Tmeasurement = 6000 ; // ms from one measure to another
 
 
 int critic = 0;
@@ -197,5 +197,5 @@ void loop() {
     Serial.println("Stop");
     cmd = "";
   }
-  delay(Tmeasurement/4);
+  delay(Tmeasurement);
 }
