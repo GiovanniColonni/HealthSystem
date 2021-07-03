@@ -42,6 +42,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
     let average = 0
     let [first,setFirst] = useState(true)
     let [name,setName] = useState("")
+    let [sended,setSended] = useState(false)
 
     let [message,setMessage] = useState("Inizia Misura")
 
@@ -119,7 +120,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                                 }else{
                                     setMessage("Process measure")
                                     let measure_json = JSON.parse(m.measureValue)
-
+                                    setSended(false)
                                     setMeasure(m)
                                     setMeasureValue(measure_json)
                                     setMeasureError(false)
@@ -169,16 +170,18 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             setYGraph([]) // azzero dati misura precedente
             setName("")
             setFirst(true)
+            setSended(false)
             //console.log("end measure")
         }
         if(mProgres){
             //console.log(measure.thReached )
             setFirst(false)
-            if(measure.thReached === 1){
-
-
-                console.log(JSON.stringify(measureValue))
+            if(measure.thReached === 1 && !sended){
+                //console.log(JSON.stringify(measureValue))
                setIsCritic(true)
+
+               setSended(true)
+
                Api.postMeasure(user.googleId,
                 name,JSON.stringify(measureValue),
                 measure.dateMeasure,measure.thReached)
