@@ -67,24 +67,26 @@ function MeasureHistory({navigation}){
     const retMeasure = (item,i) => {
       let u_mis = ""
       let value = ""
+      let value_end = ""
       // tipo di misura
+      value = JSON.parse(item.value)
+      console.log(value)
       if(item.type ==  "OxygenSaturation"){
         u_mis = " %"
-        value = item.value
+        value = value["Operc"] + u_mis
       }
       
       if(item.type ==  "HeartRate"){
         u_mis = " bps"
-        value = item.value
+        value = value["Hrate"] + u_mis
       }
       
       if(item.type ==  "BloodPressure"){
-        u_mis = " mmHg"
-        // value = JSON.parse(item.value)
-        value = item.value + "/" + "123"
+        value = value["Max"] + " mmHg \n" + value["Min"] + " mmHg \n" + value["HRate"] + " bps"
       }
       
       if(item.type !== "type" && item.type !== ""){
+        
         let subTitle = ``
         return(
           <ListItem style={styles.listItem} key={i} bottomDivider>
@@ -92,8 +94,8 @@ function MeasureHistory({navigation}){
             {item.type ==  "OxygenSaturation" && <Image style={styles.icons} source={oxygenIcon} />}
             {item.type == "HeartRate" && <Image style={styles.icons} source={heartRateIcon} />}
             
-            <ListItem.Subtitle>{value + u_mis}</ListItem.Subtitle>
-            <ListItem.Title>{item.type + "\n " +item.date}</ListItem.Title>  
+            <ListItem.Title>{value}</ListItem.Title>
+            <ListItem.Subtitle>{item.type + "\n " +item.date}</ListItem.Subtitle>  
             
             
             
