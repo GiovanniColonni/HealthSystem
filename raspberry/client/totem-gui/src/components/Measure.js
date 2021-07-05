@@ -139,12 +139,25 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                                         updateAverage(measure_json["Max"])
                                     }                             
                                     if(measure_json.hasOwnProperty("Operc")){
-                                        setYGraph(oldL => [...oldL,measure_json["Operc"]])
+                                        setYGraph(oldL =>                                            
+                                            {
+                                                if(oldL.length > 25){
+                                                    return [measure_json["Operc"]]
+                                                }
+                                                return [...oldL,measure_json["Operc"]]
+                                            }
+                                            )
                                         setName("OxygenSaturation")
                                         updateAverage(measure_json["Operc"])
                                     }
                                     if(measure_json.hasOwnProperty("HRate") && !measure_json.hasOwnProperty("Max")){
-                                        setYGraph(oldL => [...oldL,measure_json["HRate"]])
+                                        setYGraph(oldL => {
+                                            if(oldL.length > 25){
+                                                return [measure_json["HRate"]]
+                                            }
+                                            return [...oldL,measure_json["HRate"]]
+                                            }
+                                            )
                                         setName("HeartRate")
                                         updateAverage(measure_json["HRate"])
                                     }
