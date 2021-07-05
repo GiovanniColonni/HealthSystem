@@ -129,7 +129,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                                     setXGraph(oldX => [...oldX,1])
                                     if(measure_json.hasOwnProperty("Max")){    
                                         setYGraph(oldL =>{
-                                            if(oldL.length === 25){
+                                            if(oldL.length > 25){
                                                 return [measure_json["Max"]]
                                             }
                                             return [...oldL,measure_json["Max"]]
