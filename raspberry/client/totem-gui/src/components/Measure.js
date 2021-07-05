@@ -249,7 +249,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             <Row style={style.information}>
                 {name == "BloodPressure" && <FaHeart size="4em" color={isCritic? 'red' : 'green'} />}
                 {name == "OxygenSaturation" && <WiHumidity size="4em" color={isCritic? 'red' : 'green'}/>}
-                {name == "HeartBeat" && <FaHeartbeat size="4em" color={isCritic? 'red' : 'green'}/>}
+                {name == "HeartRate" && <FaHeartbeat size="4em" color={isCritic? 'red' : 'green'}/>}
                 <Row>
                     <Typography>{convertMeasureValue(measureValue)}</Typography>
                 </Row>
