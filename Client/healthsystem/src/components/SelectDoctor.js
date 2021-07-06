@@ -50,8 +50,12 @@ const SelectDoctor = (props) =>{
     }
 
     const updateDoctorIdInPatient = (doctorId,patientId) =>{
+        console.log("Update doctor in patient")
+        console.log(doctorId)
+        console.log(patientId)
         API_patient.putDoctorIdInPatient(doctorId,patientId)
             .then((resp) =>{
+                console.log(resp)
                 if(resp.status === 200){
                     history.push("/home")
                 }

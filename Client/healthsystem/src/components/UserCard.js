@@ -152,8 +152,13 @@ export function UserCardList({user, filter, setPatient}) {
 
   return (
     <>
-      {patientList !== undefined && patientList.length > 0 && filter !== undefined && 
+      {patientList !== undefined && patientList.length > 0 && filter !== undefined && setPatient !== undefined &&
         <TogglePatientList patientList={patientList} filter={filter} setPatient={setPatient} />}
+      {patientList !== undefined && patientList.length > 0 && filter !== undefined && setPatient === undefined &&
+        patientList.map(user => (
+          user.name !== undefined && (user.surname + " " + user.name).toLowerCase().includes(filter.toLowerCase()) &&
+          <UserCard title={user.surname + " " + user.name} caption={user.fiscalCode} patientId={user.googleId} patient={user}/>
+      )) }
       {patientList !== undefined && patientList.length > 0 && filter === undefined && 
         patientList.map(user => (
           user.name !== undefined &&
