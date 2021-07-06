@@ -151,10 +151,11 @@ function Home({navigation}){
                             {events.length != 0 && events.map((item,i)=>{
                                 var now = new Date();
                                 now.setHours(now.getHours()) // +2 per correggere timezone + 1 ora in più per eventuali ritardi  
+                                /*
                                 if(new Date(item.dateStart)  < now){ // appuntamento terminato 
                                     return;
                                 }
-                                
+                                */ 
                                 return(
                                     <ListItem key={i} bottomDivider>
                                         {item.typeExamination === "meeting" &&  <ImageCall url={item.meetingURL} date={item.dateStart}/> }
