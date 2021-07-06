@@ -21,6 +21,7 @@ import PatientCall from './components/PatientCall';
 import DoctorCall from './components/DoctorCall';
 import MeasureList from './components/MeasureList';
 import { Typography } from '@material-ui/core';
+import PatientListFiltered from './components/PatientListFiltered';
 
 export const AuthContext = React.createContext(); // added this
 function App() {
@@ -74,7 +75,7 @@ function App() {
           {/* Only accessible for doctor users */}
           <Route exact path={"/patientList"}>
               <NavigationBar user={user} logout={handleLogout}/>
-              <PatientList user={user} />
+              <PatientListFiltered user={user} />
           </Route>
 
           {/* Changes depending on the patient: from patient list of current doctor */}

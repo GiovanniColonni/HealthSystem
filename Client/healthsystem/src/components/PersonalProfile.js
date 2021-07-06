@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'react-bootstrap/Image';
 import DoctorAvatar from '../icons/Doctor_01.png';
 import PatientAvatar from '../icons/Woman_01.png';
@@ -8,6 +8,11 @@ import { FaPen } from 'react-icons/fa';
 import Divider from '@material-ui/core/Divider';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
+import { styled } from '@material-ui/core/styles';
+import API from '../api/API';
+const Input = styled('input')({
+    display: 'none',
+  });
 
 
 var profilestyle = {
@@ -51,6 +56,8 @@ export default function PersonalProfile({user}) {
     const [currentuser, setCurrentUser] = useState({})
     const [doctor, setDoctor] = useState({})
 
+    const myRefname= useRef(null);
+
     useEffect(() => {
         if (user.userType === "Patient") {
             API_patient.getPatient(user.googleId)
@@ -79,6 +86,25 @@ export default function PersonalProfile({user}) {
         }
     }, [user.googleId,currentuser.doctorId, user.userType]);
 
+    const fileSelectedHandler = (event) =>{
+        console.log(event.target.files[0])
+        const file = event.target.files[0]
+        const filename = event.target.files[0].name
+        API.uploadProfileImage(user.googleId,file)
+            .then((resp) => {
+                console.log(resp)
+                window.location.reload(true)        // DO NOT FORCE RELOAD
+            })
+            .catch((err) =>{
+                console.log(err)
+            })
+    }
+
+    const handleClick = () => {
+        console.log("here")
+        myRefname.current.click()
+     }
+
     return (
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
@@ -87,7 +113,7 @@ export default function PersonalProfile({user}) {
                         <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar}/>
                     }
                     {user.userType === 'Patient' &&
-                        <Image src={PatientAvatar} roundedCircle style={profilestyle.avatar} />
+                        <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar} />
                     }
                 </Column>
                 <Column>
@@ -102,24 +128,26 @@ export default function PersonalProfile({user}) {
                 </Column>
                 <Column style={profilestyle.commentblock}>
                     <Item>
-                        <Button
-                            variant="contained"
+                        <label htmlFor="contained-button-file">
+                            <Input accept="image/*" id="contained-button-file" ref={myRefname} type="file" onChange={(event) => fileSelectedHandler(event)}/>
+                            <Button variant="contained"
                             color="secondary"
                             style={profilestyle.editbutton}
-                            startIcon={<FaPen />}
-                        >
-                            Edit Profile
-                        </Button>
-                        
+                            onClick={() => handleClick()}
+                            startIcon={<FaPen />}>
+                                Edit Profile Image
+                            </Button>
+                        </label>
                     </Item>
                 </Column>
+                
             </Row>
             {user.userType === 'Patient' 
                 && <>
                 <Divider variant="middle"/>
                 <Row gap={5} p={2.5}>
                     <Column>
-                        <Image src={DoctorAvatar} roundedCircle style={profilestyle.avatar} />
+                        <Image src={"/api/patient/doctorImage/"+currentuser.doctorId} roundedCircle style={profilestyle.avatar} />
                     </Column>
                     <Column>
                         <Item>

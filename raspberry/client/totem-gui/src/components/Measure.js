@@ -128,36 +128,17 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                                     /**Aggiorno dati dei grafici */ 
                                     setXGraph(oldX => [...oldX,1])
                                     if(measure_json.hasOwnProperty("Max")){    
-                                        setYGraph(oldL =>{
-                                            if(oldL.length > 25){
-                                                return [measure_json["Max"]]
-                                            }
-                                            return [...oldL,measure_json["Max"]]
-                                        
-                                        })
+                                        setYGraph(oldL => [...oldL,measure_json["Max"]])
                                         setName("BloodPressure")
                                         updateAverage(measure_json["Max"])
                                     }                             
                                     if(measure_json.hasOwnProperty("Operc")){
-                                        setYGraph(oldL =>                                            
-                                            {
-                                                if(oldL.length > 25){
-                                                    return [measure_json["Operc"]]
-                                                }
-                                                return [...oldL,measure_json["Operc"]]
-                                            }
-                                            )
+                                        setYGraph(oldL => [...oldL,measure_json["Operc"]])
                                         setName("OxygenSaturation")
                                         updateAverage(measure_json["Operc"])
                                     }
                                     if(measure_json.hasOwnProperty("HRate") && !measure_json.hasOwnProperty("Max")){
-                                        setYGraph(oldL => {
-                                            if(oldL.length > 25){
-                                                return [measure_json["HRate"]]
-                                            }
-                                            return [...oldL,measure_json["HRate"]]
-                                            }
-                                            )
+                                        setYGraph(oldL => [...oldL,measure_json["HRate"]])
                                         setName("HeartRate")
                                         updateAverage(measure_json["HRate"])
                                     }
@@ -249,7 +230,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
             <Row style={style.information}>
                 {name == "BloodPressure" && <FaHeart size="4em" color={isCritic? 'red' : 'green'} />}
                 {name == "OxygenSaturation" && <WiHumidity size="4em" color={isCritic? 'red' : 'green'}/>}
-                {name == "HeartRate" && <FaHeartbeat size="4em" color={isCritic? 'red' : 'green'}/>}
+                {name == "HeartBeat" && <FaHeartbeat size="4em" color={isCritic? 'red' : 'green'}/>}
                 <Row>
                     <Typography>{convertMeasureValue(measureValue)}</Typography>
                 </Row>
