@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'react-bootstrap/Image';
-import DoctorAvatar from '../icons/Doctor_01.png';
-import PatientAvatar from '../icons/Woman_01.png';
 import { Row, Item, Column } from '@mui-treasury/components/flex';
 import Button from '@material-ui/core/Button';
 import { FaPen } from 'react-icons/fa';
@@ -10,6 +8,8 @@ import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
 import { styled } from '@material-ui/core/styles';
 import API from '../api/API';
+import Typography from '@material-ui/core/Typography';
+
 const Input = styled('input')({
     display: 'none',
   });
@@ -122,7 +122,9 @@ export default function PersonalProfile({user}) {
                             {currentuser.name + ' ' + currentuser.surname}
                         </div>
                         <div style={profilestyle.caption}>
-                            Some info...
+                            Birth date: {currentuser.date}
+                            {user.userType === 'Patient' && 
+                                <Typography style={profilestyle.caption}>Fiscal code: {currentuser.fiscalCode} </Typography>}
                         </div>
                     </Item>
                 </Column>
@@ -155,7 +157,8 @@ export default function PersonalProfile({user}) {
                                 {doctor !== undefined && doctor.name + ' ' + doctor.surname}
                             </div>
                             <div style={profilestyle.caption}>
-                                Some info...
+                                {doctor !== undefined && 
+                                    <Typography style={profilestyle.caption}>Birth date: {doctor.date}</Typography>}
                             </div>
                         </Item>
                     </Column>
