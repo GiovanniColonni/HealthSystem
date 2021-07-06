@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/pi/Desktop/ProgettoEmbedded/raspberry/totem/
-uwsgi --socket 0.0.0.0:5001 --protocol=http -w wsgi:app &
+python3 app.py &
 sleep 5
 
 cd /home/pi/Desktop/ProgettoEmbedded/raspberry/client/totem-gui/
