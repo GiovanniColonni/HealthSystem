@@ -68,7 +68,7 @@ function MeetingCard({appointment, isPassed}) {
     <>
     <Card border="success" className="text-center" style={styles.card}>
         <Card.Header style={(isPassed || disableButton)? {} : {backgroundColor: "#8BC24A", color: '#fff'}}>
-          {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY HH:mm A")}
+          {moment(appointment.start, "MM/DD/YYYY hh:mm").format("MM/DD/YYYY hh:mm A")}
         </Card.Header>
         <Card.Body>
             <Card.Text>
@@ -97,7 +97,7 @@ function MeasureCard({appointment, isPassed}) {
   return (
     <Card border="primary" className="text-center" style={styles.card}>
         <Card.Header style={isPassed? {} : {backgroundColor: "#007bff", color: '#fff'}}>
-            {moment(appointment.start, "MM/DD/YYYY HH:mm").format("MM/DD/YYYY")}
+            {moment(appointment.start, "MM/DD/YYYY hh:mm").format("MM/DD/YYYY")}
         </Card.Header>
         <Card.Body>
             <Card.Text>

@@ -126,9 +126,11 @@ export default function BigCalendar(props) {
       defaultView={props.defaultView}
       startAccessor="start"
       endAccessor="end"
+      min={moment('8:00am', 'h:mma').toDate()}
+      max={moment('8:00pm', 'h:mma').toDate()}
       onSelectEvent={(event) => {setShow(true); setEventClk(event)}}
       onSelectSlot={({start,end}) => createEventFunction(start,end)}
-      style={{ height: 500 }} // remove style here. Use CSS file
+      style={{ height: "80vh" }} // remove style here. Use CSS file
     />
     {eventClk !== null && <EventModal user={user} show={show} animation={true} event={eventClk} onHide={handleClose} patientId={eventClk.patientId}/>}
     {user && user.userType === "Doctor" && 

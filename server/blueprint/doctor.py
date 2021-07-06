@@ -4,6 +4,7 @@ import jsonpickle
 from pathlib import Path
 from db.queries.SelectQuery import SelectQuery
 from db.queries.InsertQuery import InsertQuery
+from db.queries.UpdateQuery import UpdateQuery
 
 doctor = Blueprint('doctor', __name__, url_prefix="/api/doctor")
 
@@ -18,6 +19,18 @@ def get_doctor(doctorId):
     if doctor is False:
         return jsonify(False)
     return jsonify(row2dict(doctor))
+
+
+@doctor.route('/profileImage', methods=['POST'])
+# @login_required
+def upload_profile_image():
+    googleId = request.form.get('googleId')
+    file = request.files['file']
+    u = UpdateQuery()
+    u.update_profile_image(googleId, file.filename)
+    destination = 'doctor_image/' + file.filename
+    file.save(destination)
+    return make_response(jsonify(True), 200)
 
 
 @doctor.route('/event')
@@ -71,6 +84,7 @@ def insert_prescription():
         file.save(destination)
         return make_response(jsonify("upload successfully"), 200)
     return make_response(jsonify("ERROR"), 400)
+
 
 def row2dict(row):
     """
