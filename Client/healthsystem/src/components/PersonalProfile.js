@@ -10,6 +10,7 @@ import { styled } from '@material-ui/core/styles';
 import API from '../api/API';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import { IconButton } from '@material-ui/core';
 
 const Input = styled('input')({
     display: 'none',
@@ -110,12 +111,25 @@ export default function PersonalProfile({user}) {
         <div style={profilestyle.container}>
             <Row gap={5} p={2.5}>
                 <Column>
+                <Row>
                     {user.userType === 'Doctor' && 
                         <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar}/>
                     }
                     {user.userType === 'Patient' &&
                         <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar} />
                     }
+                    <Row style={{marginBottom: 'auto'}}>
+                        <label htmlFor="contained-button-file">
+                            <Input accept="image/*" id="contained-button-file" ref={myRefname} type="file" onChange={(event) => fileSelectedHandler(event)}/>
+                            <Tooltip title="Change profile image" >
+                                <IconButton 
+                                    onClick={() => handleClick()}>
+                                    <FaPen />
+                                </IconButton>
+                            </Tooltip>
+                        </label>
+                    </Row>
+                </Row>
                 </Column>
                 <Column>
                     <Item>
@@ -131,16 +145,14 @@ export default function PersonalProfile({user}) {
                 </Column>
                 <Column style={profilestyle.commentblock}>
                     <Item>
-                        <label htmlFor="contained-button-file">
-                            <Input accept="image/*" id="contained-button-file" ref={myRefname} type="file" onChange={(event) => fileSelectedHandler(event)}/>
+                        <Tooltip title="Not implemented yet" >
                             <Button variant="contained"
                             color="secondary"
                             style={profilestyle.editbutton}
-                            onClick={() => handleClick()}
                             startIcon={<FaPen />}>
-                                Edit Profile Image
+                                Edit Profile
                             </Button>
-                        </label>
+                        </Tooltip>
                     </Item>
                 </Column>
                 
@@ -165,7 +177,6 @@ export default function PersonalProfile({user}) {
                     </Column>
                     <Column style={profilestyle.commentblock}>
                         <Item>
-                            
                             <Tooltip title="Not implemented yet" >
                                 <Button
                                     variant="contained"
