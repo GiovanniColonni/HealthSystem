@@ -40,14 +40,14 @@ export default function App() {
       screen: Home,
       navigationOptions: ({}) =>({
        
-       title: `Benvenuto ${user.name}`,
+       title: `Welcome ${user.name}`,
        headerLeft: () => <Image style={styleImg} source={img} />
       })
     },
     Login:{
       screen: Login,
       navigationOptions: ({}) =>({
-        title: `Autenticazione`,
+        title: `Authentication`,
         headerShown:false 
        // headerLeft: () => <></> 
       })
@@ -58,7 +58,7 @@ export default function App() {
         
         if(Platform.OS === 'android'){
           return({
-            title: `Storico Misure`,
+            title: `Measure History`,
             headerLeft: () => <Image style={styleImg} source={img}/> 
             })
         }
