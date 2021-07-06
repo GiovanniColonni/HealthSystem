@@ -86,7 +86,7 @@ export default function App() {
     
     registerForPushNotificationsAsync().then(token =>{
       //console.log(token)
-       //setExpoPushToken(token)
+       setExpoPushToken(token)
     });
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
