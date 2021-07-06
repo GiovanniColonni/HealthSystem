@@ -9,6 +9,7 @@ import API_patient from '../api/API_patient';
 import { styled } from '@material-ui/core/styles';
 import API from '../api/API';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const Input = styled('input')({
     display: 'none',
@@ -164,13 +165,16 @@ export default function PersonalProfile({user}) {
                     </Column>
                     <Column style={profilestyle.commentblock}>
                         <Item>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                style={profilestyle.changebutton}
-                            >
-                                Change Doctor
-                            </Button>
+                            
+                            <Tooltip title="Not implemented yet" >
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    style={profilestyle.changebutton}
+                                >
+                                    Change Doctor
+                                </Button>
+                            </Tooltip>
                         </Item>
                     </Column>
                 </Row></>
