@@ -131,6 +131,22 @@ async function getAllDoctors(){
     return doctors
 }
 
+async function uploadProfileImage(googleId, image){
+    var formData = new FormData()
+    formData.set("googleId",googleId)
+    formData.set("file",image)
+    try{
+        let resp = await axios.post("/api/doctor/profileImage",formData)
+        
+        if (resp.status === 200){
+          return true
+        }
+        
+    }catch(e){
+        return false
+    }
+}
 
-const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors, logout}
+
+const API = {postLogin,isAuthenticated,getEvents,changeUserType,submitFirstAccess,getAllDoctors, logout, uploadProfileImage}
 export default API;

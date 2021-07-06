@@ -44,7 +44,7 @@ class Measure(Base):
 
     id = Column(INTEGER(11), primary_key=True)
     type = Column(String(45), nullable=False)
-    value = Column(INTEGER(11))
+    value = Column(String(100))
     patientId = Column(ForeignKey('patient.googleId'), nullable=False, index=True)
     date = Column(String(45))
 

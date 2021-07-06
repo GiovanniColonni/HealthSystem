@@ -14,6 +14,16 @@ def account_is_none(account):
 
 class UpdateQuery:
 
+    def update_profile_image(self, googleId, image):
+        with DatabaseSession() as session:
+            account = session.query(Account) \
+                .filter(googleId == Account.id).first()
+            if account_is_none(account):
+                return False
+            account.image = image
+            session.commit()
+            return account
+
     def update_user_type(self, userId, userType):
         with DatabaseSession() as session:
             account = session.query(Account) \
