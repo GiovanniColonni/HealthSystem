@@ -86,7 +86,7 @@ export default function PatientDetails(props) {
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Patient Details</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Patient's Details</Typography>
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
@@ -117,7 +117,7 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Sensor Details</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Measure Details</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
@@ -127,7 +127,7 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Appointment List</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Passed Prescriptions</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                     <PrescriptionList googleId={history.location.state.patient.googleId} />
