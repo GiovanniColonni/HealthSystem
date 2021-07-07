@@ -113,7 +113,7 @@ class InsertQuery:
                             'accept' : 'application/json',
                             'accept-encoding' : 'gzip, deflate',
                             'content-type' : 'application/json'
-                        },data=json.dumps({'to' : token, 'title' : 'HealthSystem Alert', 'body' : 'Un sensore ha rilevato un valore anomalo'}))
+                        },data=json.dumps({'to' : token, 'title' : 'HealthSystem Alert', 'body' : 'A sensor returns an anomaly value'}))
                         print(r.status_code, r.reason)
                         print(token)
                 return True
