@@ -104,13 +104,15 @@ export default function MeasureList({googleId}) {
                 const listBld = []
                 for (const measure of measures) {
                     if (measure.type === "OxygenSaturation"){
-                        console.log("Adding oxygen measure: ", measure)
+                        measure.value = JSON.parse(measure.value).Operc
                         listOxy.push(measure)
                     } else if (measure.type === "HeartRate"){
-                        console.log("Adding heart measure: ", measure)
+                        measure.value = JSON.parse(measure.value).HRate
                         listHeart.push(measure)
                     } else if (measure.type === "BloodPressure"){
-                        console.log("Adding blood measure: ", measure)
+                        measure.value = JSON.parse(measure.value).Max + " ; " 
+                            + JSON.parse(measure.value).Min + " ; "
+                            + JSON.parse(measure.value).HRate
                         listBld.push(measure)
                     } else {
                         console.log("Unrecognised measure: ", measure)
