@@ -72,12 +72,10 @@ function MeasureCard({image, data, name}) {
         <CardContent>
             {data !== undefined && data.length > 0 &&
                 data.map(measure => (
-                <Row>
+                  <>
                   <Typography>{moment(measure.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}: </Typography>
-                  <Row style={{margin: 'auto'}}>
-                    <Typography color="secondary">{measure.value}</Typography>
-                  </Row>
-                </Row>
+                  <Typography color="secondary">{measure.value}</Typography>
+                  </>
             )) }
             {(data === undefined || data.length === 0) &&
                 <Typography paragraph>No Data Available</Typography>}
