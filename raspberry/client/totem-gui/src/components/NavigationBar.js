@@ -39,11 +39,18 @@ export default function NavigationBar({user,logout}) {
                             
                             notifications.push({type: "join", date: evnt.start, URL: evnt.conference})
                             setNotifList(notifications)
-                            setEvents(events)
                             
+                        }
+                    } else if(evnt.title === "measure"){
+                        const initialDifference = moment(evnt.start).diff(moment(),'minutes')
+                        const endDifference = moment().diff(evnt.end,'minutes')
+                        if(initialDifference < 15 && endDifference <= 0){
+                            notifications.push({type: "measure", date: evnt.start, description: evnt.description})
+                            setNotifList(notifications)
                         }
                     }
                 });
+                setEvents(events)
             }
             })
             .catch((err)=>{
