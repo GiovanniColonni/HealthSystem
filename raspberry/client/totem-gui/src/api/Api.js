@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from 'moment';
+import Event from '../classes/Event'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
