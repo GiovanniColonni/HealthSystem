@@ -14,6 +14,7 @@ import NavigationBar from './components/NavigationBar';
 import axios from "axios"
 import PrescriptionList from './components/PrescriptionCard';
 import NewAppointment from './components/NewAppointment';
+import PersonalProfile from './components/PersonalProfile';
 
 
 function App() {
@@ -80,14 +81,15 @@ function App() {
             <Measure setMeasure={setMeasure} user={user} measure={measure} />
           </Route>
           <Route exact path={"/prescriptionList"}>
-            <div>
-              <NavigationBar user={user} logout={handleLogout}/>
-              <PrescriptionList googleId={user.googleId} />
-              
-            </div>
+            <NavigationBar user={user} logout={handleLogout}/>
+            <PrescriptionList googleId={user.googleId} />
           </Route>
           <Route exact path="/videocall">
             <Button onClick={() => {window.location.href = link}}>Start Call</Button>
+          </Route>
+          <Route exact path="/profile">
+            <NavigationBar user={user} logout={handleLogout}/>
+            <PersonalProfile user={user}/>
           </Route>
       </Switch>
       </UserContext.Provider>
