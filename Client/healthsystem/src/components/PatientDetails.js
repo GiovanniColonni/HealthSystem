@@ -120,12 +120,9 @@ export default function PatientDetails(props) {
             <Row gap={5} p={2.5}>
                 <Typography variant="h5" style={detailsstyle.titles}>Measure Details</Typography>
             </Row>
-            <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
                     <MeasureList googleId={history.location.state.patient.googleId} />
                 </div>
-                
-            </Row>
             <Row gap={5} p={2.5}>
                 <Typography variant="h5" style={detailsstyle.titles}>Measure Reminders</Typography>
             </Row>

@@ -143,13 +143,13 @@ export default function MeasureList({googleId}) {
     return (
         <>
         <Row style={{margin: 'auto'}}>
-            <Column style={{width: '33%', minWidth: '180px'}}>
+            <Column style={{width: '33%'}}>
                 <MeasureCard image={OxygenIcon} data={oxyMeasures} name="Oxygen percentage"/>
             </Column>
-            <Column style={{width: '34%', minWidth: '180px'}}>
+            <Column style={{width: '34%'}}>
                 <MeasureCard image={HeartIcon} data={heartMeasures} name="Heart rate"/>
             </Column>
-            <Column style={{width: '33%', minWidth: '180px'}}>
+            <Column style={{width: '33%'}}>
                 <MeasureCard image={BldIcon} data={bldMeasures} name="Blood pressure"/>
             </Column>
         </Row>
