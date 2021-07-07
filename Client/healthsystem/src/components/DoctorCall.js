@@ -25,6 +25,7 @@ import moment from 'moment';
 import PrescriptionList from './PrescriptionCard';
 import API_patient from '../api/API_patient';
 import Image from 'react-bootstrap/Image';
+import { FutureAppointmentList } from './AppointmentCard';
 
 
 const drawerWidth = '50%';
@@ -338,6 +339,18 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
               <MeasureList googleId={patient.googleId}/>
             </div>
           </Row>
+          <Typography variant="h5" style={contentstyle.title}>Reminders</Typography>
+          <Row style={contentstyle.item}>
+            <div style={contentstyle.center}>
+                <FutureAppointmentList
+                    googleId={patient.googleId} 
+                    userType={"Patient"}
+                    onlyMeasure={true}
+                    order={"increasing"}
+                    noButton={true}  />
+            </div>
+          </Row>
+          
         </>}
         {value === 3 && visible === true &&
         <>
