@@ -102,7 +102,10 @@ export default function Home({user}){
                         </Button>
                     </Row>
                     <div style={{marginLeft: '50px', marginTop: '10px'}}>
-                        <FutureAppointmentList user={user} />
+                        <FutureAppointmentList 
+                            googleId={user.googleId} 
+                            userType={user.userType}
+                            order={"decreasing"} />
                     </div>
 
                     <Row style={{marginTop: '30px'}}>

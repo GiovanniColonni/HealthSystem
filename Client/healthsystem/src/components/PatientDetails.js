@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
 import PrescriptionList from './PrescriptionCard';
 import Typography from '@material-ui/core/Typography';
+import { FutureAppointmentList } from './AppointmentCard';
 
 var detailsstyle = {
     container: {
@@ -124,6 +125,19 @@ export default function PatientDetails(props) {
                     <MeasureList googleId={history.location.state.patient.googleId} />
                 </div>
                 
+            </Row>
+            <Row gap={5} p={2.5}>
+                <Typography variant="h5" style={detailsstyle.titles}>Measure Reminders</Typography>
+            </Row>
+            <Row gap={5} p={2.5} style={detailsstyle.item}>
+                <div style={detailsstyle.measures}>
+                    <FutureAppointmentList 
+                        googleId={history.location.state.patient.googleId} 
+                        userType={"Patient"}
+                        onlyMeasure={true}
+                        order={"increasing"}
+                        noButton={true}  />
+                </div>
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
