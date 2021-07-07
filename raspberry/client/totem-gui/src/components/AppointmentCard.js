@@ -96,12 +96,14 @@ function MeetingCard({appointment, isPassed}) {
 function MeasureCard({appointment, isPassed}) {
   const [disableButton,setDisableButton] = useState(true)
 
+  const history = useHistory()
+
   const isTodayEvent = (event) => {
     return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'minute')
   }
 
   const handleStartMeasure = () => {
-
+    history.push("/measure")
   }
 
   useEffect( () => {
