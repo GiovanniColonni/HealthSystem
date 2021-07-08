@@ -17,7 +17,7 @@ const localizer = momentLocalizer(moment)
 export default function BigCalendar(props) {
   const [show, setShow] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [createEvent, setCreateEvent] = useState(undefined)
+  const [createEvent, setCreateEvent] = useState()
   const [patientNameFilter, setPatientNameFilter] = useState("")
   const [patientId, setPatientId] = useState(undefined)
   const [repeatValue, setRepeatValue] = useState(1)
@@ -39,7 +39,6 @@ export default function BigCalendar(props) {
       .catch((err)=>{
 
       });
-      console.log("typeExamination  " + typeExamination)
       console.log("patientId  " + patientId)
   }, [user.googleId, user.userType, typeExamination, patientId]);
   // REMEMBER TO USE .toDate(); moment() doesn't work with bigCalendar
@@ -47,12 +46,13 @@ export default function BigCalendar(props) {
   const createEventFunction = (start, end) =>{
     if(moment(start) > moment()){
       setShowCreateModal(true)
-      setCreateEvent({"start": moment(start).format('MM/DD/YYYY hh:mm A'), "end": moment(end).format('ddd MM/DD/YYYY hh:mm A')})
+      setCreateEvent({"start": moment(start).format('MM/DD/YYYY hh:mm A'), "end": moment(end).format('ddd MM/DD/YYYY hh:mm A'), typeExamination: "meeting"})
     }
   }
 
   const submit = () =>{
-    console.log("Patient selected: ", patientId)
+    console.log(createEvent)
+    console.log("typeExamination  " + createEvent.typeExamination)
     if(createEvent.typeExamination !== undefined && createEvent.typeExamination !== ""){
       let URL = ""
       if(createEvent.typeExamination === "meeting"){
@@ -72,6 +72,8 @@ export default function BigCalendar(props) {
       let startDate = moment(createEvent.start).format("MM/DD/YYYY hh:mm A")
       let endDate = moment(createEvent.end).format("MM/DD/YYYY hh:mm A")
       let repeatV = repeatValue
+      console.log("typeExamination  " + typeExamination)
+      console.log("Patient selected: ", patientId)
       if(!((typeExamination === "measure" || typeExamination === "meeting") && (patientId === undefined || patientId === null))){
         do{
           API_patient.setAppointment(patId,doctId,startDate,createEvent.typeExamination,createEvent.description,endDate,URL)

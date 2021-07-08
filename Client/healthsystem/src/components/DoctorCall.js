@@ -26,6 +26,7 @@ import PrescriptionList from './PrescriptionCard';
 import API_patient from '../api/API_patient';
 import Image from 'react-bootstrap/Image';
 import { FutureAppointmentList } from './AppointmentCard';
+import { set } from 'date-fns';
 
 
 const drawerWidth = '50%';
@@ -108,6 +109,7 @@ export default function DoctorCall({user}) {
   const history= useHistory()
   const [prescription, setPrescription] = useState({file: undefined, observation: undefined});
   const [passedEvents, setPassedEvents] = useState([])
+  const [resetPrescription, setResetPrescription] = useState(false)
 
   useEffect(() => {
     API.getEvents(history.location.state.patient.googleId, "Patient")
@@ -150,8 +152,10 @@ export default function DoctorCall({user}) {
     console.log("DoctorId", user.googleId)
     console.log("Prescription", prescription)
     API_doctor.uploadPrescription(patientId, prescription, user.googleId)
-      .then((resp) =>
-        alert("remove this alert")
+      .then((resp) =>{
+          alert("Upload Successful")
+          setResetPrescription(true)
+        }
       )
       .catch((err) =>{
         console.log(err)
@@ -219,7 +223,8 @@ export default function DoctorCall({user}) {
                     value={content} doctor={user} visible={open} 
                     updateUploadedFiles={(files) => updateUploadedFiles(files)} passedEvents={passedEvents} 
                     uploadPrescription={(patientId) => uploadPrescription(patientId)} 
-                    updateObservation={(observation) => updateObservation(observation)} />
+                    updateObservation={(observation) => updateObservation(observation)}
+                    resetPrescription={resetPrescription} setResetPrescription={setResetPrescription} />
               </div>
             </div>
         </Drawer>
@@ -271,7 +276,7 @@ const contentstyle = {
     textAlign: 'left',
   }
 }
-function Content({value, visible, doctor, updateUploadedFiles, uploadPrescription, updateObservation}) {
+function Content({value, visible, doctor, updateUploadedFiles, uploadPrescription, updateObservation, resetPrescription, setResetPrescription}) {
   const history = useHistory()
   const [patient, setPatient] = useState({})
 
@@ -282,7 +287,8 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
         setPatient(patient)
       }
     })
-  }, [history.location.state.patient.googleId])
+    if(resetPrescription) setResetPrescription(false)
+  }, [history.location.state.patient.googleId, resetPrescription])
 
   return (
     <>
@@ -294,41 +300,43 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
         {value === 1 && visible === true &&
         <>
           <Typography variant="h5" style={contentstyle.title}>Prescription</Typography>
-          <div style={contentstyle.container}>
-            <FileUpload
-              accept=".jpg,.pdf"
-              label="Prescriptions"
-              /*multiple*/
-              updateFilesCb={(files) => updateUploadedFiles(files)}
-            />
-          </div>
+          {!resetPrescription && <>
+            <div style={contentstyle.container}>
+              <FileUpload
+                accept=".jpg,.pdf"
+                label="Prescriptions"
+                /*multiple*/
+                updateFilesCb={(files) => updateUploadedFiles(files)}
+              />
+            </div>
+                
+            <Column style={contentstyle.container}>
               
-          <Column style={contentstyle.container}>
-            
-            <Row style={contentstyle.item}>
-              <TextField
-                id="outlined-textarea"
-                label="Observations"
-                placeholder="Write here"
-                multiline
-                variant="outlined"
-                fullWidth
-                onChange={(e) => updateObservation(e.target.value)}
-              />    
-            </Row>
-            <Row style={contentstyle.item}>
-              <Button
-                  variant="contained"
-                  color="secondary"
-                  style={menustyle.okbutton}
+              <Row style={contentstyle.item}>
+                <TextField
+                  id="outlined-textarea"
+                  label="Observations"
+                  placeholder="Write here"
+                  multiline
+                  variant="outlined"
                   fullWidth
-                  onClick={() => uploadPrescription(patient.googleId)}
-                  disabled={false}
-              >
-                  Save Prescription and Notes
-              </Button>
-            </Row>
-          </Column>
+                  onChange={(e) => updateObservation(e.target.value)}
+                />    
+              </Row>
+              <Row style={contentstyle.item}>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    style={menustyle.okbutton}
+                    fullWidth
+                    onClick={() => uploadPrescription(patient.googleId)}
+                    disabled={false}
+                >
+                    Save Prescription and Notes
+                </Button>
+              </Row>
+            </Column>
+          </>}
 
         </>}
         {value === 2 && visible === true &&
