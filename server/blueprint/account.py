@@ -44,7 +44,6 @@ class Account(Resource):
             elif userType == "Doctor":
                 i.insert_doctor(name, surname, date, googleId)
             return "OK", HTTPStatus.OK
-
         if action == "insertToken":
             id = request.form.get("googleId")
             pushToken = request.form.get("pushToken")
