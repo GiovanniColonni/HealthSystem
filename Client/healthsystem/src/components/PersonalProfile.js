@@ -11,11 +11,12 @@ import API from '../api/API';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { IconButton } from '@material-ui/core';
+import { css } from "@emotion/react";
+import HashLoader from "react-spinners/HashLoader";
 
 const Input = styled('input')({
     display: 'none',
   });
-
 
 var profilestyle = {
     container: {
@@ -57,6 +58,7 @@ export default function PersonalProfile({user}) {
 
     const [currentuser, setCurrentUser] = useState({})
     const [doctor, setDoctor] = useState({})
+    let [loading, setLoading] = useState(false);
 
     const myRefname= useRef(null);
 
@@ -92,12 +94,14 @@ export default function PersonalProfile({user}) {
         console.log(event.target.files[0])
         const file = event.target.files[0]
         const filename = event.target.files[0].name
+        setLoading(true)
         API.uploadProfileImage(user.googleId,file)
             .then((resp) => {
                 console.log(resp)
-                window.location.reload(true)        // DO NOT FORCE RELOAD
+                setLoading(false)
             })
             .catch((err) =>{
+                setLoading(false)
                 console.log(err)
             })
     }
@@ -109,11 +113,17 @@ export default function PersonalProfile({user}) {
 
     return (
         <div style={profilestyle.container}>
+            {loading && 
+                <Row style={{display: "block"}} gap={5} p={12.5}>
+                    <HashLoader loading={loading} color={"#8BC24A"} speedMultiplier={1} size={150} />
+                </Row>
+            }
+            {!loading && 
             <Row gap={5} p={2.5}>
                 <Column>
                 <Row>
                     {user.userType === 'Doctor' && 
-                        <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar}/>
+                        <Image src={"/api/patient/doctorImage/"+user.googleId+ '?time='+ new Date() } roundedCircle style={profilestyle.avatar}/>
                     }
                     {user.userType === 'Patient' &&
                         <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar} />
@@ -155,9 +165,9 @@ export default function PersonalProfile({user}) {
                         </Tooltip>
                     </Item>
                 </Column>
-                
             </Row>
-            {user.userType === 'Patient' 
+            }
+            {user.userType === 'Patient' && !loading
                 && <>
                 <Divider variant="middle"/>
                 <Row gap={5} p={2.5}>
