@@ -126,7 +126,7 @@ export default function PersonalProfile({user}) {
                         <Image src={"/api/patient/doctorImage/"+user.googleId+ '?time='+ new Date() } roundedCircle style={profilestyle.avatar}/>
                     }
                     {user.userType === 'Patient' &&
-                        <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar} />
+                        <Image src={"/api/patient/doctorImage/"+user.googleId+ '?time='+ new Date() } roundedCircle style={profilestyle.avatar} />
                     }
                     <Row style={{marginBottom: 'auto'}}>
                         <label htmlFor="contained-button-file">
