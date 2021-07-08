@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 import API_doctor from '../api/API_doctor';
 import PrescriptionList from './PrescriptionCard';
 import Typography from '@material-ui/core/Typography';
+import { FutureAppointmentList } from './AppointmentCard';
 
 var detailsstyle = {
     container: {
@@ -86,7 +87,7 @@ export default function PatientDetails(props) {
     return (
         <div style={detailsstyle.container}>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Patient Details</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Patient's Details</Typography>
             </Row>
             <Row gap={5} p={2.5}>
                 <Column>
@@ -117,17 +118,27 @@ export default function PatientDetails(props) {
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Sensor Details</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Measure Details</Typography>
             </Row>
-            <Row gap={5} p={2.5} style={detailsstyle.item}>
                 <div style={detailsstyle.measures}>
                     <MeasureList googleId={history.location.state.patient.googleId} />
                 </div>
-                
+            <Row gap={5} p={2.5}>
+                <Typography variant="h5" style={detailsstyle.titles}>Measure Reminders</Typography>
+            </Row>
+            <Row gap={5} p={2.5} style={detailsstyle.item}>
+                <div style={detailsstyle.measures}>
+                    <FutureAppointmentList 
+                        googleId={history.location.state.patient.googleId} 
+                        userType={"Patient"}
+                        onlyMeasure={true}
+                        order={"increasing"}
+                        noButton={true}  />
+                </div>
             </Row>
             <Divider variant="middle"/>
             <Row gap={5} p={2.5}>
-                <Typography variant="h5" style={detailsstyle.titles}>Appointment List</Typography>
+                <Typography variant="h5" style={detailsstyle.titles}>Passed Prescriptions</Typography>
             </Row>
             <Row gap={5} p={2.5} style={detailsstyle.item}>
                     <PrescriptionList googleId={history.location.state.patient.googleId} />

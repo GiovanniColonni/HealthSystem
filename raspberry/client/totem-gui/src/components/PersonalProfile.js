@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import API_doctor from '../api/API_doctor';
 import API_patient from '../api/API_patient';
 import { styled } from '@material-ui/core/styles';
-import API from '../api/API';
+import Api from '../api/Api';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { IconButton } from '@material-ui/core';
@@ -61,6 +61,7 @@ export default function PersonalProfile({user}) {
     const myRefname= useRef(null);
 
     useEffect(() => {
+        console.log(user)
         if (user.userType === "Patient") {
             API_patient.getPatient(user.googleId)
             .then((patient) =>{
@@ -77,22 +78,14 @@ export default function PersonalProfile({user}) {
             .catch((err)=>{
                 console.log(err)
             });
-        } else if (user.userType === "Doctor") {
-            API_doctor.getDoctor(user.googleId)
-            .then((doctor) =>{
-            setCurrentUser(doctor)
-            })
-            .catch((err)=>{
-    
-            });
         }
-    }, [user.googleId,currentuser.doctorId, user.userType]);
+    }, [user.googleId, currentuser.doctorId, user.userType]);
 
     const fileSelectedHandler = (event) =>{
         console.log(event.target.files[0])
         const file = event.target.files[0]
         const filename = event.target.files[0].name
-        API.uploadProfileImage(user.googleId,file)
+        Api.uploadProfileImage(user.googleId,file)
             .then((resp) => {
                 console.log(resp)
                 window.location.reload(true)        // DO NOT FORCE RELOAD
@@ -112,9 +105,6 @@ export default function PersonalProfile({user}) {
             <Row gap={5} p={2.5}>
                 <Column>
                 <Row>
-                    {user.userType === 'Doctor' && 
-                        <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar}/>
-                    }
                     {user.userType === 'Patient' &&
                         <Image src={"/api/patient/doctorImage/"+user.googleId} roundedCircle style={profilestyle.avatar} />
                     }
@@ -133,14 +123,9 @@ export default function PersonalProfile({user}) {
                 </Column>
                 <Column>
                     <Item>
-                        <div style={profilestyle.name}>
-                            {currentuser.name + ' ' + currentuser.surname}
-                        </div>
-                        <div style={profilestyle.caption}>
-                            Birth date: {currentuser.date}
-                            {user.userType === 'Patient' && 
-                                <Typography style={profilestyle.caption}>Fiscal code: {currentuser.fiscalCode} </Typography>}
-                        </div>
+                        <Typography style={profilestyle.name}>{currentuser.name + ' ' + currentuser.surname}</Typography>
+                        <Typography style={profilestyle.caption}>Birth date: {currentuser.date}</Typography>
+                        <Typography style={profilestyle.caption}>Fiscal code: {currentuser.fiscalCode}</Typography>
                     </Item>
                 </Column>
                 <Column style={profilestyle.commentblock}>
@@ -157,39 +142,36 @@ export default function PersonalProfile({user}) {
                 </Column>
                 
             </Row>
-            {user.userType === 'Patient' 
-                && <>
-                <Divider variant="middle"/>
-                <Row gap={5} p={2.5}>
-                    <Column>
-                        <Image src={"/api/patient/doctorImage/"+currentuser.doctorId} roundedCircle style={profilestyle.avatar} />
-                    </Column>
-                    <Column>
-                        <Item>
-                            <div style={profilestyle.name}>
-                                {doctor !== undefined && doctor.name + ' ' + doctor.surname}
-                            </div>
-                            <div style={profilestyle.caption}>
-                                {doctor !== undefined && 
-                                    <Typography style={profilestyle.caption}>Birth date: {doctor.date}</Typography>}
-                            </div>
-                        </Item>
-                    </Column>
-                    <Column style={profilestyle.commentblock}>
-                        <Item>
-                            <Tooltip title="Not implemented yet" >
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    style={profilestyle.changebutton}
-                                >
-                                    Change Doctor
-                                </Button>
-                            </Tooltip>
-                        </Item>
-                    </Column>
-                </Row></>
-            }
+            <Divider variant="middle"/>
+            <Row gap={5} p={2.5}>
+                <Column>
+                    <Image src={"/api/patient/doctorImage/"+currentuser.doctorId} roundedCircle style={profilestyle.avatar} />
+                </Column>
+                <Column>
+                    <Item>
+                        <div style={profilestyle.name}>
+                            {doctor !== undefined && doctor.name + ' ' + doctor.surname}
+                        </div>
+                        <div style={profilestyle.caption}>
+                            {doctor !== undefined && 
+                                <Typography style={profilestyle.caption}>Birth date: {doctor.date}</Typography>}
+                        </div>
+                    </Item>
+                </Column>
+                <Column style={profilestyle.commentblock}>
+                    <Item>
+                        <Tooltip title="Not implemented yet" >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                style={profilestyle.changebutton}
+                            >
+                                Change Doctor
+                            </Button>
+                        </Tooltip>
+                    </Item>
+                </Column>
+            </Row>
         </div>
     )
 }

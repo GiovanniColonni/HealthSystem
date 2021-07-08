@@ -48,7 +48,7 @@ var styles = {
     }
 }
 
-function MeetingCard({appointment, isPassed}) {
+function MeetingCard({appointment, isPassed, noButton}) {
   const [disableButton,setDisableButton] = useState(true)
   const history = useHistory()
 
@@ -74,7 +74,7 @@ function MeetingCard({appointment, isPassed}) {
             <Card.Text>
                 {appointment.description}
             </Card.Text>
-            {isPassed === false && disableButton === true &&
+            {isPassed === false && disableButton === true && noButton !== true &&
             <Tooltip title="Available 15 minutes before the beginning" >
               <span>
               <Button variant="contained" color="primary"
@@ -82,7 +82,7 @@ function MeetingCard({appointment, isPassed}) {
                   Join Appointment
               </Button></span>
             </Tooltip>}
-            {isPassed === false && disableButton === false &&
+            {isPassed === false && disableButton === false && noButton !== true &&
               <Button variant="contained" color="primary" style={styles.btnJoin}
                   onClick={() => handleAppointment()}>
                   Join Appointment
@@ -93,7 +93,7 @@ function MeetingCard({appointment, isPassed}) {
   )
 }
 
-function MeasureCard({appointment, isPassed}) {
+function MeasureCard({appointment, isPassed, noButton}) {
   return (
     <Card border="primary" className="text-center" style={styles.card}>
         <Card.Header style={isPassed? {} : {backgroundColor: "#007bff", color: '#fff'}}>
@@ -103,7 +103,7 @@ function MeasureCard({appointment, isPassed}) {
             <Card.Text>
                 {appointment.description}
             </Card.Text>
-            {isPassed === false &&
+            {isPassed === false && noButton !== true &&
             <Tooltip title="Available only on totem" >
               <span>
               <Button variant="contained" color="primary"disabled>
@@ -135,15 +135,15 @@ export function BookingAppointmentCard(props) {
   );
 }
 
-export function AppointmentCard({appointment, isPassed}) {
+export function AppointmentCard({appointment, isPassed, noButton}) {
   console.log("AppointmentCard: ", appointment)
 
   return (
     <>
     {appointment && appointment.title === "measure" &&
-      <MeasureCard appointment={appointment} isPassed={isPassed}/>}
+      <MeasureCard appointment={appointment} isPassed={isPassed} noButton={noButton}/>}
     {appointment.title === "meeting" &&
-      <MeetingCard appointment={appointment} isPassed={isPassed}/>}
+      <MeetingCard appointment={appointment} isPassed={isPassed} noButton={noButton}/>}
     </>
   )
 }
@@ -192,33 +192,48 @@ export function TodayAppointmentList({user}) {
   )
 }
 
-export function FutureAppointmentList({user}) {
+export function FutureAppointmentList({googleId, userType, onlyMeasure, order, noButton}) {
   
   const [futureEvents, setFutureEvents] = useState([])
 
   useEffect(() => {
-    API.getEvents(user.googleId, user.userType)
+    API.getEvents(googleId, userType)
       .then((events) =>{
         let futureEvents = []
         console.log("Appointment List ", events);
         if (events !== undefined){
             futureEvents = events.filter(isFutureEvent)
+            if (onlyMeasure) {
+              futureEvents = futureEvents.filter((event) => event.title === "measure")
+            }
             console.log("Future appointment List ", futureEvents);
-            futureEvents = futureEvents.sort(function(a, b) {
-              if (moment(a.start).isBefore(b.start)) {
-                return 1
-              }
-              if (moment(a.start).isAfter(b.start)) {
-                return -1
-              }
-              return 0
-            })
+            if (order === "increasing") {
+              futureEvents = futureEvents.sort(function(a, b) {
+                if (moment(a.start).isBefore(b.start)) {
+                  return -1
+                }
+                if (moment(a.start).isAfter(b.start)) {
+                  return 1
+                }
+                return 0
+              })
+            } else if (order === "decreasing") {
+              futureEvents = futureEvents.sort(function(a, b) {
+                if (moment(a.start).isBefore(b.start)) {
+                  return 1
+                }
+                if (moment(a.start).isAfter(b.start)) {
+                  return -1
+                }
+                return 0
+              })
+            }
             console.log("Sorted future appointment List ", futureEvents);
             setFutureEvents(futureEvents)
         }
         console.log("Events: ", futureEvents)
       })
-  }, [user.googleId, user.userType]);
+  }, [googleId, userType, onlyMeasure]);
 
   const isFutureEvent = (event) => {
     return moment().isBefore(event.start, 'day')
@@ -228,7 +243,7 @@ export function FutureAppointmentList({user}) {
     <>
       {futureEvents.length > 0 &&
         futureEvents.map((appointment) => (
-            <AppointmentCard appointment={appointment} isPassed={false} />
+            <AppointmentCard appointment={appointment} isPassed={false} noButton={noButton} />
         ))
       }
       {futureEvents.length === 0 &&

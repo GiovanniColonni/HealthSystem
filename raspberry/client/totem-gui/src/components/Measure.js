@@ -1,13 +1,12 @@
-import {useState,useEffect,useContext} from "react"
+import  {useState,useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import {Line} from "react-chartjs-2"
 import Api from "../api/Api"
-import moment from "moment"
-import { Row, Column } from '@mui-treasury/components/flex';
+import { Row } from '@mui-treasury/components/flex';
 import { WiHumidity } from "react-icons/wi";
 import { FaHeartbeat, FaHeart } from "react-icons/fa";
 import { Typography } from '@material-ui/core';
-import NavigationBar from "./NavigationBar"
+import MeasureList from "./MeasureList"
 
 const style = {
     information: {
@@ -24,8 +23,11 @@ const style = {
         margin: 'auto'
     }, btn: {
         marginLeft: '20px'
-    }, container: {
-        
+    }, titles: {
+        margin: 'auto',
+        fontSize: '30px',
+        fontStyle: 'italic',
+        color: '#616161'
     }
 }
 
@@ -217,7 +219,7 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                 </Button>
                 {/*<Typography>Average: {average}</Typography>*/}
                 <Row style={style.message}>
-                    {<Typography variant="h4">{message}</Typography>}
+                    {/*<Typography variant="h4">{message}</Typography>*/}
                     {measureError && <Typography>Problema con misurazione</Typography>}
                 </Row>
                 </>
@@ -236,6 +238,13 @@ function Measure ({setMeasure, measure, user, handleLogout}) {
                 </Row>
             </Row></>}
         </Row>
+        {mProgres === false && 
+            <>
+            <Typography variant="h5" style={style.titles}>Measure History</Typography>
+            <div style={{width: '70%', marginLeft: 'auto', marginRight: 'auto', marginTop: '50px'}}>
+                <MeasureList googleId={user.googleId}/>
+            </div>
+            </>}
         <Row p={2} style={style.graph}>
             {mProgres == true &&
             <Line type={"line"} width={100} height={50} data={data} options={options}/>}

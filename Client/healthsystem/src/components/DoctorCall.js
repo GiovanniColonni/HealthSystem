@@ -25,6 +25,7 @@ import moment from 'moment';
 import PrescriptionList from './PrescriptionCard';
 import API_patient from '../api/API_patient';
 import Image from 'react-bootstrap/Image';
+import { FutureAppointmentList } from './AppointmentCard';
 
 
 const drawerWidth = '50%';
@@ -260,6 +261,14 @@ const contentstyle = {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       textAlign: 'left',
+  }, caption: {
+    fontFamily: "Lato",
+    fontSize: '0.875rem',
+    color: '#758392',
+    marginTop: -4,
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    textAlign: 'left',
   }
 }
 function Content({value, visible, doctor, updateUploadedFiles, uploadPrescription, updateObservation}) {
@@ -330,6 +339,18 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
               <MeasureList googleId={patient.googleId}/>
             </div>
           </Row>
+          <Typography variant="h5" style={contentstyle.title}>Reminders</Typography>
+          <Row style={contentstyle.item}>
+            <div style={contentstyle.center}>
+                <FutureAppointmentList
+                    googleId={patient.googleId} 
+                    userType={"Patient"}
+                    onlyMeasure={true}
+                    order={"increasing"}
+                    noButton={true}  />
+            </div>
+          </Row>
+          
         </>}
         {value === 3 && visible === true &&
         <>
@@ -342,6 +363,9 @@ function Content({value, visible, doctor, updateUploadedFiles, uploadPrescriptio
                 <Item>
                     <div style={contentstyle.name}>
                         {patient.name + " " + patient.surname }
+                    </div>
+                    <div style={contentstyle.caption}>
+                        {patient.fiscalCode}
                     </div>
                 </Item>
             </Column>

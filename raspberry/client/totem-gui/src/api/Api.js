@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from 'moment';
+import Event from '../classes/Event'
 
 axios.defaults.headers.common['X-Requested-With'] = "XmlHttpRequest"
 axios.defaults.headers.common['Access-Control'] = "XmlHttpRequest"
@@ -147,5 +148,21 @@ async function getMeasure(){
 
 }
 
-let Api = {login,logout,isAuthenticated,getEvents,startMeasure,getMeasure,postMeasure}
+async function uploadProfileImage(googleId, image){
+    var formData = new FormData()
+    formData.set("googleId",googleId)
+    formData.set("file",image)
+    try{
+        let resp = await axios.post("/api/doctor/profileImage",formData)
+        
+        if (resp.status === 200){
+          return true
+        }
+        
+    }catch(e){
+        return false
+    }
+}
+
+let Api = {login,logout,isAuthenticated,getEvents,startMeasure,getMeasure,postMeasure,uploadProfileImage}
 export default Api;

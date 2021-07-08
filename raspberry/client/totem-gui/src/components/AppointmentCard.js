@@ -94,6 +94,26 @@ function MeetingCard({appointment, isPassed}) {
 }
 
 function MeasureCard({appointment, isPassed}) {
+  const [disableButton,setDisableButton] = useState(true)
+
+  const history = useHistory()
+
+  const isTodayEvent = (event) => {
+    return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'minute')
+  }
+
+  const handleStartMeasure = () => {
+    history.push("/measure")
+  }
+
+  useEffect( () => {
+      if(isTodayEvent(appointment)){
+        setDisableButton(false)
+      } else {
+        setDisableButton(true)
+      }
+  },[disableButton, appointment.start, appointment.end])
+
   return (
     <Card border="primary" className="text-center" style={styles.card}>
         <Card.Header style={isPassed? {} : {backgroundColor: "#007bff", color: '#fff'}}>
@@ -104,13 +124,11 @@ function MeasureCard({appointment, isPassed}) {
                 {appointment.description}
             </Card.Text>
             {isPassed === false &&
-            <Tooltip title="Available only on totem" >
-              <span>
-              <Button variant="contained" color="primary"disabled>
-                  Upload measures
-              </Button>
-              </span>
-            </Tooltip>}
+              <Button variant="contained" color="primary" style={styles.btnUpload}
+                disabled disabled={disableButton}
+                onClick={() => handleStartMeasure()}>
+                  Start measure
+              </Button>}
         </Card.Body>
     </Card>
   )
@@ -176,7 +194,7 @@ export function TodayAppointmentList({user}) {
   }, [user.googleId, user.userType]);
 
   const isTodayEvent = (event) => {
-    return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'hour')
+    return moment().isSame(event.start, 'day') && moment().isBefore(event.end, 'minute')
   }
   return (
     <>

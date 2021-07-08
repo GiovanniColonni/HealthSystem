@@ -117,7 +117,7 @@ def get_all_measures(patientId):
 
 
 @patient.route('/measure', methods=['POST'])
-#login_required
+@login_required
 def insert_measure():
     patientId = request.form.get('googleId')
     type = request.form.get('type')

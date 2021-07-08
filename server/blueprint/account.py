@@ -49,6 +49,7 @@ class Account(Resource):
             pushToken = request.form.get("pushToken")
             # get all pushToken from the googleId
             allPushToken = s.get_push_token(id)
+            print(f"push token : {pushToken} ")
             if allPushToken is None or allPushToken == "":
                 allPushToken = pushToken+","
             else:
