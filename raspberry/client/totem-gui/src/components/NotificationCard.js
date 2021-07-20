@@ -27,11 +27,7 @@ export default function NotificationCard(props) {
     const history = useHistory()
 
     const handleAppointment = () => {
-        if (props.userType === "Patient") {
-            history.push({pathname: '/patient/meeting', state:{URL: props.URL}})
-        } else if (props.userType === "Doctor") {
-            history.push({pathname: '/doctor/meeting', state:{URL: props.URL, patient: { googleId: props.patientId}}})
-        }
+        history.push({pathname: '/videocall', state:{URL: props.URL}})
         props.handleClose()
     }
 
