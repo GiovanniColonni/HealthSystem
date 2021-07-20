@@ -6,6 +6,7 @@ function VideoCallRedirect() {
   const history = useHistory()
 
   useEffect(() => {
+    console.log(history.state)
     window.location.href = history.state.URL;
   }, []);
 
