@@ -61,7 +61,7 @@ function MeetingCard({appointment, isPassed}) {
   },[disableButton, appointment.start, appointment.end])
 
   const handleAppointment = () => {
-        history.push({pathname: '/patient/meeting', state:{URL: appointment.conference}})
+        history.push({pathname: 'videocall', state:{URL: appointment.conference}})
   }
 
   return (

@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 
 function VideoCallRedirect() {
 
+  const history = useHistory()
+
   useEffect(() => {
-    window.location.href = "https://google.com/";
+    window.location.href = history.state.URL;
   }, []);
 
   return (
