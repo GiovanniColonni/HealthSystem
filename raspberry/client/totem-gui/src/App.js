@@ -15,6 +15,7 @@ import axios from "axios"
 import PrescriptionList from './components/PrescriptionCard';
 import NewAppointment from './components/NewAppointment';
 import PersonalProfile from './components/PersonalProfile';
+import VideoCallRedirect from './components/VideoCallRedirect';
 
 
 function App() {
@@ -85,7 +86,8 @@ function App() {
             <PrescriptionList googleId={user.googleId} />
           </Route>
           <Route exact path="/videocall">
-            <Button onClick={() => {window.location.href = link}}>Start Call</Button>
+            {/*<Button onClick={() => {window.location.href = link}}>Start Call</Button>*/}
+            <VideoCallRedirect />
           </Route>
           <Route exact path="/profile">
             <NavigationBar user={user} logout={handleLogout}/>
