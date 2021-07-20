@@ -15,7 +15,7 @@ import axios from "axios"
 import PrescriptionList from './components/PrescriptionCard';
 import NewAppointment from './components/NewAppointment';
 import PersonalProfile from './components/PersonalProfile';
-import VideoCallRedirect from './components/VideoCallRedirect';
+import PatientCall from './components/PatientCall';
 
 
 function App() {
@@ -85,9 +85,11 @@ function App() {
             <NavigationBar user={user} logout={handleLogout}/>
             <PrescriptionList googleId={user.googleId} />
           </Route>
-          <Route exact path="/videocall">
-            {/*<Button onClick={() => {window.location.href = link}}>Start Call</Button>*/}
-            <VideoCallRedirect />
+          <Route exact path={"/patient/meeting"}>
+            <div>{/*https://meet.jit.si/lucatest#config.prejoinPageEnabled=false*/ }
+              <NavigationBar user={user} logout={handleLogout}/>
+              <PatientCall />
+            </div>
           </Route>
           <Route exact path="/profile">
             <NavigationBar user={user} logout={handleLogout}/>

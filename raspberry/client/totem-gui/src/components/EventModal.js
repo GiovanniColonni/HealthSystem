@@ -28,7 +28,7 @@ export default function EventModal(props) {
                     <Modal.Footer>
                         {props.event.title === "meeting" &&
                             <Button variant="contained" color="primary" disabled={disableButton}
-                            onClick={() => history.push({pathname: '/videocall', state:{URL: props.event.conference}})}>
+                            onClick={() => history.push({pathname: '/patient/meeting', state:{URL: props.event.conference, patient: { googleId: props.patientId}}})}>
                                 Join Appointment
                             </Button> 
                         }

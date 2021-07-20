@@ -27,8 +27,7 @@ export default function NotificationCard(props) {
     const history = useHistory()
 
     const handleAppointment = () => {
-        console.log(props)
-        history.push({pathname: '/videocall', state:{URL: props.URL}})
+        history.push({pathname: '/patient/meeting', state:{URL: props.URL}})
         props.handleClose()
     }
 
